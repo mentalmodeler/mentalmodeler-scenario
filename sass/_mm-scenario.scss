@@ -78,10 +78,19 @@ nav section ul li a.wrapper {
   }
 }
 
-#app > .top-bar { 
+$padding: 20px;
+.top-bar { 
+  .top-bar-section {
+    ul > li > a.disabled {
+      color: rgba(255,255,255,0.4);
+      &:hover {
+        background-color: #000;
+      }
+    }
+  }
 }
 #workspace {
-  padding: 20px;
+  padding: $padding;
   background-image: url('../img/bg.jpg');
 }
 div.left-main {
@@ -97,9 +106,9 @@ div.left-main {
     @include border-top-radius(6px);
     @include text-dropshadow();
     background-image: url('../img/pattern_small.png');
-    background-color: $purple;
+    background-color: $gray;
     padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    padding-bottom: 0.5em; 
   }
   .body {
     @include panel-dropshadow();
@@ -113,7 +122,7 @@ div.left-main {
       $spacing: 5px;
       //@include border-radius( 4px );
       
-      padding: 10px 5px;
+      padding: 10px 5px 10px 5px;
       font-size: 0.85em;
       margin: 0;
       &.selected {
@@ -124,27 +133,29 @@ div.left-main {
       }
       // selected style
       .selectable {
+        $color: $gray;
+        $pct: 23%;
         padding: 3px;
         @include border-radius( 4px );
         cursor: pointer;
         &.selected {
-          background-color: $purple;
+          background-color: $color;
           color: #fff;
           cursor: default;
           &:hover {
-            background-color: $purple;
+            background-color: $color;
             color: #fff;
           }
           &:active {
-            background-color: $purple;
+            background-color: $color;
             color: #fff;
           }
         }
         &:hover {
-            background-color: lighten($purple, 50%);    
+            background-color: lighten($color, $pct);    
         }
         &:active {
-            background-color: lighten($purple, 35%);    
+            background-color: lighten($color, $pct);    
         }
       }
       i {
@@ -165,6 +176,19 @@ div.left-main {
           margin-bottom: $spacing;
           cursor: pointer;
         }
+
+        .add-scenario {
+          $h: 1.5em;
+          font-size:0.8em;
+          line-height: $h;
+          height: $h;
+          //float: right;
+          @include border-radius( 4px );
+          padding: 0 7px;
+          background-color: $green;
+          margin: 0;
+        }
+
         // collapsable scenarios div
         .scenarios-list {
           .scenario {
@@ -201,7 +225,7 @@ div.right-main {
   box-sizing: border-box;
   width: calc(100% - 15em);
   //border-left: solid $panel-border-width #000;
-  padding-left: 20px;
+  padding-left: $padding;
   div.tab-panel {
     //-webkit-box-shadow: 0 0 12px 0 rgba(0,0,0,0.5);
     //box-shadow: 0 0 12px 0 rgba(0,0,0,0.5);
@@ -279,26 +303,26 @@ div.right-main {
       }
       &:nth-child(2) {
         &:hover {
-          background-color: rgba($red, $tab-alpha);
+          background-color: rgba($purple, $tab-alpha);
         }
         &.active {
-          background-color: $red;
+          background-color: $purple;
         }
       }
       &:nth-child(3) {
         &:hover {
-          background-color: rgba($yellow, $tab-alpha);
+          background-color: rgba($red, $tab-alpha);
         }
         &.active {
-          background-color: rgba( darken( $yellow, 10% ), 1);
+          background-color: rgba( darken( $red, 10% ), 1);
         }
       }
       &:nth-child(4) {
         &:hover {
-          background-color: rgba($brown, $tab-alpha);
+          background-color: rgba($yellow, $tab-alpha);
         }
         &.active {
-          background-color: $brown;
+          background-color: $yellow;
         }
       }
       &.hover {

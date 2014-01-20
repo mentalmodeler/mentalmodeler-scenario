@@ -9,7 +9,7 @@ define([
 
     var AbstractView = Backbone.View.extend({
         initialize: function() {
-            if ( this.model !== null ) {
+            if ( typeof this.model !== 'undefined' ) {
                 this.model.setView( this );
             }
         },

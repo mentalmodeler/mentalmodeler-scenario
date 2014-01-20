@@ -40,13 +40,7 @@ define([
                 window.onresize = resizeScrollPanels;
                 // initialize dynamcially added foundation components
                 $(document).foundation();
-                resizeScrollPanels();
-                // add one default model
-                /*
-                for (var i=0; i<7; i++) {
-                     that.model.addModel('');     
-                }
-                */
+                resizeScrollPanels();  
             });
         },
         

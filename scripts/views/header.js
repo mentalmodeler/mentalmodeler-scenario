@@ -5,9 +5,10 @@ define([
     'underscore',
     'backbone',
     'foundation',
+    'filesaver',
     'views/abstract',
     'text!templates/header.html'
-], function ($, _, Backbone, Foundation, AbstractView, Template) {
+], function ($, _, Backbone, Foundation, FileSaver, AbstractView, Template) {
     'use strict';
 
     var HeaderView = AbstractView.extend({
@@ -16,7 +17,9 @@ define([
 
         events: {
             'change input#load-file' : 'loadFiles',
-            'click #newFile': 'newFile'
+            'click #newFile': 'newFile',
+            'click #saveFile': 'saveFile',
+            'click #deleteFile': 'remove'
         },
         
         initialize: function() {
@@ -27,13 +30,17 @@ define([
 
         render: function() {
             this.$el.html( this.template( {} ) );
+            this.$el.find('a.disabled').click( function(e) {
+                e.preventDefault();
+                return false;
+            });
             //console.log('header > render > this.el:',this.el,', this.$el:',this.$el);
             return this;
         },
 
         /***************
          *  new file
-        ****************/
+        ****************/       
         
         newFile: function() {
             window.mentalmodeler.appModel.addModel('');
@@ -44,44 +51,24 @@ define([
         ******************/
 
         loadFiles: function(e) {
-            //console.log('handleFileSelect, e:',e);
-            var mmpFiles = [];
-            var files = e.target.files; // FileList object
-
-            // files is a FileList of File objects. List some properties.
-            for (var i = 0, f; f = files[i]; i++) {
-                var name = escape(f.name);
-                var type = f.type;
-                if (name.split('.').indexOf('mmp') === -1 ) {
-                    continue;
-                }
-                mmpFiles.push( f );
-            }
-
-            this.readFiles( mmpFiles );
+            window.mentalmodeler.appModel.loadFiles(e);
         },
 
-        readFiles: function( files ) {
-          var that = this
-          var reader = new FileReader();
-          var file = files.pop();
-          //console.log('readFiles, file:',file,', files:',files);
-          // Closure to capture the file information.
-          reader.onload = (function(theFile) {
-            return function(e) {
-                //console.log('loaded, files:',files); //,', e.target.result:',e.target.result);
-                window.mentalmodeler.appModel.addModel( e.target.result );
-                //Backbone.trigger( 'file:onload', e.target.result );
-                if ( files.length > 0 ) {
-                    that.readFiles( files );
-                }
-            };
-          })(file);
+        /*****************
+         *  save files
+        ******************/
 
-          // Read in the image file as a data URL.
-          reader.readAsText(file);
+        saveFile: function(e) {
+            console.log('saveFile');
+        },
+
+        /*****************
+         *  remove files
+        ******************/
+
+        remove: function(e) {
+            window.mentalmodeler.appModel.remove();
         }
-
     });
 
     return HeaderView;

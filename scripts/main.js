@@ -28,7 +28,8 @@ require.config({
         backbone: '../vendor/backbone/backbone-min',
         underscore: '../vendor/underscore/underscore-min',
         foundation: '../vendor/foundation/foundation.min',
-        text: '../vendor/requirejs-text/text'
+        text: '../vendor/requirejs-text/text',
+        filesaver: '../vendor/filesaver/FileSaver'
     }
 });
 
@@ -38,7 +39,10 @@ require([
     'underscore',
     'routes/app'
 ], function ( $, Backbone, _, App ) {
-    //$(document).foundation();
     window.mentalmodeler = new App();
     Backbone.history.start();
-}); 
+});
+
+function flashInitialized() {
+    window.mentalmodeler.appModel.addModel('');
+} 

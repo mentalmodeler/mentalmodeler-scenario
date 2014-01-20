@@ -23,6 +23,7 @@ define([
         initialize: function() {
             ListView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'mmp:add', this.onModelAdded );
+            this.listenTo( Backbone, 'mmp:remove', this.onModelAdded );
         },
 
         render: function() {
@@ -48,7 +49,6 @@ define([
         },
 
         onModelAdded: function ( mmpModel ) {
-            //console.log( 'onModelAdded, mmpModel:',mmpModel );
             this.renderList();
         },
 

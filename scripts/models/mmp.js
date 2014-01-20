@@ -19,8 +19,37 @@ define([
                 justAdded: false
             },
 
+            $components:null,
+
             initialize: function () {
-                MmpModel.__super__.initialize.apply( this, arguments );            
+                MmpModel.__super__.initialize.apply( this, arguments );
+                var xmlString = this.get('xmlString');
+                console.log( 'MmpModel > initialize, xmlString:',xmlString); 
+                if ( xmlString && xmlString !== '' ) {
+                    this.parseXML( xmlString );
+                }            
+            },
+
+            parseXML: function( xmlString ) {
+                // remove carraige returns and new lines
+                xmlString = xmlString.replace(/(\r\n|\n|\r)/gm,'');
+                // remove CDATA tags
+                xmlString = xmlString.replace(/<!\[CDATA\[|\]\]>/gm,'');
+                xmlString = xmlString.split('?>')[1];
+                console.log('pareseXML, xmlString:',xmlString );
+                var $xml = $(xmlString);
+                this.$components = $xml.find('> concepts > concept');
+                console.log('this.$components');
+            },
+
+            getComponents: function() {
+                var a = [];
+                if ( this.$components && this.$components.length > 0) {
+                    this.$components.each( function(index, elem) {
+                        a.push( elem )
+                    });
+                }
+                return a;
             }
         });
 

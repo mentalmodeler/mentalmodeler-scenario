@@ -31,24 +31,23 @@ define([
 
             addModel: function( xmlString ) {
                 //console.log('AppModel > addMmpModel, xmlString:',xmlString);
-                //console.log('    BEFORE    this.get(mmps):',this.get('mmps') ); 
                 var mmps = this.get( 'mmps' );
                 var mmp = new MmpModel( {xmlString:xmlString, justAdded:true } );
-                this.curModel = mmp;
                 var mmpView = new MmpView( {model:mmp} );
                 mmps.add( mmp );
                 this.set( 'mmps', mmps );
+                // this event will trigger a new model to be added to the list and it will automatically be selected
                 Backbone.trigger( 'mmp:add', mmp );
             },
 
             selectionChange: function( model, target, section ) {
+                //console.log('--- AppModel > selectionChange, curModel:',this.curModel,', model:',model,', target:',target);
                 if ( this.modelingView !== null ) {
                     var xmlString = this.modelingView.getModelXML(); 
                     if ( this.curModel ) {
                         this.curModel.set( 'xmlString', xmlString );
                     }
-                }
-                
+                }                
                 if ( model !== this.curModel ) {
                     this.curModel = model;
                 }
@@ -57,6 +56,68 @@ define([
 
             setCurSection: function( section ) {
                 this.curSection = section;
+            },
+
+            /*****************
+             *  Remove files
+            ******************/
+            remove:function (e) {
+                var mmps = this.get( 'mmps' );
+                if ( mmps.length > 1 && this.curModel) {
+                    var modelToRemove = this.curModel;
+                    var idx = mmps.indexOf( this.curModel );
+                    if ( idx  === mmps.length - 1 ) {
+                        idx -= 1
+                    }
+                    mmps.remove( modelToRemove );
+                    this.curModel = null;
+                    this.selectionChange( mmps.at(idx) );
+                    
+                    // this event will trigger a new model to be added to the list and it will automatically be selected
+                    Backbone.trigger( 'mmp:remove');                   
+                }
+            },
+
+            /*****************
+             *  Load files
+            ******************/
+
+            loadFiles: function(e) {
+                var mmpFiles = [];
+                var files = e.target.files; // FileList object
+                console.log('loadFiles, e.target.files:',e.target.files)
+                // files is a FileList of File objects. List some properties.
+                for (var i = 0, f; f = files[i]; i++) {
+                    var name = escape(f.name);
+                    var type = f.type;
+                    if (name.split('.').indexOf('mmp') === -1 ) {
+                        continue;
+                    }
+                    mmpFiles.push( f );
+                }
+
+                this.readFiles( mmpFiles );
+            },
+
+            readFiles: function( files ) {
+              var that = this
+              var reader = new FileReader();
+              var file = files.pop();
+              //console.log('readFiles, file:',file,', files:',files);
+              // Closure to capture the file information.
+              reader.onload = (function(theFile) {
+                return function(e) {
+                    console.log('loaded, files:',files); //,', e.target.result:',e.target.result);
+                    that.addModel( e.target.result );
+                    //Backbone.trigger( 'file:onload', e.target.result );
+                    if ( files.length > 0 ) {
+                        that.readFiles( files );
+                    }
+                };
+              })(file);
+
+              // Read in the image file as a data URL.
+              reader.readAsText(file);
             }
         });
 

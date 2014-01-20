@@ -24,17 +24,19 @@ define([
         
         initialize: function() {
             MmpView.__super__.initialize.apply( this, arguments );
-            this.listenTo( Backbone, 'selection:change', this.selectionChange );
+            this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
         },
 
         render: function() {
+            //console.log('MmpView > render');
             this.$el.html( this.template( { model: this.model } ) );
             this.delegateEvents();
             if ( this.model.get( 'justAdded' ) === true ) {
+                //console.log('--- mmp > just added so select')
                 this.model.set( 'justAdded', false );
                 this.$el.find( '.map' ).click();
             }
-            
+            this.onSelectionChange();
             return this;
         },
 
@@ -58,27 +60,34 @@ define([
             }
         },
 
-        selectionChange:function ( model, target ) {
+        onSelectionChange:function ( model, target ) {
+            //console.log('--- mmp > onSelectionChange');
             var curModel = window.mentalmodeler.appModel.curModel;
             this.$el.removeClass( 'selected' );
             this.$el.find( '.map' ).removeClass( 'selected' );
             this.$el.find( '.scenario' ).removeClass( 'selected' );
             //console.log('selectionChange, model:',model,', target:',target,', curModel === this.model:',curModel === this.model );
             if ( curModel === this.model ) {
-                var $elem = this.$el.find( target );
+                var $elem;
+                if (typeof target !== 'undefined') {
+                    $elem = this.$el.find( target );
+                }
+                else {
+                    $elem = this.$el.find( '.map' );
+                }
                 $elem.addClass( 'selected' );
                 $elem.closest( '.mmp' ).addClass( 'selected' );
             }
         },
         
         selectMap: function (e) {
+            //console.log('selectMap, e.target:',e.target);
             this.onSelect( e.target, 'modeling' );
-            //console.log('selectMap');
         },
 
         selectScenario: function (e) {
+            //console.log('selectScenario,', ' e.target:',e.target);
             this.onSelect( e.target, 'scenario' );
-            //console.log('selectScenario');
         },
 
         onSelect: function( target, section ) {

@@ -7,9 +7,10 @@ define([
     'foundation',
     'views/abstract',
     'views/modeling',
+    'views/grid',
     'models/abstract',
     'text!templates/content.html'
-], function ($, _, Backbone, Foundation, AbstractView, ModelingView, AbstractModel, Template) {
+], function ($, _, Backbone, Foundation, AbstractView, ModelingView, GridView, AbstractModel, Template) {
     'use strict';
 
     var ContentView = AbstractView.extend({
@@ -18,20 +19,25 @@ define([
         className: 'right-main app-panel',
         template: _.template( $(Template).html() ),
         modelingView: null,
+        gridView: null,
         contentPanelHeight: 0,
         events: {
         },
         
         initialize: function() {
             ContentView.__super__.initialize.apply( this, arguments );
-            this.modelingView = new ModelingView( { model:new AbstractModel() } );
-             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
+            this.modelingView = new ModelingView( { /*model:new AbstractModel()*/ } );
+            this.gridView = new GridView( { /*model:new AbstractModel()*/ } );
+            this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
         },
 
         render: function() {
             var that = this;
             this.$el.html( this.template( {} ) );
-            var modeling = this.$el.find('div.tabs-content #panel-modeling').html( this.modelingView.render().el );
+            // populate tab panel content
+            this.$el.find('div.tabs-content #panel-modeling').html( this.modelingView.render().el );
+            this.$el.find('div.tabs-content #panel-grid').html( this.gridView.render().el );
+            
             this.$el.find('.tabs').on('click', function (e) {
                 that.updateContentPanel( that.contentPanelHeight, e.target.href.split('#')[1] );
             });
@@ -39,7 +45,9 @@ define([
         },
 
         onSelectionChange: function( model, target, section ) {
-            this.$el.find( 'a[href="#panel-' + section + '"]' ).click();
+            if (typeof section !== 'undefined' ) {
+                this.$el.find( 'a[href="#panel-' + section + '"]' ).click();
+            }
         },
 
         updateContentPanel: function( h, activeId ) {

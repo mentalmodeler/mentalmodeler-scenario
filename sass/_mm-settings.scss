@@ -1,0 +1,21 @@
+@mixin linear-gradient($topColor, $bottomColor) {
+  background: $topColor;
+  background: -moz-linear-gradient(top, $topColor 0%, $bottomColor 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$topColor), color-stop(100%,$bottomColor));
+  background: -webkit-linear-gradient(top, $topColor 0%,$bottomColor 100%);
+  background: -o-linear-gradient(top, $topColor 0%,$bottomColor 100%);
+  background: -ms-linear-gradient(top, $topColor 0%,$bottomColor 100%);
+  background: linear-gradient(to bottom, $topColor 0%,$bottomColor 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$topColor', endColorstr='$bottomColor',GradientType=0 );
+}
+
+$font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$green: #A5C825;
+$purple: #BF00BF;
+$red: #BF0F00;
+$yellow: #CCCC27;
+$brown: #A66F03;
+$tab-alpha: 0.35;
+$tabs-navigation-active-bg-color: #fff;
+$tabs-navigation-bg-color: #666;
+$tabs-navigation-hover-bg-color: $green; //scale-color($tabs-navigation-bg-color, $lightness: -20%);

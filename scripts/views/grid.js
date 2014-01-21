@@ -26,6 +26,7 @@ define([
             this.listenTo( Backbone, 'window:resize', this.onWindowResize );
             */
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
+            this.listenTo( Backbone, 'mmp:xmlStringChange', this.onSelectionChange );
         },
 
 
@@ -37,6 +38,7 @@ define([
             }
             
             this.$el.html( this.template( {components:components} ) );
+            $(document).foundation();
             return this;
         },
 

@@ -17,7 +17,7 @@ define([
                 mmps: [],
             },
             curModel: null,
-            curSection: 'modeling',
+            curSection: null,
             modelingView: null,
             gridView: null,
             scenarioView: null,
@@ -42,20 +42,36 @@ define([
 
             selectionChange: function( model, target, section ) {
                 //console.log('--- AppModel > selectionChange, curModel:',this.curModel,', model:',model,', target:',target);
-                if ( this.modelingView !== null ) {
-                    var xmlString = this.modelingView.getModelXML(); 
-                    if ( this.curModel ) {
-                        this.curModel.set( 'xmlString', xmlString );
-                    }
-                }                
+                
+                this.saveModelData();
+
                 if ( model !== this.curModel ) {
                     this.curModel = model;
                 }
                 Backbone.trigger( 'selection:change', model, target, section );
             },
 
-            setCurSection: function( section ) {
-                this.curSection = section;
+            setSection: function( section ) {
+                //console.log('AppModel > setSection, section:',section);
+                var sectionChanged = this.curSection !== section;
+                if ( sectionChanged ) {
+                    this.saveModelData();
+                    this.curSection = section;
+                    Backbone.trigger( 'section:change', section );
+                }
+            },
+
+            saveModelData:function() {
+                //console.log('AppModel > saveModelData, this.curSection:',this.curSection);
+                
+                // leaving from modeling section
+                if ( this.curSection === 'modeling' && this.modelingView !== null ) {
+                    var xmlString = this.modelingView.getModelXML(); 
+                    //console.log('saving from flash, xmlString:',xmlString);
+                    if ( this.curModel ) {
+                        this.curModel.setXMLString( xmlString );
+                    }
+                }
             },
 
             /*****************

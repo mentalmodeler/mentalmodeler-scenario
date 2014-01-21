@@ -24,10 +24,17 @@ define([
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
                 var xmlString = this.get('xmlString');
-                console.log( 'MmpModel > initialize, xmlString:',xmlString); 
+                //console.log( 'MmpModel > initialize, xmlString:',xmlString); 
+                this.setXMLString( xmlString );   
+            },
+
+            setXMLString: function( xmlString ) {
+                //console.log( 'MmpModel > setXMLString, xmlString:',xmlString)
                 if ( xmlString && xmlString !== '' ) {
+                    this.set('xmlString', xmlString)
                     this.parseXML( xmlString );
-                }            
+                    Backbone.trigger( 'mmp:xmlStringChange' );
+                }   
             },
 
             parseXML: function( xmlString ) {
@@ -36,10 +43,10 @@ define([
                 // remove CDATA tags
                 xmlString = xmlString.replace(/<!\[CDATA\[|\]\]>/gm,'');
                 xmlString = xmlString.split('?>')[1];
-                console.log('pareseXML, xmlString:',xmlString );
+                //console.log('parseXML, xmlString:',xmlString );
                 var $xml = $(xmlString);
                 this.$components = $xml.find('> concepts > concept');
-                console.log('this.$components');
+                //console.log('this.$components');
             },
 
             getComponents: function() {

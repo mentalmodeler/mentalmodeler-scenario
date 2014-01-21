@@ -8063,7 +8063,53 @@ div.right-main div.tabs-content > div.content#panel-modeling #flash-model {
 div.right-main div.tabs-content > div.content#panel-modeling.active #flash-model {
   border-width: 1px;
 }
-/* line 271, ../sass/_mm-scenario.scss */
+/* line 276, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table {
+  border: none;
+}
+/* line 278, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table td {
+  font-size: 0.75em;
+  line-height: 1.25em;
+}
+/* line 287, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table thead tr {
+  border-bottom: solid 1px #d8d8d8;
+}
+/* line 289, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table thead tr td {
+  padding: 2px 7px;
+}
+/* line 291, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table thead tr td:nth-child(n+2) {
+  border-left: solid 1px #d8d8d8;
+}
+/* line 300, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table tbody tr td a.button.dropdown {
+  background-color: #999999;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  padding: 0px 20px 3px 5px;
+  margin: 0;
+}
+/* line 305, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table tbody tr td a.button.dropdown:before {
+  right: 0.3rem;
+  border-width: 0.35rem;
+}
+/* line 310, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table tbody tr td:nth-child(n+2) {
+  border-left: solid 1px #d8d8d8;
+}
+/* line 313, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content > div.content#panel-grid table tbody tr td.node {
+  font-weight: bold;
+  padding: 7px 8px;
+}
+/* line 324, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd {
   text-align: center;
   padding: 0;
@@ -8077,7 +8123,7 @@ div.right-main dl.tabs dd {
   position: relative;
   top: 0px;
 }
-/* line 276, ../sass/_mm-scenario.scss */
+/* line 329, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd a {
   background-color: transparent;
   color: #fff;
@@ -8091,43 +8137,43 @@ div.right-main dl.tabs dd a {
   border-right-width: 0px;
   text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.5);
 }
-/* line 297, ../sass/_mm-scenario.scss */
+/* line 350, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(1):hover {
   background-color: rgba(165, 200, 37, 0.35);
 }
-/* line 300, ../sass/_mm-scenario.scss */
+/* line 353, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(1).active {
   background-color: #819d1d;
 }
-/* line 305, ../sass/_mm-scenario.scss */
+/* line 358, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(2):hover {
   background-color: rgba(191, 0, 191, 0.35);
 }
-/* line 308, ../sass/_mm-scenario.scss */
+/* line 361, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(2).active {
   background-color: #bf00bf;
 }
-/* line 313, ../sass/_mm-scenario.scss */
+/* line 366, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(3):hover {
   background-color: rgba(191, 15, 0, 0.35);
 }
-/* line 316, ../sass/_mm-scenario.scss */
+/* line 369, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(3).active {
   background-color: #8c0b00;
 }
-/* line 321, ../sass/_mm-scenario.scss */
+/* line 374, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(4):hover {
   background-color: rgba(204, 204, 39, 0.35);
 }
-/* line 324, ../sass/_mm-scenario.scss */
+/* line 377, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(4).active {
   background-color: #cccc27;
 }
-/* line 331, ../sass/_mm-scenario.scss */
+/* line 384, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd.active {
   top: 0;
 }
-/* line 336, ../sass/_mm-scenario.scss */
+/* line 389, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd.active a {
   top: 0px;
   position: relative;

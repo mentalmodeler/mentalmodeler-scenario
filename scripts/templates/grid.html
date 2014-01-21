@@ -2,17 +2,29 @@
 	<table>
 	  <thead>
 	  	<tr>
+	  		<td></td>
 	  		<% for (var i=0; i<components.length; i++) { var $component = $(components[i]); %>
-	  			<td><%= $component.children('name').text() %></td>
+	  			<td><%= $component.children("name").text() %></td>
 	  		<% } %>
 	  	</tr>
 	  </thead>
 	  <tbody>
-	  	<% for (var i=0; i<components.length; i++) { var $component = $(components[i]); console.log('$component:',$component,', $component.find(name):',$component.children('name').text() ); %>
+	  	<% for (var i=0; i<components.length; i++) { var $component = $(components[i]); %>
 	    <tr>
-	    	<td><%= $component.children('name').text() %></td>
-	    	<% for (var j=0; j<components.length - 1; j++) { %>
-	    		<td>  a </td>
+	    	<td class="node"><%= $component.children("name").text() %></td>
+	    	<% for (var j=0; j<components.length; j++) { %>
+	    		<td>
+	    			<a href="#" data-dropdown="drop" class="button dropdown">+++</a><br>
+					<ul id="drop" data-dropdown-content class="f-dropdown">
+					  <li><a href="#">+++</a></li>
+					  <li><a href="#">++</a></li>
+					  <li><a href="#">+</a></li>
+					  <li><a href="#">0</a></li>
+					  <li><a href="#">-</a></li>
+					  <li><a href="#">---</a></li>
+					  <li><a href="#">---</a></li>
+					</ul>
+	    		</td>
 	    	<% } %>
 	    </tr>
 	    <% } %>

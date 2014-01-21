@@ -31,12 +31,16 @@ define([
             //console.log('MmpView > render');
             this.$el.html( this.template( { model: this.model } ) );
             this.delegateEvents();
+            
+            // for models that are just added, select that model and the modeing view
             if ( this.model.get( 'justAdded' ) === true ) {
-                //console.log('--- mmp > just added so select')
                 this.model.set( 'justAdded', false );
                 this.$el.find( '.map' ).click();
             }
-            this.onSelectionChange();
+            else {
+                this.onSelectionChange();
+            }
+
             return this;
         },
 
@@ -81,12 +85,12 @@ define([
         },
         
         selectMap: function (e) {
-            //console.log('selectMap, e.target:',e.target);
+            //console.log('MmpView > selectMap, e.target:',e.target);
             this.onSelect( e.target, 'modeling' );
         },
 
         selectScenario: function (e) {
-            //console.log('selectScenario,', ' e.target:',e.target);
+            //console.log('MmpView > selectScenario,', ' e.target:',e.target);
             this.onSelect( e.target, 'scenario' );
         },
 

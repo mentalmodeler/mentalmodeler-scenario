@@ -21,6 +21,8 @@ define([
         listView: null,
         contentView: null,
         template: _.template( $(Template).html() ),
+        resizeTimer: null,
+        resizeDelay: 750, // milliseconds
         
         initialize: function() {
             AppView.__super__.initialize.apply( this, arguments );
@@ -37,14 +39,22 @@ define([
             //$('body').append( this.el );
             var resizeScrollPanels = _.bind( this.resizeScrollPanels, this );
             $(document).ready( function() {
-                window.onresize = resizeScrollPanels;
+                console.log('$(document).ready');
                 // initialize dynamcially added foundation components
                 $(document).foundation();
-                resizeScrollPanels();  
+                resizeScrollPanels();
+                //window.onresize = resizeScrollPanels;
+                window.onresize = function() {
+                    if ( that.resizeTimer ) {
+                        clearTimeout( that.resizeTimer );
+                    }
+                    that.resizeTimer = setTimeout( resizeScrollPanels, that.resizeDelay );
+                }
             });
         },
         
         resizeScrollPanels: function() {
+            console.log('resizeScrollPanels');
             var viewportHeight = $(window).height();
             if (window.innerWidth) {
                 viewportHeight = window.innerHeight;
@@ -58,12 +68,9 @@ define([
             var availableHeight = viewportHeight - headerHeight - footerHeight - padding;
             // console.log( 'viewportHeight:',viewportHeight,', padding:',padding,', headerHeight:',headerHeight,', footerHeight:',footerHeight,', availableHeight:',availableHeight);
             $workspace.height( availableHeight );
-            this.$el.find('.app-panel').each( function() {
-                //$(this).css( 'min-height', availableHeight );
-            });
             this.listView.setAvailableHeight( availableHeight );
             this.contentView.setHeight( availableHeight );
-            Backbone.trigger('window:resize', { availableHeight: availableHeight } );
+            //Backbone.trigger('window:resize', { availableHeight: availableHeight } );
         }
   
     });

@@ -119,6 +119,7 @@ define([
             var padding = parseInt( this.$el.find('div.tabs-content').css( 'padding-top' ), 10 ) + parseInt( this.$el.find('div.tabs-content').css( 'padding-bottom' ), 10 );
             this.contentPanelHeight = availableHeight - tabHeight - padding
             this.$el.find('div.tab-content').height( availableHeight );
+            
             //console.log('setHeight, availableHeight:',availableHeight,', tabHeight:',tabHeight,', padding:',padding );
             this.updateContentPanel( this.contentPanelHeight );
         },

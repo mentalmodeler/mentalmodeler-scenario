@@ -13,7 +13,7 @@ define([
     var GridView = AbstractView.extend({
         
         tagName: 'div',
-        classNames: 'grid',
+        className: 'grid',
         template: _.template( $(Template).html() ),
         
         events: {
@@ -36,8 +36,8 @@ define([
             if ( curModel ) {
                 components = curModel.getComponents();
             }
-            
-            this.$el.html( this.template( {components:components} ) );
+            var a = ["+++", "   ", "-", " ", "++", " ", "--"];
+            this.$el.html( this.template( {components:components, choiceLabels:a} ) );
             $(document).foundation();
             return this;
         },

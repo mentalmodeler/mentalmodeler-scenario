@@ -41,7 +41,7 @@ define([
             },
 
             selectionChange: function( model, target, section ) {
-                //console.log('--- AppModel > selectionChange, curModel:',this.curModel,', model:',model,', target:',target);
+                console.log('>>> selectionChange, curModel:',this.curModel,', model:',model,', target:',target);
                 
                 this.saveModelData();
 
@@ -52,7 +52,7 @@ define([
             },
 
             setSection: function( section ) {
-                //console.log('AppModel > setSection, section:',section);
+                console.log('>>> setSection, section:',section);
                 var sectionChanged = this.curSection !== section;
                 if ( sectionChanged ) {
                     this.saveModelData();

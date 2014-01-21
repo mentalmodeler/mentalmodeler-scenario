@@ -8,9 +8,10 @@ define([
     'views/abstract',
     'views/modeling',
     'views/grid',
-    'models/abstract',
+    'views/info',
+    'views/scenario',
     'text!templates/content.html'
-], function ($, _, Backbone, Foundation, AbstractView, ModelingView, GridView, AbstractModel, Template) {
+], function ($, _, Backbone, Foundation, AbstractView, ModelingView, GridView, InfoView, ScenarioView, Template) {
     'use strict';
 
     var ContentView = AbstractView.extend({
@@ -20,14 +21,20 @@ define([
         template: _.template( $(Template).html() ),
         modelingView: null,
         gridView: null,
+        infoView: null,
+        scenarioView: null,
         contentPanelHeight: 0,
         events: {
         },
         
         initialize: function() {
             ContentView.__super__.initialize.apply( this, arguments );
-            this.modelingView = new ModelingView( { /*model:new AbstractModel()*/ } );
-            this.gridView = new GridView( { /*model:new AbstractModel()*/ } );
+            
+            this.modelingView = new ModelingView();
+            this.gridView = new GridView();
+            this.infoView = new InfoView();
+            this.scenarioView = new ScenarioView();
+
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
             this.listenTo( Backbone, 'section:change', this.onSectionChange );
         },
@@ -35,19 +42,33 @@ define([
         render: function() {
             var that = this;
             this.$el.html( this.template( {} ) );
+            
             // populate tab panel content
             this.$el.find('div.tabs-content #panel-modeling').html( this.modelingView.render().el );
             this.$el.find('div.tabs-content #panel-grid').html( this.gridView.render().el );
+            this.$el.find('div.tabs-content #panel-info').html( this.infoView.render().el );
+            this.$el.find('div.tabs-content #panel-scenario').html( this.scenarioView.render().el );
             
             // override default tab click functionality
             this.$el.find('.tabs').on('click', function (e) {
-                var section = e.target.href.split('-')[1];
+                var $target = $(e.target);
+                if ( $target.is('i') ) {
+                    $target = $target.closest('a');
+                }
+                var section = $target[0].href.split('-')[1];
                 window.mentalmodeler.appModel.setSection( section );
-                that.updateContentPanel( that.contentPanelHeight, section );
+                that.updateContentPanel( section );    
+                
+                // prevent click from propogating
                 e.preventDefault();                
                 return false;
             });
             return this;
+        },
+
+        updateSection:function (section) {
+            window.mentalmodeler.appModel.setSection( section );
+            this.updateContentPanel( section );        
         },
 
         onSelectionChange: function( model, target, section ) {
@@ -86,31 +107,18 @@ define([
             });
         },
 
-        updateContentPanel: function( h, activeId ) {
-            
-            var useActive = true;
-            if ( typeof activeId !== 'undefined' ) {
-                //window.mentalmodeler.appModel.setSection( activeId.split('-')[1] );
-                useActive = false;
-            }
-            //console.log('updateContentPanel, h:',h,', activeId:',activeId);
-            
-
-            //var useActive = typeof activeId === 'undefined';
+        updateContentPanel: function( activeId ) {
+            var that = this;
+            var useActive = ( typeof activeId === 'undefined' );
             this.$el.find('div.content').each( function() {                
                 var $this = $(this);
                 var id = $this.attr('id');
-                if ( id === 'panel-modeling' ) {
-                    if ( (useActive && $this.hasClass('active') === false) || (useActive === false && activeId !== 'modeling') ) {
-                        $this.height( 0 );
-                    }
-                    else {
-                        $this.height( h );
-                    }
+                var h = that.contentPanelHeight;
+                // panel-modeling height is set to 0 when not active instead of display:none so .swf is not reset
+                if ( id === 'panel-modeling' && (( useActive && $this.hasClass('active') === false ) || ( useActive === false && activeId !== 'modeling' )) ) {
+                        h = 0;
                 }
-                else {
-                    $this.height( h );
-                }
+                $this.height( h );
             });
         },
 
@@ -121,7 +129,7 @@ define([
             this.$el.find('div.tab-content').height( availableHeight );
             
             //console.log('setHeight, availableHeight:',availableHeight,', tabHeight:',tabHeight,', padding:',padding );
-            this.updateContentPanel( this.contentPanelHeight );
+            this.updateContentPanel();
         },
 
         getActivePanel:function () {

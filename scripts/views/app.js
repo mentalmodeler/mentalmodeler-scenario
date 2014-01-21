@@ -6,13 +6,10 @@ define([
     'backbone',
     'views/abstract',
     'views/header',
-    'models/header',
     'views/list',
-    'models/list',
     'views/content',
-    'models/content',
     'text!templates/app.html'
-], function ($, _, Backbone, AbstractView, HeaderView, HeaderModel, ListView, ListModel, ContentView, ContentModel, Template ) {
+], function ($, _, Backbone, AbstractView, HeaderView, ListView, ContentView, Template ) {
     'use strict';
 
     var AppView = AbstractView.extend({
@@ -26,9 +23,9 @@ define([
         
         initialize: function() {
             AppView.__super__.initialize.apply( this, arguments );
-            this.headerView = new HeaderView( {model: new HeaderModel(), el: '#header'} );
-            this.listView = new ListView( {model: new ListModel()} );
-            this.contentView = new ContentView( {model: new ContentModel()} );
+            this.headerView = new HeaderView( {el: '#header'} );
+            this.listView = new ListView();
+            this.contentView = new ContentView();
         },
 
         render: function() {

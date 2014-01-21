@@ -1,5 +1,5 @@
 <script type="text/template" class="template">
-	<table>
+	<table class="responsive">
 	  <thead>
 	  	<tr>
 	  		<td></td>
@@ -14,12 +14,12 @@
 	    	<td class="node"><%= $component.children("name").text() %></td>
 	    	<% for (var j=0; j<components.length; j++) { %>
 	    		<td>
-	    			<a href="#" data-dropdown="drop" class="button dropdown">+++</a><br>
+	    			<a href="#" data-dropdown="drop" class="button dropdown"><%= choiceLabels[Math.floor(Math.random() * choiceLabels.length)] %></a><br>
 					<ul id="drop" data-dropdown-content class="f-dropdown">
 					  <li><a href="#">+++</a></li>
 					  <li><a href="#">++</a></li>
 					  <li><a href="#">+</a></li>
-					  <li><a href="#">0</a></li>
+					  <li><a href="#">&nbsp;&nbsp;&nbsp;</a></li>
 					  <li><a href="#">-</a></li>
 					  <li><a href="#">---</a></li>
 					  <li><a href="#">---</a></li>

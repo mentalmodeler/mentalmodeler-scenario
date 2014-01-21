@@ -2,6 +2,8 @@
 
 $panel-border-width: 2px;
 $tab-bg: #999;
+$bg-image: url('../img/bg.jpg');
+$texture: url('../img/pattern_small.png');
 
 @mixin opacity($value){
   $IEValue: $value*100;
@@ -34,6 +36,18 @@ $tab-bg: #999;
   -moz-user-select: $select;
   -o-user-select: $select;
   user-select: $select;
+  &:focus, &:active {
+    -moz-user-select: $select;
+    -khtml-user-select: $select;
+    -webkit-user-select: $select;
+    -ms-user-select: $select;
+    -moz-user-select: $select;
+    -o-user-select: $select;  
+    outline: none;
+  }
+
+  outline: none;
+
 }
 
 @mixin box-sizing( $sizing ) {
@@ -83,17 +97,27 @@ nav section ul li a.wrapper {
 $padding: 20px;
 .top-bar { 
   .top-bar-section {
-    ul > li > a.disabled {
-      color: rgba(255,255,255,0.4);
+    li:not(.has-form) a:not(.button) {
       &:hover {
-        background-color: #000;
+        background-image: $texture;
       }
     }
+    ul > li > a {
+      &.disabled {
+        color: rgba(255,255,255,0.4);
+         &:hover {
+          background-color: #000;
+        }
+      }
+      i {
+        margin-right: 5px;
+      }
+    }    
   }
 }
 #workspace {
   padding: $padding;
-  background-image: url('../img/bg.jpg');
+  background-image: $bg-image;
 }
 div.left-main {
   //position: relative;
@@ -107,10 +131,13 @@ div.left-main {
     text-align: center;
     @include border-top-radius(6px);
     @include text-dropshadow();
-    background-image: url('../img/pattern_small.png');
+    background-image: $texture;
     background-color: $gray;
     padding-top: 0.5em;
-    padding-bottom: 0.5em; 
+    padding-bottom: 0.5em;
+    i {
+      margin-right: 7px;
+    }
   }
   .body {
     @include panel-dropshadow();
@@ -144,12 +171,15 @@ div.left-main {
           background-color: $color;
           color: #fff;
           cursor: default;
+          background-image: $texture;
           &:hover {
             background-color: $color;
+            background-image: $texture;
             color: #fff;
           }
           &:active {
             background-color: $color;
+            background-image: $texture;
             color: #fff;
           }
         }
@@ -253,6 +283,9 @@ div.right-main {
         display: block;
       }
     }
+    /*
+     *  Modeling Panel
+     */
     > div.content#panel-modeling {
         display: block;
         height: 0;
@@ -270,11 +303,96 @@ div.right-main {
           }
         }
     }
+    /*
+     *  Scenario Panel
+     */
+    > div.content#panel-scenario > div.scenario { 
+      max-width: none;
+      > div {
+        //@include box-sizing(border-box);
+        //display:inline-block;
 
+        &.panel-left {
+          width: 15em;
+          padding-left: 0;
+          label {
+            margin-bottom: 0.35rem;
+
+          }
+          button {
+            width: 100%;
+            $h: 2em;
+            font-size:1em;
+            line-height: $h;
+            height: $h;
+            //float: right;
+            @include border-radius( 4px );
+            @include user-select( none );
+            padding: 0 7px;
+            background-color: $red;
+            margin: 0;
+            i {
+              margin-right:7px;
+            }
+            &:hover {
+              background-color: darken( $red, 5% );
+            }
+          }
+          textarea {
+            @include border-radius(6px);
+            outline: none;
+            margin-bottom: 1.5rem;  
+            resize: none;
+            min-height: 4em;
+            height: 4em;
+            margin-bottom:10px;
+          }
+        }
+        
+        &.panel-right {
+          width: calc(100% - 15em);
+          background-color:#f2f2f2;
+          height: 300px;
+        }  
+      }      
+    }
+    /*
+     *  info Panel
+     */
+    > div.content#panel-info {
+      background-color: #f4f4f4;
+      .info {
+        height: 100%;
+        width:100%;
+        padding: 30px;
+        label {
+          margin-bottom: 0.35rem;
+        } 
+        textarea {
+          @include border-radius(6px);
+          outline: none;
+          margin-bottom: 1.5rem;  
+          resize: vertical;
+          height: auto;
+          &.single-line {
+            resize: none;
+            min-height: 2.75em;
+            height:2.75em;
+          }
+          &#descriptionText {
+            height: calc(100% - 185px);
+            min-height: 5em;
+          }
+        }
+      }
+    }
+    /*
+     *  Grid Panel
+     */
     > div.content#panel-grid {
         $font-size: 0.75em;
         $line-height: 1.25em;
-        $border-color: #d8d8d8;
+        $border-color: #cecece; //#d2d2d2;
         $max-cell-width: 6em;
         $min-cell-size: 100px;
 
@@ -286,11 +404,24 @@ div.right-main {
             font-size: $font-size;
             line-height: $line-height;
             // max-width: $max-cell-width;
-            // word-wrap: break-word;     
+            // word-wrap: break-word;
+            ul.f-dropdown {
+              @include border-radius( 6px );
+              width: auto;
+              min-width: 3em;
+              li a {
+                padding: 2px 4px 2px 4px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 1.25em;
+              }
+            }    
           }
           thead {
             tr {
               border-bottom: solid 1px $border-color;
+              background-color: lighten( $gray, 30%);
+              color: #fff;
               td {
                 padding: 2px 7px;
                 &:nth-child(n+2) {
@@ -301,7 +432,12 @@ div.right-main {
           }
           tbody {
             tr {
+              background-color: #fff;
+              &:nth-child(2n) {
+                background-color: lighten( $gray, 35%);
+              }   
               td {
+                background-color: none;
                 a.button.dropdown {
                     $color: #333;
                     background-color: rgba(0, 0, 0, 0);
@@ -329,6 +465,9 @@ div.right-main {
         }
     }
   }
+  /*
+   *  Content Tabs
+   */
   dl.tabs {
     dd {
       text-align: center;
@@ -351,6 +490,10 @@ div.right-main {
         @include text-dropshadow();
         //-webkit-box-shadow: 0 0 12px 0 rgba(0,0,0,0.5);
         //box-shadow: 0 0 12px rgba(0,0,0,0.5);
+        white-space: nowrap;
+      }
+      i {
+        margin-right:5px;
       }
       //@include border-top-radius(6px);
       position:relative;

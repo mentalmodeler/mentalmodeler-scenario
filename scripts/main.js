@@ -29,7 +29,7 @@ require.config({
         underscore: '../vendor/underscore/underscore-min',
         foundation: '../vendor/foundation/foundation.min',
         text: '../vendor/requirejs-text/text',
-        filesaver: '../vendor/filesaver/FileSaver'
+        filesaver: '../vendor/filesaver/FileSaver',
     }
 });
 

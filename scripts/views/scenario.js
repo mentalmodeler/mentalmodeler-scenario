@@ -22,7 +22,6 @@ define([
         initialize: function() {
             ScenarioView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
-            //this.listenTo( Backbone, 'mmp:xmlStringChange', this.onSelectionChange );
         },
 
 

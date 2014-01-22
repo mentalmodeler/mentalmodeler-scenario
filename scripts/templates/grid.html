@@ -3,16 +3,16 @@
 	  <thead>
 	  	<tr>
 	  		<td></td>
-	  		<% for (var i=0; i<components.length; i++) { var $component = $(components[i]); %>
-	  			<td><%= $component.children("name").text() %></td>
+	  		<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
+	  			<td><%= concept.name %></td>
 	  		<% } %>
 	  	</tr>
 	  </thead>
 	  <tbody>
-	  	<% for (var i=0; i<components.length; i++) { var $component = $(components[i]); %>
+	  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
 	    <tr>
-	    	<td class="node"><%= $component.children("name").text() %></td>
-	    	<% for (var j=0; j<components.length; j++) { %>
+	    	<td class="node"><%= concept.name %></td>
+	    	<% for (var j=0; j<concepts.length; j++) { %>
 	    		<td>
 	    			<a href="#" data-dropdown="drop" class="button dropdown"><%= choiceLabels[Math.floor(Math.random() * choiceLabels.length)] %></a><br>
 					<ul id="drop" data-dropdown-content class="f-dropdown">

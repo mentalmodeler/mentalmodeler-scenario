@@ -29,10 +29,13 @@ define([
                 //console.log('AppModel > initialize, this.get(mmps):',this.get('mmps') );
             },
 
-            addModel: function( xmlString ) {
-                //console.log('AppModel > addMmpModel, xmlString:',xmlString);
+            /*
+             * adds a new mmp model, passing the xml string
+             */
+            addModel: function( xml ) {
+                //console.log('AppModel > addMmpModel, xml:',xml);
                 var mmps = this.get( 'mmps' );
-                var mmp = new MmpModel( {xmlString:xmlString, justAdded:true } );
+                var mmp = new MmpModel( {xml:xml, justAdded:true } );
                 var mmpView = new MmpView( {model:mmp} );
                 mmps.add( mmp );
                 this.set( 'mmps', mmps );
@@ -41,7 +44,7 @@ define([
             },
 
             selectionChange: function( model, target, section ) {
-                console.log('>>> selectionChange, curModel:',this.curModel,', model:',model,', target:',target);
+                //console.log('AppModel > selectionChange, model:',model,', target:',target,', (curModel:',this.curModel,')' );
                 
                 this.saveModelData();
 
@@ -52,7 +55,7 @@ define([
             },
 
             setSection: function( section ) {
-                console.log('>>> setSection, section:',section);
+                //console.log('AppModel > setSection, section:',section);
                 var sectionChanged = this.curSection !== section;
                 if ( sectionChanged ) {
                     this.saveModelData();
@@ -64,13 +67,9 @@ define([
             saveModelData:function() {
                 //console.log('AppModel > saveModelData, this.curSection:',this.curSection);
                 
-                // leaving from modeling section
-                if ( this.curSection === 'modeling' && this.modelingView !== null ) {
-                    var xmlString = this.modelingView.getModelXML(); 
-                    //console.log('saving from flash, xmlString:',xmlString);
-                    if ( this.curModel ) {
-                        this.curModel.setXMLString( xmlString );
-                    }
+                // leaving from modeling section, so save data to model
+                if ( this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
+                    this.curModel.setXML( this.modelingView.getModelXML() );
                 }
             },
 

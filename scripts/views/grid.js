@@ -7,7 +7,7 @@ define([
     'foundation',
     'views/abstract',
     'text!templates/grid.html'
-], function ($, _, Backbone, Foundation, AbstractView, Template) {
+], function ($, _, Backbone, Foundation, AbstractView, Template ) {
     'use strict';
 
     var GridView = AbstractView.extend({
@@ -26,18 +26,18 @@ define([
             this.listenTo( Backbone, 'window:resize', this.onWindowResize );
             */
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
-            this.listenTo( Backbone, 'mmp:xmlStringChange', this.onSelectionChange );
+            this.listenTo( Backbone, 'mmp:change', this.onSelectionChange );
         },
 
 
         render: function() {
-            var components = [];
+            var concepts = [];
             var curModel = window.mentalmodeler.appModel.curModel;
             if ( curModel ) {
-                components = curModel.getComponents();
+                concepts = curModel.getConcepts();
             }
             var a = ["+++", "   ", "-", " ", "++", " ", "--"];
-            this.$el.html( this.template( {components:components, choiceLabels:a} ) );
+            this.$el.html( this.template( {concepts:concepts, choiceLabels:a} ) );
             $(document).foundation();
             return this;
         },

@@ -27,7 +27,6 @@ define([
         },
 
         render: function() {            
-            console.log("------- render");
             this.$el.flash({ swf: 'img/mentalmodeler.swf',
                              height: '100%',
                              width: '100%'
@@ -46,11 +45,11 @@ define([
         },
 
         onSelectionChange: function( model, target, section ) {
-            console.log('--- modeling > onSelectionChange');
-            var xmlString = model.get('xmlString');
+            //console.log('ModelingView > onSelectionChange');
+            var xml = model.getXML();
             this.$el.flash(
                 function() {
-                    this.doLoad( xmlString );
+                    this.doLoad( xml );
                 }
             );
         }

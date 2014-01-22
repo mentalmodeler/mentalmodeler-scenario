@@ -36,7 +36,6 @@ define([
             //$('body').append( this.el );
             var resizeScrollPanels = _.bind( this.resizeScrollPanels, this );
             $(document).ready( function() {
-                console.log('$(document).ready');
                 // initialize dynamcially added foundation components
                 $(document).foundation();
                 resizeScrollPanels();
@@ -51,7 +50,7 @@ define([
         },
         
         resizeScrollPanels: function() {
-            console.log('resizeScrollPanels');
+            //console.log('resizeScrollPanels');
             var viewportHeight = $(window).height();
             if (window.innerWidth) {
                 viewportHeight = window.innerHeight;

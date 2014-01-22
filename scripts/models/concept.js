@@ -90,11 +90,6 @@ define([
                 $xml.find( '> relationships relationship').each( function( index, elem) {
                     that.relationshipCollection.add( {xml: elem} );
                 });
-
-                //console.log('---parseXML');
-                //console.log( 'this.relationshipCollection:',this.relationshipCollection);
-                //this.getRelationshipsByIdHash();
-                //console.log( 'this.toJSON():',this.toJSON() );
             },
         });
 

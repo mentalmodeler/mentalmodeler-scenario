@@ -32,11 +32,27 @@ define([
                 this.setXML();
             },
 
-            toJSON:function () {
+            toJSON:function ( forView ) {
                 var json = ConceptModel.__super__.toJSON.apply( this, arguments );
-                json.relationships = this.relationshipCollection.toJSON();
+                switch ( forView ) {
+                    case 'grid':
+                        json.relationships = this.getRelationshipsByIdHash();
+                        break;
+                    default:
+                        json.relationships = this.relationshipCollection.toJSON();
+                }
                 return json;
                 //console.log( 'toJSON > json:',json ); 
+            },
+
+            getRelationshipsByIdHash:function() {
+                var relationships = this.relationshipCollection.toJSON();
+                var o = {};
+                for (var i=0; i<relationships.length; i++) {
+                    var r = relationships[i];
+                    o[r.id] = r.influence;
+                }
+                return o;
             },
 
             setXML: function( xml ) {
@@ -49,6 +65,8 @@ define([
 
                 if ( xml && xml !== '' ) {
                     this.set( 'xml', xml );
+                    this.relationshipCollection.reset();
+                    this.relationshipCollection = new Backbone.Collection( [], {model: RelationshipModel} ),
                     this.parseXML( xml ); 
                 }
             },
@@ -59,8 +77,6 @@ define([
             parseXML: function( xml ) {
                 var that = this;
                 
-                this.relationshipCollection.reset();
-
                 // jquery xml object filtering
                 var $xml = $(xml);
                 this.set( 'id', $xml.children('id').text() );
@@ -72,11 +88,13 @@ define([
 
                 // concepts
                 $xml.find( '> relationships relationship').each( function( index, elem) {
-                    console.log( 'elem:',elem)
                     that.relationshipCollection.add( {xml: elem} );
                 });
 
-                console.log( 'this.toJSON():',this.toJSON() );
+                //console.log('---parseXML');
+                //console.log( 'this.relationshipCollection:',this.relationshipCollection);
+                //this.getRelationshipsByIdHash();
+                //console.log( 'this.toJSON():',this.toJSON() );
             },
         });
 

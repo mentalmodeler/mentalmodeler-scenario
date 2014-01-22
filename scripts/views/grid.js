@@ -34,7 +34,8 @@ define([
             var concepts = [];
             var curModel = window.mentalmodeler.appModel.curModel;
             if ( curModel ) {
-                concepts = curModel.getConcepts();
+                concepts = curModel.getConceptsForGrid();
+                console.log('concepts:',concepts);
             }
             var a = ["+++", "   ", "-", " ", "++", " ", "--"];
             this.$el.html( this.template( {concepts:concepts, choiceLabels:a} ) );

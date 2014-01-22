@@ -38,7 +38,7 @@ define([
                 var mmp = new MmpModel( {xml:xml, justAdded:true } );
                 var mmpView = new MmpView( {model:mmp} );
                 mmps.add( mmp );
-                this.set( 'mmps', mmps );
+                //this.set( 'mmps', mmps );
                 // this event will trigger a new model to be added to the list and it will automatically be selected
                 Backbone.trigger( 'mmp:add', mmp );
             },
@@ -100,7 +100,7 @@ define([
             loadFiles: function(e) {
                 var mmpFiles = [];
                 var files = e.target.files; // FileList object
-                console.log('loadFiles, e.target.files:',e.target.files)
+                //console.log('loadFiles, e.target.files:',e.target.files)
                 // files is a FileList of File objects. List some properties.
                 for (var i = 0, f; f = files[i]; i++) {
                     var name = escape(f.name);
@@ -122,7 +122,7 @@ define([
               // Closure to capture the file information.
               reader.onload = (function(theFile) {
                 return function(e) {
-                    console.log('loaded, files:',files); //,', e.target.result:',e.target.result);
+                    //console.log('loaded, files:',files); //,', e.target.result:',e.target.result);
                     that.addModel( e.target.result );
                     //Backbone.trigger( 'file:onload', e.target.result );
                     if ( files.length > 0 ) {

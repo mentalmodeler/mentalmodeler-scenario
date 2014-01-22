@@ -25,7 +25,7 @@ define([
             },
 
             setXML: function (xml) {
-                console.log( 'InfoModel > setXML, xml:',xml );
+                //console.log( 'InfoModel > setXML, xml:',xml );
 
                 if (typeof xml === 'undefined') {
                     xml = this.xml;

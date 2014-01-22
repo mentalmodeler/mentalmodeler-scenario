@@ -27,7 +27,6 @@ define([
 
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
-                console.log( 'this.conceptCollection:', this.conceptCollection );
                 this.setXML();
             },
 
@@ -60,8 +59,6 @@ define([
             parseXML: function( xml ) {
                 var that = this;
                 
-                console.log('reset')
-
                 // remove carraige returns and new lines
                 xml = xml.replace(/(\r\n|\n|\r)/gm,'');
                 // remove CDATA tags
@@ -99,11 +96,18 @@ define([
                 return this.infoModel.toJSON();
             },
 
+             /**
+             * returns array of concepts for the grid view
+             */
+            getConceptsForGrid: function() {
+                return this.conceptCollection.toJSON( 'grid' );
+            },
+
             /**
              * returns array of concepts for the grid view
              */
             getConcepts: function() {
-                return this.conceptCollection.toJSON();
+                return this.conceptCollection.toJSON( 'grid' );
             }
         });
 

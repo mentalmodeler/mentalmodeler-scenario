@@ -27,9 +27,7 @@ define([
         },
 
         render: function() {
-            var appModel =window.mentalmodeler.appModel; 
-            var models =  appModel.get( 'mmps' );
-            this.$el.html( this.template( { models: models.toJSON() } ) );
+            this.$el.html( this.template() );
             this.renderList();
             this.setHeight();
             

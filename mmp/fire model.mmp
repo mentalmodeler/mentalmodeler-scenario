@@ -1,0 +1,696 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mentalModeler>
+  <info>
+    <id><![CDATA[c9825a3a-8d4d-461a-aed7-ae10afc207fd]]></id>
+    <name><![CDATA[Fire]]></name>
+    <version>1.0</version>
+    <date>Tue Jan 7 21:05:35 GMT-0600 2014</date>
+    <author><![CDATA[Mary]]></author>
+  </info>
+  <concepts>
+    <concept>
+      <id>1</id>
+      <name><![CDATA[Natural Beauty]]></name>
+      <x>735</x>
+      <y>35</y>
+      <relationships>
+        <relationship>
+          <id>20</id>
+          <name><![CDATA[Tourism]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>2</id>
+      <name><![CDATA[Property Damage]]></name>
+      <x>534</x>
+      <y>27</y>
+      <relationships>
+        <relationship>
+          <id>16</id>
+          <name><![CDATA[Property Value]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>3</id>
+      <name><![CDATA[Accidental Fires]]></name>
+      <x>141</x>
+      <y>85</y>
+      <relationships>
+        <relationship>
+          <id>17</id>
+          <name><![CDATA[Exposure to Wildfire Risks]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>4</id>
+      <name><![CDATA[Recreational Forest Use]]></name>
+      <x>347</x>
+      <y>31</y>
+      <relationships>
+        <relationship>
+          <id>3</id>
+          <name><![CDATA[Accidental Fires]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>25</id>
+          <name><![CDATA[Economy]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>5</id>
+      <name><![CDATA[Arson]]></name>
+      <x>101</x>
+      <y>144</y>
+      <relationships>
+        <relationship>
+          <id>17</id>
+          <name><![CDATA[Exposure to Wildfire Risks]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>6</id>
+      <name><![CDATA[Logging]]></name>
+      <x>30</x>
+      <y>414</y>
+      <relationships>
+        <relationship>
+          <id>13</id>
+          <name><![CDATA[Mature Trees]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>23</id>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>25</id>
+          <name><![CDATA[Economy]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>7</id>
+      <name><![CDATA[Urbanization]]></name>
+      <x>15</x>
+      <y>34</y>
+      <relationships>
+        <relationship>
+          <id>6</id>
+          <name><![CDATA[Logging]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>5</id>
+          <name><![CDATA[Arson]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>4</id>
+          <name><![CDATA[Recreational Forest Use]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>8</id>
+      <name><![CDATA[Climate Change]]></name>
+      <x>89</x>
+      <y>203</y>
+      <relationships>
+        <relationship>
+          <id>9</id>
+          <name><![CDATA[High Winds]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>10</id>
+          <name><![CDATA[Drought]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>9</id>
+      <name><![CDATA[High Winds]]></name>
+      <x>115</x>
+      <y>330</y>
+      <relationships>
+        <relationship>
+          <id>17</id>
+          <name><![CDATA[Exposure to Wildfire Risks]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>10</id>
+      <name><![CDATA[Drought]]></name>
+      <x>195</x>
+      <y>264</y>
+      <relationships>
+        <relationship>
+          <id>17</id>
+          <name><![CDATA[Exposure to Wildfire Risks]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>11</id>
+      <name><![CDATA[Practice 2: Fuel Reduction ]]></name>
+      <x>430</x>
+      <y>486</y>
+      <relationships>
+        <relationship>
+          <id>23</id>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>6</id>
+          <name><![CDATA[Logging]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>12</id>
+      <name><![CDATA[Natural Beauty ]]></name>
+      <x>655.5</x>
+      <y>133</y>
+      <relationships>
+        <relationship>
+          <id>16</id>
+          <name><![CDATA[Property Value]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>13</id>
+      <name><![CDATA[Mature Trees]]></name>
+      <x>467.5</x>
+      <y>269</y>
+      <relationships>
+        <relationship>
+          <id>19</id>
+          <name><![CDATA[Poor Air Quality]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>18</id>
+          <name><![CDATA[Timber Quality and Supply]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>23</id>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>14</id>
+      <name><![CDATA[Practice 3: Selective Logging/no Clear cutting]]></name>
+      <x>678.5</x>
+      <y>464</y>
+      <relationships>
+        <relationship>
+          <id>13</id>
+          <name><![CDATA[Mature Trees]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>6</id>
+          <name><![CDATA[Logging]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>23</id>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>15</id>
+      <name><![CDATA[Practice 1: Resstrictoins on Building at wildland interface ]]></name>
+      <x>150.5</x>
+      <y>455</y>
+      <relationships>
+        <relationship>
+          <id>23</id>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>25</id>
+          <name><![CDATA[Economy]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>16</id>
+      <name><![CDATA[Property Value]]></name>
+      <x>874.5</x>
+      <y>174</y>
+    </concept>
+    <concept>
+      <id>17</id>
+      <name><![CDATA[Exposure to Wildfire Risks]]></name>
+      <x>390.5</x>
+      <y>192</y>
+      <relationships>
+        <relationship>
+          <id>12</id>
+          <name><![CDATA[Natural Beauty ]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>16</id>
+          <name><![CDATA[Property Value]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>19</id>
+          <name><![CDATA[Poor Air Quality]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>2</id>
+          <name><![CDATA[Property Damage]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>24</id>
+          <name><![CDATA[Health and Safety]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>1</id>
+          <name><![CDATA[Natural Beauty]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>20</id>
+          <name><![CDATA[Tourism]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>18</id>
+      <name><![CDATA[Timber Quality and Supply]]></name>
+      <x>658.5</x>
+      <y>389</y>
+      <relationships>
+        <relationship>
+          <id>6</id>
+          <name><![CDATA[Logging]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>23</id>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>19</id>
+      <name><![CDATA[Poor Air Quality]]></name>
+      <x>663.5</x>
+      <y>234</y>
+      <relationships>
+        <relationship>
+          <id>20</id>
+          <name><![CDATA[Tourism]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>21</id>
+          <name><![CDATA[Quality of Life]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>24</id>
+          <name><![CDATA[Health and Safety]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>20</id>
+      <name><![CDATA[Tourism]]></name>
+      <x>922.5</x>
+      <y>340</y>
+      <relationships>
+        <relationship>
+          <id>4</id>
+          <name><![CDATA[Recreational Forest Use]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>25</id>
+          <name><![CDATA[Economy]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>21</id>
+      <name><![CDATA[Quality of Life]]></name>
+      <x>882.5</x>
+      <y>246</y>
+    </concept>
+    <concept>
+      <id>23</id>
+      <name><![CDATA[Combustable Material in Forest]]></name>
+      <x>379.5</x>
+      <y>346</y>
+    </concept>
+    <concept>
+      <id>24</id>
+      <name><![CDATA[Health and Safety]]></name>
+      <x>837.5</x>
+      <y>408</y>
+    </concept>
+    <concept>
+      <id>25</id>
+      <name><![CDATA[Economy]]></name>
+      <x>888.5</x>
+      <y>90</y>
+    </concept>
+  </concepts>
+  <scenarios>
+    <scenario>
+      <name><![CDATA[win game]]></name>
+      <concepts>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Natural Beauty]]></name>
+          <id><![CDATA[1]]></id>
+          <influence><![CDATA[H+]]></influence>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Property Damage]]></name>
+          <id><![CDATA[2]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Accidental Fires]]></name>
+          <id><![CDATA[3]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Recreational Forest Use]]></name>
+          <id><![CDATA[4]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Arson]]></name>
+          <id><![CDATA[5]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Logging]]></name>
+          <id><![CDATA[6]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Urbanization]]></name>
+          <id><![CDATA[7]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Climate Change]]></name>
+          <id><![CDATA[8]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[High Winds]]></name>
+          <id><![CDATA[9]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Drought]]></name>
+          <id><![CDATA[10]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Practice 2: Fuel Reduction ]]></name>
+          <id><![CDATA[11]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Natural Beauty ]]></name>
+          <id><![CDATA[12]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Mature Trees]]></name>
+          <id><![CDATA[13]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Practice 3: Selective Logging/no Clear cutting]]></name>
+          <id><![CDATA[14]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Practice 1: Resstrictoins on Building at wildland interface ]]></name>
+          <id><![CDATA[15]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Property Value]]></name>
+          <id><![CDATA[16]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Exposure to Wildfire Risks]]></name>
+          <id><![CDATA[17]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Timber Quality and Supply]]></name>
+          <id><![CDATA[18]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Poor Air Quality]]></name>
+          <id><![CDATA[19]]></id>
+        </concept>
+        <concept>
+          <selected>False</selected>
+          <name><![CDATA[Tourism]]></name>
+          <id><![CDATA[20]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Quality of Life]]></name>
+          <id><![CDATA[21]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <id><![CDATA[23]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Health and Safety]]></name>
+          <id><![CDATA[24]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Economy]]></name>
+          <id><![CDATA[25]]></id>
+        </concept>
+      </concepts>
+    </scenario>
+    <scenario>
+      <name><![CDATA[go team]]></name>
+      <concepts>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Natural Beauty]]></name>
+          <id><![CDATA[1]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Property Damage]]></name>
+          <id><![CDATA[2]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Accidental Fires]]></name>
+          <id><![CDATA[3]]></id>
+          <influence><![CDATA[L-]]></influence>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Recreational Forest Use]]></name>
+          <id><![CDATA[4]]></id>
+          <influence><![CDATA[M+]]></influence>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Arson]]></name>
+          <id><![CDATA[5]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Logging]]></name>
+          <id><![CDATA[6]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Urbanization]]></name>
+          <id><![CDATA[7]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Climate Change]]></name>
+          <id><![CDATA[8]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[High Winds]]></name>
+          <id><![CDATA[9]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Drought]]></name>
+          <id><![CDATA[10]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Practice 2: Fuel Reduction ]]></name>
+          <id><![CDATA[11]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Natural Beauty ]]></name>
+          <id><![CDATA[12]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Mature Trees]]></name>
+          <id><![CDATA[13]]></id>
+          <influence><![CDATA[H+]]></influence>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Practice 3: Selective Logging/no Clear cutting]]></name>
+          <id><![CDATA[14]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Practice 1: Resstrictoins on Building at wildland interface ]]></name>
+          <id><![CDATA[15]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Property Value]]></name>
+          <id><![CDATA[16]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Exposure to Wildfire Risks]]></name>
+          <id><![CDATA[17]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Timber Quality and Supply]]></name>
+          <id><![CDATA[18]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Poor Air Quality]]></name>
+          <id><![CDATA[19]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Tourism]]></name>
+          <id><![CDATA[20]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Quality of Life]]></name>
+          <id><![CDATA[21]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Combustable Material in Forest]]></name>
+          <id><![CDATA[23]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Health and Safety]]></name>
+          <id><![CDATA[24]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Economy]]></name>
+          <id><![CDATA[25]]></id>
+        </concept>
+      </concepts>
+    </scenario>
+  </scenarios>
+</mentalModeler>

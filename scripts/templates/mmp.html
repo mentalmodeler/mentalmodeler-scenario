@@ -1,10 +1,10 @@
 <script type="text/template" class="template">
-	<div class="map selectable"><i class="fa fa-sitemap"></i>Sample Model</div>
+	<div class="map selectable"><i class="fa fa-sitemap"></i><%= model.infoModel.get('name') %></div>
 	<div class="scenarios">
 		<div class="scenarios-header"><i class="expand fa fa-minus-square-o"></i><i class="collapse fa fa-plus-square-o" style="display:none"></i>Scenarios
 			<button class="add-scenario">ADD</button>
 		</div>
-		
+		<% console.log('model.scenarioCollection:',model.scenarioCollection) %>
 		<div class="scenarios-list expanded">
 			<div class="scenario selectable"><i class="expand fa fa-play-circle"></i>Sample Scenario</div>
 			<div class="scenario selectable"><i class="expand fa fa-play-circle"></i>Sample Scenario</div>

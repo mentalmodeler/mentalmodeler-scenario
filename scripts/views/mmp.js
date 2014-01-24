@@ -28,7 +28,8 @@ define([
         },
 
         render: function() {
-            //console.log('MmpView > render');
+            console.log('MmpView > render, this.model:',this.model );
+
             this.$el.html( this.template( { model: this.model } ) );
             this.delegateEvents();
             

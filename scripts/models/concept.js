@@ -25,10 +25,11 @@ define([
                 influence: ''
             },
 
-            relationshipCollection: new Backbone.Collection( [], {model: RelationshipModel} ),
+            relationshipCollection: null,
 
             initialize: function () {
                 ConceptModel.__super__.initialize.apply( this, arguments );
+                this.relationshipCollection = new Backbone.Collection( [], {model: RelationshipModel} );
                 this.setXML();
             },
 
@@ -66,7 +67,6 @@ define([
                 if ( xml && xml !== '' ) {
                     this.set( 'xml', xml );
                     this.relationshipCollection.reset();
-                    this.relationshipCollection = new Backbone.Collection( [], {model: RelationshipModel} ),
                     this.parseXML( xml ); 
                 }
             },

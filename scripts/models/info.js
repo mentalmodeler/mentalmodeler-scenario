@@ -11,7 +11,7 @@ define([
 
     var InfoModel = AbstractModel.extend({
             defaults: {
-                name: '',
+                name: 'New Model',
                 author: '',
                 description: '',
                 version: '',
@@ -22,6 +22,7 @@ define([
 
             initialize: function () {
                 InfoModel.__super__.initialize.apply( this, arguments );
+                //setXML();
             },
 
             setXML: function (xml) {

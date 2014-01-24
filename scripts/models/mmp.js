@@ -18,15 +18,15 @@ define([
                 justAdded: false
             },
 
-            $components: null,
-            $xml: $(''),
-
-            infoModel: new InfoModel(),
-            conceptCollection: new Backbone.Collection( [], {model: ConceptModel} ),
-            scenarioCollection: new Backbone.Collection( [], {model: ScenarioModel} ),
+            infoModel: null,
+            conceptCollection: null,
+            scenarioCollection: null,
 
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
+                this.infoModel = new InfoModel();
+                this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );
+                this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
                 this.setXML();
             },
 
@@ -78,7 +78,7 @@ define([
                 });
                 //scenario
                 $xml.find( '> scenarios scenario').each( function( index, elem) {
-                    that.scenarioCollection.add( {xml: elem} );
+                    that.scenarioCollection.add( {xml: elem, sourceCollection:that.conceptCollection } );
                 });
             },
 
@@ -96,10 +96,17 @@ define([
                 return this.infoModel.toJSON();
             },
 
-             /**
+            /**
              * returns array of concepts for the grid view
              */
             getConceptsForGrid: function() {
+                return this.conceptCollection.toJSON( 'grid' );
+            },
+
+            /**
+             * returns array of concepts for the grid view
+             */
+            getConceptsForScenario: function() {
                 return this.conceptCollection.toJSON( 'grid' );
             },
 

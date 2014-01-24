@@ -30,10 +30,11 @@ require.config({
         foundation: '../vendor/foundation/foundation.min',
         text: '../vendor/requirejs-text/text',
         filesaver: '../vendor/filesaver/FileSaver',
+        d3: '../vendor/d3.v3.min'
     }
 });
 
-require([    
+require([
     'jquery',
     'backbone',
     'underscore',
@@ -45,4 +46,4 @@ require([
 
 function flashInitialized() {
     window.mentalmodeler.appModel.addModel('');
-} 
+}

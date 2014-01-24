@@ -25,6 +25,7 @@ require.config({
         backbone: '../vendor/backbone/backbone-min',
         underscore: '../vendor/underscore/underscore-min',
         bootstrap: '../vendor/bootstrap/js/bootstrap.min',
-        text: '../vendor/requirejs-text/text'
+        text: '../vendor/requirejs-text/text',
+        d3: '../vendor/d3.v3.min'
     }
 });

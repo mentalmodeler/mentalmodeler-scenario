@@ -65,10 +65,7 @@ define([
                 
                 // get ref to concept
                 var collection = this.scenario.conceptsSourceCollection;
-                console.log( 'collection:',collection );
                 this.concept = collection.findWhere( { id: this.get('id') } );
-                console.log( 'this.concept:',this.concept );
-                
             },
         });
 

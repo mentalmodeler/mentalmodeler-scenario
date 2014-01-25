@@ -19,16 +19,19 @@ define([
         events: {
             'click .map' : 'selectMap',
             'click .scenario' : 'selectScenario',
-            'click .scenarios-header' : 'toggleScenarios'
+            'click .scenarios-header' : 'toggleScenarios',
+            'click .scenarios-header > button' : 'addScenario'
         },
         
         initialize: function() {
             MmpView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
+            //console.log('this.model:',this.model);
+            //this.listenTo( this.model, 'mmp:scenarioschange', this.onScenarioChange );
         },
 
         render: function() {
-            console.log('MmpView > render, this.model:',this.model );
+            //console.log('MmpView > render, this.model:',this.model );
 
             this.$el.html( this.template( { model: this.model } ) );
             this.delegateEvents();
@@ -43,6 +46,16 @@ define([
             }
 
             return this;
+        },
+
+        onScenariosChange: function() {
+            this.render();
+        },
+
+        addScenario: function( e ) {
+            e.preventDefault();
+            this.model.addScenario();
+            return false;
         },
 
         toggleScenarios: function(e) {

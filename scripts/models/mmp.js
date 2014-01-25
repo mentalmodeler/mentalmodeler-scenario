@@ -25,9 +25,27 @@ define([
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
                 this.infoModel = new InfoModel();
-                this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );
+                this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );                
                 this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
                 this.setXML();
+
+                // for scenarios added after model and view is first created
+                this.listenTo( this.scenarioCollection, 'add', this.onScenarioAdded );
+            },
+
+            /*
+             * adds a new scenario
+             */
+            addScenario: function( xml ) {
+                if ( typeof xml === 'undefined' ) {
+                    xml = '';
+                }
+                this.scenarioCollection.add( {xml: xml, sourceCollection:this.conceptCollection } );
+            },
+
+            onScenarioAdded: function() {
+                //console.log('onScenarioAdded, this.scenarioCollection:',this.scenarioCollection );
+                this.getView().onScenariosChange();
             },
 
             /*
@@ -44,7 +62,7 @@ define([
                 if ( xml && xml !== '' ) {
                     this.set( 'xml', xml );
                     this.conceptCollection.reset();
-                    this.scenarioCollection.reset();
+                    //this.scenarioCollection.reset();
                     this.parseXML( xml ); 
                     Backbone.trigger( 'mmp:change' );
                 }
@@ -76,10 +94,19 @@ define([
                 $xml.find( '> concepts concept').each( function( index, elem) {
                     that.conceptCollection.add( {xml: elem} );
                 });
-                //scenario
+                // scenarios
+                var $scenarios = $xml.find( '> scenarios scenario');
+                if ( $scenarios.length > 0 ) {
+                    this.scenarioCollection.reset();
+                    $scenarios.each( function( index, elem) {
+                        that.addScenario( elem )
+                    });
+                }
+                /*
                 $xml.find( '> scenarios scenario').each( function( index, elem) {
-                    that.scenarioCollection.add( {xml: elem, sourceCollection:that.conceptCollection } );
+                    that.addScenario( elem )
                 });
+                */
             },
 
             /*

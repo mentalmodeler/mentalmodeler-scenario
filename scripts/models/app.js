@@ -18,6 +18,7 @@ define([
             },
             curModel: null,
             curSection: null,
+            curSelection: null,
             modelingView: null,
             gridView: null,
             scenarioView: null,
@@ -30,24 +31,44 @@ define([
             },
 
             /*
+             * once flash has initialized, start app
+             */
+            start: function() {
+                console.log('start');
+                this.addModel('');
+            },
+
+            /*
              * adds a new mmp model, passing the xml string
              */
             addModel: function( xml ) {
                 //console.log('AppModel > addMmpModel, xml:',xml);
-                var mmps = this.get( 'mmps' );
+                
                 var mmp = new MmpModel( {xml:xml, justAdded:true } );
                 var mmpView = new MmpView( {model:mmp} );
-                mmps.add( mmp );
-                //this.set( 'mmps', mmps );
+                this.get( 'mmps' ).add( mmp );
+                
                 // this event will trigger a new model to be added to the list and it will automatically be selected
                 Backbone.trigger( 'mmp:add', mmp );
             },
 
             selectionChange: function( model, target, section ) {
-                //console.log('AppModel > selectionChange, model:',model,', target:',target,', (curModel:',this.curModel,')' );
+                var $target = $( target);
+                var prevSelection = this.curSelection;
                 
-                this.saveModelData();
+                if ( $target.hasClass('scenario') ) {
+                    // a scenario was selected
+                    var idx = $target.index();
+                    this.curSelection = model.scenarioCollection.at(idx);
+                }
+                else if ( $target.hasClass('map') ) {
+                    // a model was selected
+                    this.curSelection = model;
+                }
 
+                //console.log('AppModel > selectionChange, model:',model,', target:',target,', (this.curSelection:',this.curSelection,', prevSelection:',prevSelection,')' );
+
+                this.saveModelData();
                 if ( model !== this.curModel ) {
                     this.curModel = model;
                 }

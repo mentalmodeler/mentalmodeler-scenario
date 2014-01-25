@@ -4,11 +4,12 @@
 		<div class="scenarios-header"><i class="expand fa fa-minus-square-o"></i><i class="collapse fa fa-plus-square-o" style="display:none"></i>Scenarios
 			<button class="add-scenario">ADD</button>
 		</div>
-		<% console.log('model.scenarioCollection:',model.scenarioCollection) %>
+		<% if ( model.scenarioCollection.length > 0 ) { %>
 		<div class="scenarios-list expanded">
-			<div class="scenario selectable"><i class="expand fa fa-play-circle"></i>Sample Scenario</div>
-			<div class="scenario selectable"><i class="expand fa fa-play-circle"></i>Sample Scenario</div>
-			<div class="scenario selectable"><i class="expand fa fa-play-circle"></i>Sample Scenario</div>
+			<% for (i=0; i<model.scenarioCollection.length; i++) { var scenario = model.scenarioCollection.at(i); %>
+				<div class="scenario selectable"><i class="expand fa fa-play-circle"></i><%= scenario.get('name') %></div>
+			<% } %>
 		</div>
+		<% } %>
 	</div>
 </script>

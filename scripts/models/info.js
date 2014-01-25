@@ -22,11 +22,10 @@ define([
 
             initialize: function () {
                 InfoModel.__super__.initialize.apply( this, arguments );
-                //setXML();
             },
 
             setXML: function (xml) {
-                //console.log( 'InfoModel > setXML, xml:',xml );
+               // console.log( 'InfoModel > setXML, xml:',xml );
 
                 if (typeof xml === 'undefined') {
                     xml = this.xml;
@@ -36,7 +35,10 @@ define([
                     this.xml = xml;
 
                     var $xml = $(xml);
-                    this.set( 'name', $xml.find('name').text() );
+                    var $name = $xml.find('name');
+                    if ( $name.length > 0 ) {
+                        this.set( 'name', $name.text() );     
+                    }
                     this.set( 'author', $xml.find('author').text() );
                     this.set( 'description', $xml.find('description').text() );
                     this.set( 'date', $xml.find('date').text() );

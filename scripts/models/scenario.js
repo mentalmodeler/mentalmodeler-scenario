@@ -14,7 +14,7 @@ define([
     var ScenarioModel = AbstractModel.extend({
             defaults: {
                 xml: '',
-                name: ''
+                name: 'New Scenario'
             },
 
             conceptCollection: null,
@@ -44,12 +44,16 @@ define([
                     this.conceptCollection.reset();
                     this.parseXML( xml ); 
                 }
+                else {
+                    // create new scenario data from
+                }
             },
 
             /*
              * parse xml string
              */ 
             parseXML: function( xml ) {
+                //console.log('ScenarioModel > parseXML, xml:',xml);
                 var that = this;
                 
                 // jquery xml object filtering

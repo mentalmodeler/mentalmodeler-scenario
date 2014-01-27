@@ -36,6 +36,7 @@ define([
              * once flash has initialized, start app
              */
             start: function() {
+                this.getView().resizeScrollPanels();
                 this.addModel();
             },
 

@@ -130,6 +130,7 @@ define([
             
             //console.log('setHeight, availableHeight:',availableHeight,', tabHeight:',tabHeight,', padding:',padding );
             this.updateContentPanel();
+            this.scenarioView.setHeight( this.contentPanelHeight );
         },
 
         getActivePanel:function () {

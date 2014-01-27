@@ -19,6 +19,9 @@ define([
         className: 'scenario row',
         template: _.template( $(Template).html() ),
 
+        availableHeight: 0,
+        tableHeight: 0,
+
         events: {
         },
 
@@ -38,13 +41,18 @@ define([
                 console.log('data.concepts:',data.concepts);
             }
             this.$el.html( this.template( data ) );
+            
+            // size table 
+            
+            var $button = this.$el.find('> .panel-left > button');
+            this.$el.find('#scenarioTable').outerHeight( this.tableHeight - $button.position().top + 10);
             //$(document).foundation();
             return this;
         },
 
         checkToRender: function() {
             var appModel = window.mentalmodeler.appModel;
-            if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
+            if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' && appModel.curSection === 'scenario' ) {
                 this.render();
             }
         },
@@ -57,6 +65,19 @@ define([
         onSectionChange: function( model, target, section ) {
             //console.log('ScenarioView > onSectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curModel:',appModel.curModel);
             this.checkToRender();
+        },
+
+        sizeTable: function( h ) {
+            
+        },
+
+        setHeight: function ( availableHeight ) {
+            this.availableHeight = availableHeight
+            var $button = this.$el.find('> .panel-left > button');
+            console.log()
+            this.tableHeight = availableHeight - $button.outerHeight(true);
+            console.log('ScenarioView < setHeight, this.availableHeight:',this.availableHeight,' this.tableHeight:',this.tableHeight);
+            this.render();
         }
     });
 

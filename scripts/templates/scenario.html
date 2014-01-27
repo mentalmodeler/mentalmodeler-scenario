@@ -2,24 +2,36 @@
 	<div class="panel-left">
 		<textarea id="scenarioName" placeholder="Scenario Name"></textarea>
 		<button><i class="fa fa-refresh"></i>Refresh Scenario</button>
-		<table>
-		  <thead>
-		  	<tr>
-		  		<td class="col-1">Show</td>
-		  		<td class="col-2">Component</td>
-		  		<td class="col-3">Change</td>
-		  	</tr>
-		  </thead>
-		  <tbody>
-		  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
-		  	<tr>
-		    	<td class="col-1"><%= concept.selected %></td>
-		    	<td class="col-2"><%= concept.name %></td>
-		    	<td class="col-3"><%= concept.influence %></td>
-		    </tr>
-		    <% } %>
-		  </tbody>
-		</table>
+		<div id="scenarioTable">
+			<table>
+			  <thead>
+			  	<tr>
+			  		<td class="col-1"></td>
+			  		<td class="col-2">Component</td>
+			  		<td class="col-3">+/-</td>
+			  	</tr>
+			  </thead>
+			  <tbody>
+			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
+			  	<tr>
+			    	<td class="col-1"><input type="checkbox" name="selected" checked></td>
+			    	<td class="col-2"><%= concept.name %></td>
+			    	<td class="col-3">
+			    		<select>
+						  <option value="+++">+++</option>
+						  <option value="++">++</option>
+						  <option value="+">+</option>
+						  <option value="none"></option>
+						  <option value="-">-</option>
+						  <option value="--">--</option>
+						  <option value="---">---</option>
+						</select>
+			    	</td>
+			    </tr>
+			    <% } %>
+			  </tbody>
+			</table>
+		</div>
 	</div>
 	<div class="panel-right">
 	</div>

@@ -5,17 +5,19 @@
 		<table>
 		  <thead>
 		  	<tr>
-		  		<td class="col-1">Chart</td>
+		  		<td class="col-1">Show</td>
 		  		<td class="col-2">Component</td>
 		  		<td class="col-3">Change</td>
 		  	</tr>
 		  </thead>
 		  <tbody>
+		  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
 		  	<tr>
-		    	<td class="col-1">chart?</td>
-		    	<td class="col-2">component</td>
-		    	<td class="col-3">change</td>
+		    	<td class="col-1"><%= concept.selected %></td>
+		    	<td class="col-2"><%= concept.name %></td>
+		    	<td class="col-3"><%= concept.influence %></td>
 		    </tr>
+		    <% } %>
 		  </tbody>
 		</table>
 	</div>

@@ -36,7 +36,7 @@ define([
 
                     var $xml = $(xml);
                     var $name = $xml.find('name');
-                    if ( $name.length > 0 ) {
+                    if ( $name.length > 0 && $name.text() !== '' ) {
                         this.set( 'name', $name.text() );     
                     }
                     this.set( 'author', $xml.find('author').text() );

@@ -7,8 +7,10 @@ define([
     'foundation',
     'd3',
     'views/abstract',
+    'models/scenario',
+    'models/mmp',
     'text!templates/scenario.html'
-], function ($, _, Backbone, Foundation, d3, AbstractView, Template) {
+], function ($, _, Backbone, Foundation, d3, AbstractView, ScenarioModel, MmpModel, Template) {
     'use strict';
 
     var ScenarioView = AbstractView.extend({
@@ -28,22 +30,33 @@ define([
 
 
         render: function() {
-            //console.log(d3.version);
-            this.$el.html( this.template( {} ) );
+            console.log( 'ScenarioView > render ');
+            var data = { concepts: [] };
+            var appModel = window.mentalmodeler.appModel;
+            if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
+                data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
+                console.log('data.concepts:',data.concepts);
+            }
+            this.$el.html( this.template( data ) );
             //$(document).foundation();
             return this;
         },
 
-        onSelectionChange: function( model, target, section ) {
-            //this.render();
+        checkToRender: function() {
             var appModel = window.mentalmodeler.appModel;
-            console.log('ScenarioView > onSelectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curModel:',appModel.curModel);
+            if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
+                this.render();
+            }
+        },
+
+        onSelectionChange: function( model, target, section ) {
+            //console.log('ScenarioView > onSelectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curModel:',appModel.curModel);
+            this.checkToRender();
         },
 
         onSectionChange: function( model, target, section ) {
-            //this.render();
-            var appModel = window.mentalmodeler.appModel;
-            console.log('ScenarioView > onSectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curModel:',appModel.curModel);
+            //console.log('ScenarioView > onSectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curModel:',appModel.curModel);
+            this.checkToRender();
         }
     });
 

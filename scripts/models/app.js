@@ -17,8 +17,10 @@ define([
                 mmps: [],
             },
             curModel: null,
+            prevSection: null,
             curSection: null,
             curSelection: null,
+            curSelectionType: null, // 'scenario' or 'mmp'
             modelingView: null,
             gridView: null,
             scenarioView: null,
@@ -34,17 +36,19 @@ define([
              * once flash has initialized, start app
              */
             start: function() {
-                console.log('start');
-                this.addModel('');
+                this.addModel();
             },
 
             /*
              * adds a new mmp model, passing the xml string
              */
             addModel: function( xml ) {
-                //console.log('AppModel > addMmpModel, xml:',xml);
+                var options = { justAdded: true };
+                if (typeof xml !== 'undefined' && xml !== '') {
+                    options.xml = xml
+                }
                 
-                var mmp = new MmpModel( {xml:xml, justAdded:true } );
+                var mmp = new MmpModel( options );
                 var mmpView = new MmpView( {model:mmp} );
                 this.get( 'mmps' ).add( mmp );
                 
@@ -60,10 +64,12 @@ define([
                     // a scenario was selected
                     var idx = $target.index();
                     this.curSelection = model.scenarioCollection.at(idx);
+                    this.curSelectionType = "scenario";
                 }
                 else if ( $target.hasClass('map') ) {
                     // a model was selected
                     this.curSelection = model;
+                    this.curSelectionType = "mmp";
                 }
 
                 //console.log('AppModel > selectionChange, model:',model,', target:',target,', (this.curSelection:',this.curSelection,', prevSelection:',prevSelection,')' );
@@ -77,6 +83,7 @@ define([
 
             setSection: function( section ) {
                 //console.log('AppModel > setSection, section:',section);
+                
                 var sectionChanged = this.curSection !== section;
                 if ( sectionChanged ) {
                     this.saveModelData();
@@ -90,7 +97,7 @@ define([
                 
                 // leaving from modeling section, so save data to model
                 if ( this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
-                    this.curModel.setXML( this.modelingView.getModelXML() );
+                    this.curModel.updateFromModelSection( this.modelingView.getModelXML() );
                 }
             },
 

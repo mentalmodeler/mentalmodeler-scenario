@@ -47,6 +47,7 @@ define([
         },
 
         onModelAdded: function ( mmpModel ) {
+            //console.log( 'ListView > onModelAdded');
             this.renderList();
         },
 

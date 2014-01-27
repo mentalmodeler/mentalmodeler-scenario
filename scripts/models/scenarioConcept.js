@@ -4,38 +4,41 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/abstract',
-    'models/relationship'
+    'models/abstract'
 
-], function ( $, _, Backbone, AbstractModel, RelationshipModel ) {
+], function ( $, _, Backbone, AbstractModel ) {
     'use strict';
 
     var ScenarioConceptModel = AbstractModel.extend({
             defaults: {
                 xml: '',
-                id: '',
                 selected: '',
                 influence: '',
+                id: '',
                 name: ''
             },
 
-            concept: null,
-            scenario: null,
-
+            conceptReference: null,
+            
             initialize: function ( options ) {
                 ScenarioConceptModel.__super__.initialize.apply( this, arguments );
-                if (typeof options.scenario !== 'undefined') {
-                    this.scenario = options.scenario;
-                    //console.log ( 'this.scenario:',this.scenario );
+                if (typeof options.conceptReference !== 'undefined') {
+                    this.conceptReference = options.conceptReference;
                     this.setXML();    
                 }
                 else {
-                    console.log( 'ERROR >> ScenarioConcpetModel >> no scenario provided')
+                    console.log( 'ERROR >> ScenarioConcpetModel >> no source concept reference provided')
                 }
             },
 
             toJSON:function () {
-                return ScenarioConceptModel.__super__.toJSON.apply( this, arguments );
+                var json = ScenarioConceptModel.__super__.toJSON.apply( this, arguments );
+                var propsToDelete = ['xml', 'conceptReference'];
+                for ( var i=0; i<propsToDelete.length; i++ ) {
+                    delete json[ propsToDelete[i] ];
+                }
+                //console.log('scenario concept toJSON, json:',json);
+                return json;
             },
 
             setXML: function( xml ) {
@@ -58,14 +61,14 @@ define([
                 
                 // jquery xml object filtering
                 var $xml = $(xml);
-                this.set( 'id', $xml.children('id').text() );
-                this.set( 'name', $xml.children('name').text() );
+                
+                // properties unique to the ScenarioConceptModel
                 this.set( 'selected', $xml.children('selected').text() );
                 this.set( 'influence', $xml.children('influence').text() );
                 
-                // get ref to concept
-                var collection = this.scenario.conceptsSourceCollection;
-                this.concept = collection.findWhere( { id: this.get('id') } );
+                // properties acquired from the source reference ConceptModel
+                this.set( 'id', this.conceptReference.get('id') );
+                this.set( 'name', this.conceptReference.get('name') );
             },
         });
 

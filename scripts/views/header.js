@@ -43,7 +43,7 @@ define([
         ****************/       
         
         newFile: function() {
-            window.mentalmodeler.appModel.addModel('');
+            window.mentalmodeler.appModel.addModel();
         },
 
         /*****************

@@ -22,7 +22,9 @@ define([
         availableHeight: 0,
         tableHeight: 0,
 
-        events: {
+       events: {
+            'change input[type="checkbox"]' : 'onSelectedChange',
+            'change select': 'onInfluenceChange'
         },
 
         initialize: function() {
@@ -31,6 +33,21 @@ define([
             this.listenTo( Backbone, 'section:change', this.onSectionChange );
         },
 
+        onSelectedChange:function(e) {
+            var $cb = $( e.target );
+            var id = $cb.closest('tr').attr('data-id');
+            var selected = e.target.checked;
+            // TODO - update ScenarioConceptModel [id] with selected value [selected]
+        },
+
+        onInfluenceChange:function(e) {
+            console.log('onInfluenceChange, e:',e)
+            var $select = $( e.target );
+            var id = $select.closest('tr').attr('data-id');
+            var value = $select.find('option:selected').val();
+            console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value);
+            // TODO - update ScenarioConceptModel [id] with selected value [selected]
+        },
 
         render: function() {
             console.log( 'ScenarioView > render ');
@@ -45,7 +62,10 @@ define([
             // size table 
             
             var $button = this.$el.find('> .panel-left > button');
-            this.$el.find('#scenarioTable').outerHeight( this.tableHeight - $button.position().top + 10);
+            var top = $button.position().top < 1 ? 38 : $button.position().top;
+            this.$el.find('#scenarioTable').outerHeight( this.tableHeight - top + 10);
+            
+
             //$(document).foundation();
             return this;
         },

@@ -13,18 +13,18 @@
 			  </thead>
 			  <tbody>
 			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
-			  	<tr>
-			    	<td class="col-1"><input type="checkbox" name="selected" checked></td>
+			  	<tr data-id="<%= concept.id %>">
+			    	<td class="col-1"><input type="checkbox" name="selected" <%= concept.selected ? "checked" : ""%> ></td>
 			    	<td class="col-2"><%= concept.name %></td>
 			    	<td class="col-3">
 			    		<select>
-						  <option value="+++">+++</option>
-						  <option value="++">++</option>
-						  <option value="+">+</option>
-						  <option value="none"></option>
-						  <option value="-">-</option>
-						  <option value="--">--</option>
-						  <option value="---">---</option>
+						  <option value="H+" <%= concept.influence === "H+" ? "selected" : "" %> >+++</option>
+						  <option value="M+" <%= concept.influence === "M+" ? "selected" : "" %> >+++</option>
+						  <option value="L+" <%= concept.influence === "L+" ? "selected" : "" %> >++</option>
+						  <option value="" <%= concept.influence === "" ? "selected" : "" %> ></option>
+						  <option value="L-" <%= concept.influence === "L-" ? "selected" : "" %> >-</option>
+						  <option value="M-" <%= concept.influence === "M-" ? "selected" : "" %> >--</option>
+						  <option value="H-" <%= concept.influence === "H-" ? "selected" : "" %> >---</option>
 						</select>
 			    	</td>
 			    </tr>

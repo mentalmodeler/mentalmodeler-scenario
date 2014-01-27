@@ -471,15 +471,13 @@ div.right-main {
           }
         
           table{
-            height: 200px;
+            margin-bottom: 0;
             thead, tbody {
               tr > td {
                 $padding: 5px;
-                min-width: 33%;
-                max-width: 33%;
-                width: 33%;
                 word-break: break-all;
-                padding: padding;
+                padding: $padding;
+                text-align: center;
                 &.col-1 {
                   min-width: 10%;
                   max-width: 10%;
@@ -519,6 +517,12 @@ div.right-main {
                   }
                 }
               }
+            }
+            thead > tr > td {
+              text-align: center;
+            }
+            tbody > tr > td {
+              text-align: left;
             }
           }
         }

@@ -12,7 +12,6 @@ define([
 
     var ConceptModel = AbstractModel.extend({
             defaults: {
-                xml: '',
                 id: '',
                 name: '',
                 notes: '',
@@ -27,10 +26,13 @@ define([
 
             relationshipCollection: null,
 
-            initialize: function () {
+            initialize: function ( options ) {
                 ConceptModel.__super__.initialize.apply( this, arguments );
                 this.relationshipCollection = new Backbone.Collection( [], {model: RelationshipModel} );
-                this.setXML();
+                
+                if ( typeof options !== 'undefined' && typeof options.data !== 'undefined' ) {
+                    this.setData( options.data );
+                }
             },
 
             toJSON:function ( forView ) {
@@ -55,42 +57,21 @@ define([
                 }
                 return o;
             },
-
-            setXML: function( xml ) {
-                //console.log( 'ConceptModel > setXML, xml:',xml);
-                
-                // if not passed a string, use model property
-                if (typeof xml === 'undefined') {
-                    xml = this.get( 'xml' );
-                }
-
-                if ( xml && xml !== '' ) {
-                    this.set( 'xml', xml );
-                    this.relationshipCollection.reset();
-                    this.parseXML( xml ); 
-                }
-            },
-
-            /*
-             * parse xml string
-             */ 
-            parseXML: function( xml ) {
+            
+            setData: function( data ) {
                 var that = this;
-                
-                // jquery xml object filtering
-                var $xml = $(xml);
-                this.set( 'id', $xml.children('id').text() );
-                this.set( 'name', $xml.children('name').text() );
-                this.set( 'notes', $xml.children('notes').text() );
-                this.set( 'x', $xml.children('x').text() );
-                this.set( 'y', $xml.children('y').text() );
-                this.set( 'units', $xml.children('units').text() );
+                for (var key in data ) {
+                    if ( key === 'relationships' ) { // assignment for relationships
+                        _.each( data.relationships, function( relationship ) {
+                            that.relationshipCollection.add( {data: relationship} )
+                        });
+                    }
+                    else if ( data[key] !== '' ) {
+                        this.set( key, data[key] );
+                    }
+                }
+            }
 
-                // concepts
-                $xml.find( '> relationships relationship').each( function( index, elem) {
-                    that.relationshipCollection.add( {xml: elem} );
-                });
-            },
         });
 
     return ConceptModel;

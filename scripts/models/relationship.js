@@ -11,7 +11,6 @@ define([
 
     var RelationshipModel = AbstractModel.extend({
             defaults: {
-                xml: '',
                 id: '',
                 name: '',
                 notes: '',
@@ -19,39 +18,21 @@ define([
                 influence: ''
             },
             
-            initialize: function () {
+            initialize: function ( options ) {
                 RelationshipModel.__super__.initialize.apply( this, arguments );
-                this.setXML();
-            },
-
-            setXML: function( xml ) {
-                //console.log( 'RelationshipModel > setXML, xml:',xml);
                 
-                // if not passed a string, use model property
-                if (typeof xml === 'undefined') {
-                    xml = this.get( 'xml' );
-                }
-
-                if ( xml && xml !== '' ) {
-                    this.set( 'xml', xml );
-                    this.parseXML( xml ); 
+                if ( typeof options !== 'undefined' && typeof options.data !== 'undefined' ) {
+                    this.setData( options.data );
                 }
             },
-
-            /*
-             * parse xml string
-             */ 
-            parseXML: function( xml ) {
-                var that = this;
-                
-                // jquery xml object filtering
-                var $xml = $(xml);
-                this.set( 'id', $xml.children('id').text() );
-                this.set( 'name', $xml.children('name').text() );
-                this.set( 'notes', $xml.children('notes').text() );
-                this.set( 'confidence', $xml.children('confidence').text() );
-                this.set( 'influence', $xml.children('influence').text() );
-            },
+            
+            setData: function( data ) {
+                for (var key in data ) {
+                    if ( data[key] !== '' ) {
+                        this.set( key, data[key] );
+                    }
+                }
+            }
         });
 
     return RelationshipModel;

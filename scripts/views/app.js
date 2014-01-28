@@ -39,8 +39,6 @@ define([
                 // initialize dynamcially added foundation components
                 $(document).foundation();
                 resizeScrollPanels();
-                console.log('-------- resizeScrollPanels -----------')
-                //window.onresize = resizeScrollPanels;
                 window.onresize = function() {
                     if ( that.resizeTimer ) {
                         clearTimeout( that.resizeTimer );

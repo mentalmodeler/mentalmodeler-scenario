@@ -21,12 +21,10 @@ define([
         
         initialize: function() {
             GridView.__super__.initialize.apply( this, arguments );
-            /*
-            window.mentalmodeler.appModel.modelingView = this;
-            this.listenTo( Backbone, 'window:resize', this.onWindowResize );
-            */
-            this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
-            //this.listenTo( Backbone, 'mmp:change', this.onSelectionChange );
+            
+            this.listenTo( Backbone, 'selection:change', this.checkToRender );
+            this.listenTo( Backbone, 'section:change', this.checkToRender );
+            this.listenTo( Backbone, 'mmp:change', this.checkToRender );
         },
 
 
@@ -36,13 +34,17 @@ define([
             if ( curModel ) {
                 concepts = curModel.getConceptsForGrid();
             }
+            
             this.$el.html( this.template( {concepts:concepts} ) );
             $(document).foundation();
             return this;
         },
 
-        onSelectionChange: function( model, target, section ) {
-            this.render();
+        checkToRender: function() {
+            var appModel = window.mentalmodeler.appModel;
+            if ( appModel.curSelection != null && appModel.curSection === 'grid' ) {
+                this.render();
+            }
         }
     });
 

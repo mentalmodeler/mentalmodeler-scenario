@@ -7,9 +7,10 @@ define([
     'models/abstract',
     'models/info',
     'models/concept',
-    'models/scenario'
+    'models/scenario',
+    'util/xmlUtils'
 
-], function ( $, _, Backbone, AbstractModel, InfoModel, ConceptModel, ScenarioModel ) {
+], function ( $, _, Backbone, AbstractModel, InfoModel, ConceptModel, ScenarioModel, XMLUtils ) {
     'use strict';
 
     var MmpModel = AbstractModel.extend({
@@ -23,22 +24,15 @@ define([
             conceptCollection: null,
             scenarioCollection: null,
 
-            initialize: function ( options ) {
+            initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
                 this.infoModel = new InfoModel();
                 this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );                
                 this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
                 
-                //this.setXML();
-                var xml = this.get('xml');
-                if ( xml !== '' ) {
-                    this.xmlDoc = $.parseXML( xml );
-                    this.conceptCollection.reset();
-                    //this.scenarioCollection.reset();
-                    this.parseXML( xml ); 
-                    Backbone.trigger( 'mmp:change' );
-                }
-
+                this.setData( XMLUtils.parseMmpFile( this.get('xml') ) );
+                Backbone.trigger( 'mmp:change' );
+                
                 // for scenarios added after model and view is first created
                 this.listenTo( this.scenarioCollection, 'add', this.onScenarioAdded );
             },
@@ -48,35 +42,23 @@ define([
              * the info model or explicitly updating the scenarios
              */
             updateFromModelSection: function( modelXML ) {
-                /*
-                console.log('MmpModel > updateFromModelSection'); //, modelXML',modelXML );
-                this.conceptCollection.reset();
-                var $xml = this.prepXML( modelXML );
-                var $concepts = $xml.find( '> concepts');
-                var $concept = $concepts.find( 'concept' );
-                this.setConcepts( $concept );
+                // updates the concepts collection
+                var concepts = XMLUtils.parseMmpFile( modelXML, ['info', 'scenario'] ).concepts;
+                this.conceptCollection.reset( concepts );
 
-                // replace the concepts xml
-                var s = $('<div></div>').append( $concepts ).html();
-                s = s.replace(/(\r\n|\n|\r)/gm,'');
-                console.log('   s:',s );
-                //console.log('   $concepts[0]:',$concepts[0] );
-                var xml = this.get('xml');
-                console.log('xml:',xml);
-                */
-
-                // this is still doing it the old way
-                this.set('xml', modelXML);
+                // updates the concepts node in the xml and sets the xml
+                var xml = XMLUtils.replaceConceptsNode( modelXML, this.get('xml') );
+                this.set('xml', xml);
             },
 
             /*
              * adds a new scenario
              */
-            addScenario: function( xml ) {
-                if ( typeof xml === 'undefined' ) {
-                    xml = '';
+            addScenario: function( data ) {
+                if (typeof data === 'undefined') {
+                    data = {};
                 }
-                this.scenarioCollection.add( {xml: xml, sourceCollection:this.conceptCollection } );
+                this.scenarioCollection.add( {data: data, sourceCollection:this.conceptCollection } );
             },
 
             onScenarioAdded: function() {
@@ -85,79 +67,28 @@ define([
             },
 
             /*
-             * sets xml string. should only get called when new model is created
+             * set data model with JSON values
              */ 
-            setXML: function() {
-                var xml = this.get('xml');
-                if ( xml !== '' ) {
-                    this.conceptCollection.reset();
-                    //this.scenarioCollection.reset();
-                    this.parseXML( xml ); 
-                    Backbone.trigger( 'mmp:change' );
+            setData: function( data ) {
+                if ( typeof data === 'undefined' ) {
+                    return false;
                 }
-            },
-            
-            /*
-             * builds the concepts collection from the concepts xml
-             */             
-            setConcepts: function( $concepts ) {
-                //console.log( 'MmpModel > setConcepts');
-                var that = this;
-                $concepts.each( function( index, elem) {
-                    that.conceptCollection.add( {xml: elem} );
-                    //console.log('elem:',elem)
-                });
-                //console.log('     this.conceptCollection:',this.conceptCollection );
-            },
-
-            /*
-             * parse xml string
-             */ 
-            parseXML: function( xml ) {
-                // TODO, parse as xml, not html
 
                 var that = this;
-                // jquery xml object filtering
-                var $xml = this.prepXML( xml );
-                // info
-                this.infoModel.setXML( $xml.find( '> info')[0] )
-                // concepts
-                this.setConcepts( $xml.find( '> concepts concept') );
-                // scenarios
-                var $scenarios = $xml.find( '> scenarios scenario');
-                if ( $scenarios.length > 0 ) {
-                    this.scenarioCollection.reset();
-                    $scenarios.each( function( index, elem) {
-                        that.addScenario( elem )
+                if (typeof data.info !== 'undefined') {
+                    this.infoModel.setData( data.info );
+                }
+                if (typeof data.concepts !== 'undefined') {
+                    _.each( data.concepts, function( concept ) {
+                        that.conceptCollection.add( {data: concept} )
                     });
                 }
-                
-                // stubbing out beginning of xml parsing
-                /*
-                var childNodes = this.xmlDoc.childNodes[0].childNodes;
-                for (var i=0; i<childNodes.length; i++ ) {
-                    var node = childNodes[i];
-                    switch ( node.nodeName ) {
-                        case 'info':
-                            break;
-                        case 'concepts':
-                            break;
-                        case 'scenarios':
-                            break;        
-                    }
+                if (typeof data.scenarios !== 'undefined' && data.scenarios.length > 0 ) {
+                    this.scenarioCollection.reset();
+                    _.each( data.scenarios, function( scenario ) {
+                         that.addScenario( scenario )
+                    });
                 }
-                */
-            },
-
-            prepXML: function( xml ) {
-                // remove carraige returns and new lines
-                xml = xml.replace(/(\r\n|\n|\r)/gm,'');
-                // remove CDATA tags
-                xml = xml.replace(/<!\[CDATA\[|\]\]>/gm,'');
-                //remove header
-                xml = xml.split('?>')[1];
-            
-                return $(xml);
             },
 
             /*
@@ -184,16 +115,9 @@ define([
             },
 
             /**
-             * returns array of concepts for the grid view
+             * returns array of concepts for the scenario view
              */
             getConceptsForScenario: function() {
-                return this.conceptCollection.toJSON( 'grid' );
-            },
-
-            /**
-             * returns array of concepts for the grid view
-             */
-            getConcepts: function() {
                 return this.conceptCollection.toJSON( 'grid' );
             }
         });

@@ -11,8 +11,7 @@ define([
 
     var ScenarioConceptModel = AbstractModel.extend({
             defaults: {
-                xml: '',
-                selected: '',
+                selected: 'true',
                 influence: '',
                 id: '',
                 name: ''
@@ -22,12 +21,12 @@ define([
             
             initialize: function ( options ) {
                 ScenarioConceptModel.__super__.initialize.apply( this, arguments );
-                if (typeof options.conceptReference !== 'undefined') {
+                if ( typeof options.conceptReference !== 'undefined'  && typeof options.data !== 'undefined' ) {
                     this.conceptReference = options.conceptReference;
-                    this.setXML();    
+                    this.setData( options.data );    
                 }
                 else {
-                    console.log( 'ERROR >> ScenarioConcpetModel >> no source concept reference provided')
+                    console.log( 'ERROR >> ScenarioConcpetModel >> no source concept reference -or- concept data provided')
                 }
             },
 
@@ -41,35 +40,19 @@ define([
                 return json;
             },
 
-            setXML: function( xml ) {
-                // if not passed a string, use model property
-                if (typeof xml === 'undefined') {
-                    xml = this.get( 'xml' );
-                }
-
-                if ( xml && xml !== '' ) {
-                    this.set( 'xml', xml );
-                    this.parseXML( xml ); 
-                }
-            },
-
-            /*
-             * parse xml string
-             */ 
-            parseXML: function( xml ) {
-                var that = this;
-                
-                // jquery xml object filtering
-                var $xml = $(xml);
-                
+            setData: function( data ) {
                 // properties unique to the ScenarioConceptModel
-                this.set( 'selected', $xml.children('selected').text() );
-                this.set( 'influence', $xml.children('influence').text() );
-                
+                for (var key in data ) {
+                    if ( data[key] !== '' ) {
+                        this.set( key, data[key] );
+                    }
+                }
                 // properties acquired from the source reference ConceptModel
-                this.set( 'id', this.conceptReference.get('id') );
                 this.set( 'name', this.conceptReference.get('name') );
-            },
+                this.set( 'id', this.conceptReference.get('id') );
+
+            }
+
         });
 
     return ScenarioConceptModel;

@@ -18,35 +18,23 @@ define([
                 date: ''
             },
 
-            xml: '',
-
             initialize: function () {
                 InfoModel.__super__.initialize.apply( this, arguments );
             },
 
-            setXML: function (xml) {
-               // console.log( 'InfoModel > setXML, xml:',xml );
-
-                if (typeof xml === 'undefined') {
-                    xml = this.xml;
-                }
-
-                if ( xml && xml !== '' ) {
-                    this.xml = xml;
-
-                    var $xml = $(xml);
-                    var $name = $xml.find('name');
-                    if ( $name.length > 0 && $name.text() !== '' ) {
-                        this.set( 'name', $name.text() );     
+            setData: function( data ) {
+                for (var key in data ) {
+                    if ( data[key] !== '' ) {
+                        this.set( key, data[key] );
                     }
-                    this.set( 'author', $xml.find('author').text() );
-                    this.set( 'description', $xml.find('description').text() );
-                    this.set( 'date', $xml.find('date').text() );
-                    this.set( 'version', $xml.find('version').text() );
+                    else { // assignment for empty properties
+                        if ( data[key] === 'date' ) {
+                            this.set( 'date', (new Date()).toString() ); 
+                        }
+                    }
                 }
-
-                // console.log( 'this.toJSON():',this.toJSON() );   
             }
+
         });
 
     return InfoModel;

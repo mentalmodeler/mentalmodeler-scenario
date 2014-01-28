@@ -24,23 +24,24 @@ define([
                 ScenarioModel.__super__.initialize.apply( this, arguments );
                 this.conceptCollection = new Backbone.Collection( [], {model: ScenarioConceptModel} );
                 
-                if (typeof options.sourceCollection !== 'undefined') {
+                if (typeof options.sourceCollection !== 'undefined' && typeof options.data !== 'undefined') {
                     this.conceptsSourceCollection = options.sourceCollection;
-                    this.setXML();    
+                    this.setData( options.data );    
                 }
                 else {
-                    console.log( 'ERROR >> ScenarioModel >> no concept source collection provided')
+                    console.log( 'ERROR >> ScenarioModel >> no concept source collection -or- scenario data provided')
                 }
             },
 
             getConceptsForScenario: function() {
+                this.updateCollection();
                 return this.conceptCollection.toJSON();
             },
 
             updateCollection: function() {
-                console.log('updateCollection, this.conceptsSourceCollection:',this.conceptsSourceCollection);
                 this.removeConcepts();
                 this.addConcepts();
+                //console.log('updateCollection, this.conceptsSourceCollection:',this.conceptsSourceCollection);
             },
 
             /*
@@ -52,11 +53,12 @@ define([
                 this.conceptCollection.each( function( scenarioConceptModel ) {
                     var id = scenarioConceptModel.get('id');
                     if ( typeof that.conceptsSourceCollection.findWhere( {id: id} ) === "undefined" ) {
-                        console.log('     removing scenario concept, id:',id);
+                        //console.log('     removing scenario concept, id:',id);
                         that.conceptCollection.remove( scenarioConceptModel );
                     }
                 });
             },
+            
             /*
              * add concepts that are in source collection but not in concept collection
              */
@@ -66,49 +68,34 @@ define([
                 this.conceptsSourceCollection.each( function( conceptModel ) {
                     var id = conceptModel.get('id');
                     if ( typeof that.conceptCollection.findWhere( {id: id} ) === "undefined" ) {
-                        console.log('     adding scenario concept, id:',id);
-                        that.conceptCollection.add()
+                        //console.log('     adding scenario concept, id:',id);
+                        that.conceptCollection.add( {data: {}, conceptReference: conceptModel} )
                     }
                 });
             },
 
-
-            setXML: function( xml ) {
-                // if not passed a string, use model property
-                if (typeof xml === 'undefined') {
-                    xml = this.get( 'xml' );
-                }
-                if ( xml && xml !== '' ) {
-                    this.set( 'xml', xml );
-                    this.conceptCollection.reset();
-                    this.parseXML( xml ); 
+            setData: function( data ) {
+                var that = this;
+                this.conceptCollection.reset();
+                for (var key in data ) {
+                    if ( key === 'concepts' ) { // assignment for concepts
+                        _.each( data.concepts, function( concept ) {
+                            var conceptReference = that.conceptsSourceCollection.findWhere( {id: concept.id} );
+                            // if we found a source concept with an id matching the scenario concept, we are good to go
+                            if ( typeof conceptReference !== 'undefined' ) {
+                               that.conceptCollection.add( {data: concept, conceptReference: conceptReference} );
+                            }
+                        });
+                    }
+                    else if ( data[key] !== '' ) {
+                        this.set( key, data[key] );
+                    }
                 }
 
                 // aggregate concepts 
                 this.updateCollection();
-            },
-
-            /*
-             * parse xml string
-             */ 
-            parseXML: function( xml ) {
-                //console.log('ScenarioModel > parseXML, xml:',xml);
-                var that = this;
-                
-                // jquery xml object filtering
-                var $xml = $(xml);
-                this.set( 'name', $xml.children('name').text() );
-                
-                // concepts
-                $xml.find( '> concepts concept').each( function( index, elem) {
-                    var id = $(elem).children('id').text();
-                    var conceptReference = that.conceptsSourceCollection.findWhere( {id: id} );
-                    // if we found a source concept with an id matching the scenario concept, we are good to go
-                    if ( typeof conceptReference !== 'undefined' ) {
-                        that.conceptCollection.add( {xml: elem, conceptReference: conceptReference} );
-                    }
-                });
             }
+
         });
 
     return ScenarioModel;

@@ -29,8 +29,8 @@ define([
 
         initialize: function() {
             ScenarioView.__super__.initialize.apply( this, arguments );
-            this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
-            this.listenTo( Backbone, 'section:change', this.onSectionChange );
+            this.listenTo( Backbone, 'selection:change', this.checkToRender );
+            this.listenTo( Backbone, 'section:change', this.checkToRender );
         },
 
         onSelectedChange:function(e) {
@@ -59,13 +59,11 @@ define([
             }
             this.$el.html( this.template( data ) );
             
-            // size table 
-            
+            // size table    
             var $button = this.$el.find('> .panel-left > button');
             var top = $button.position().top < 1 ? 38 : $button.position().top;
             this.$el.find('#scenarioTable').outerHeight( this.tableHeight - top + 10);
             
-
             //$(document).foundation();
             return this;
         },
@@ -77,26 +75,12 @@ define([
             }
         },
 
-        onSelectionChange: function( model, target, section ) {
-            //console.log('ScenarioView > onSelectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curModel:',appModel.curModel);
-            this.checkToRender();
-        },
-
-        onSectionChange: function( model, target, section ) {
-            //console.log('ScenarioView > onSectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curModel:',appModel.curModel);
-            this.checkToRender();
-        },
-
-        sizeTable: function( h ) {
-            
-        },
-
         setHeight: function ( availableHeight ) {
             this.availableHeight = availableHeight
             var $button = this.$el.find('> .panel-left > button');
             console.log()
             this.tableHeight = availableHeight - $button.outerHeight(true);
-            console.log('ScenarioView < setHeight, this.availableHeight:',this.availableHeight,' this.tableHeight:',this.tableHeight);
+            //console.log('ScenarioView < setHeight, this.availableHeight:',this.availableHeight,' this.tableHeight:',this.tableHeight);
             this.render();
         }
     });

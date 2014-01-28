@@ -43,12 +43,9 @@ define([
              */
             updateFromModelSection: function( modelXML ) {
                 // updates the concepts collection
-                console.log('BEFORE this.conceptCollection:',this.conceptCollection);
-                
                 var concepts = XMLUtils.parseMmpFile( modelXML, ['info', 'scenario'] ).concepts;
                 this.conceptCollection.reset( concepts );
 
-                console.log('AFTER this.conceptCollection:',this.conceptCollection);
                 // updates the concepts node in the xml and sets the xml
                 var xml = XMLUtils.replaceConceptsNode( modelXML, this.get('xml') );
                 this.set('xml', xml);

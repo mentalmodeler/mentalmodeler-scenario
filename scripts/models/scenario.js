@@ -39,46 +39,37 @@ define([
             },
 
             updateCollection: function() {
-                var sc = this.conceptCollection.toJSON();
-                console.log('BEFORE sc:',sc)
-                //this.removeConcepts();
-                this.addConcepts();
-                console.log('AFTER sc:',sc)
-                //console.log('updateCollection, this.conceptsSourceCollection:',this.conceptsSourceCollection);
-            },
-
-            /*
-             * remove concepts that aren't in source collection but are in concept collection
-             */ 
-            removeConcepts: function() {
-                //console.log('removeConcepts, this.conceptCollection:',this.conceptCollection,', this.conceptsSourceCollection:',this.conceptsSourceCollection);
-                var that = this;
-                this.conceptCollection.each( function( scenarioConceptModel ) {
-                    var id = scenarioConceptModel.get('id');
-                    if ( typeof that.conceptsSourceCollection.findWhere( {id: id} ) === "undefined" ) {
-                        console.log('     removing scenario concept, id:',id);
-                        that.conceptCollection.remove( scenarioConceptModel );
-                    }
-                });
+                // pass the previous collection to addConcepts so that selected/influence values for models
+                // can be passed on to new version of smae model
+                var prevCollection = this.conceptCollection.clone();
+                this.addConcepts( prevCollection );
             },
             
             /*
-             * add concepts that are in source collection but not in concept collection
+             * update scenario concept collection based on new concpet models
              */
-            addConcepts: function() {
+            addConcepts: function( prevCollection ) {
+                var log = false;
+                if (log) { console.log('addConcepts, prevCollection:',prevCollection); }
                 //console.log('addConcepts, this.conceptCollection:',this.conceptCollection,', this.conceptsSourceCollection:',this.conceptsSourceCollection);
                 var that = this;
                 that.conceptCollection.reset();
                 this.conceptsSourceCollection.each( function( conceptModel ) {
+                    var conceptRefProps =  { id: conceptModel.get('id'), name: conceptModel.get('name') };
                     var id = conceptModel.get('id');
-                    if ( typeof that.conceptCollection.findWhere( {id: id} ) === "undefined" ) {
-                        console.log('     adding scenario concept, id:',id);
-                        that.conceptCollection.add( { conceptModel: { id: conceptModel.get('id'), name: conceptModel.get('name') } } );
+                    var prevModel = prevCollection.findWhere( {id: id} );
+                    if ( typeof prevModel !== 'undefined' ) {
+                        conceptRefProps.selected = prevModel.get('selected');
+                        conceptRefProps.influence = prevModel.get('influence');
                     }
+                    if (log) { console.log('     adding scenario concept, conceptRefProps:',conceptRefProps); }
+                    that.conceptCollection.add( { conceptRefProps: conceptRefProps } );
                 });
+                if (log) { console.log('     newCollection:', that.conceptCollection); }
             },
 
             setData: function( data ) {
+                //console.log('setData');
                 var that = this;
                 this.conceptCollection.reset();
                 for (var key in data ) {
@@ -87,6 +78,7 @@ define([
                             var conceptReference = that.conceptsSourceCollection.findWhere( {id: concept.id} );
                             // if we found a source concept with an id matching the scenario concept, we are good to go
                             if ( typeof conceptReference !== 'undefined' ) {
+                               //console.log('     adding scenario concept, id:',id);
                                that.conceptCollection.add( {data: concept } );
                             }
                         });

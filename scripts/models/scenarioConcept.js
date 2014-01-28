@@ -21,9 +21,8 @@ define([
             
             initialize: function ( options ) {
                 ScenarioConceptModel.__super__.initialize.apply( this, arguments );
-                if ( /*typeof options.conceptReference !== 'undefined'  && */typeof options.conceptModel !== 'undefined' ) {
-                    //this.conceptReference = options.conceptReference;
-                    this.setData( options.conceptModel );    
+                if ( typeof options.conceptRefProps !== 'undefined' ) {
+                    this.setData( options.conceptRefProps );    
                 }
                 else {
                     console.log( 'ERROR >> ScenarioConcpetModel >> no source concept reference -or- concept data provided')
@@ -34,6 +33,7 @@ define([
                 // properties unique to the ScenarioConceptModel
                 for (var key in data ) {
                     if ( data[key] !== '' ) {
+                        //console.log( '     data['+key+']:',data[key],', typeof data[key] is String:',typeof data[key] );
                         this.set( key, data[key] );
                     }
                 }

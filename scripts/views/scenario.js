@@ -36,23 +36,27 @@ define([
         onSelectedChange:function(e) {
             var $cb = $( e.target );
             var id = $cb.closest('tr').attr('data-id');
-            var selected = e.target.checked;
-            // TODO - update ScenarioConceptModel [id] with selected value [selected]
+            var value = e.target.checked;
+            var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
+            //console.log('onSelectedChange,  $cb:', $cb,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);            
+            if ( scenarioConcept ) {
+                scenarioConcept.set( 'selected', value );
+            }
         },
 
         onInfluenceChange:function(e) {
-            //console.log('onInfluenceChange, e:',e)
             var $select = $( e.target );
             var id = $select.closest('tr').attr('data-id');
             var value = $select.find('option:selected').val();
-            console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value);
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
-            console.log('scenarioConcept:',scenarioConcept);
-            // TODO - update ScenarioConceptModel [id] with selected value [selected]
+            //console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);            
+            if ( scenarioConcept ) {
+                scenarioConcept.set( 'influence', value );
+            }
         },
 
         render: function() {
-            console.log( 'ScenarioView > render ');
+            //console.log( 'ScenarioView > render ');
             var data = { concepts: [] };
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {

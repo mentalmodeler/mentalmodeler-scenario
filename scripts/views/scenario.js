@@ -41,11 +41,13 @@ define([
         },
 
         onInfluenceChange:function(e) {
-            console.log('onInfluenceChange, e:',e)
+            //console.log('onInfluenceChange, e:',e)
             var $select = $( e.target );
             var id = $select.closest('tr').attr('data-id');
             var value = $select.find('option:selected').val();
             console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value);
+            var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
+            console.log('scenarioConcept:',scenarioConcept);
             // TODO - update ScenarioConceptModel [id] with selected value [selected]
         },
 
@@ -55,7 +57,6 @@ define([
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
-                console.log('data.concepts:',data.concepts);
             }
             this.$el.html( this.template( data ) );
             

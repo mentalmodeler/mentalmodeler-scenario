@@ -21,23 +21,13 @@ define([
             
             initialize: function ( options ) {
                 ScenarioConceptModel.__super__.initialize.apply( this, arguments );
-                if ( typeof options.conceptReference !== 'undefined'  && typeof options.data !== 'undefined' ) {
-                    this.conceptReference = options.conceptReference;
-                    this.setData( options.data );    
+                if ( /*typeof options.conceptReference !== 'undefined'  && */typeof options.conceptModel !== 'undefined' ) {
+                    //this.conceptReference = options.conceptReference;
+                    this.setData( options.conceptModel );    
                 }
                 else {
                     console.log( 'ERROR >> ScenarioConcpetModel >> no source concept reference -or- concept data provided')
                 }
-            },
-
-            toJSON:function () {
-                var json = ScenarioConceptModel.__super__.toJSON.apply( this, arguments );
-                var propsToDelete = ['xml', 'conceptReference'];
-                for ( var i=0; i<propsToDelete.length; i++ ) {
-                    delete json[ propsToDelete[i] ];
-                }
-                //console.log('scenario concept toJSON, json:',json);
-                return json;
             },
 
             setData: function( data ) {
@@ -47,10 +37,6 @@ define([
                         this.set( key, data[key] );
                     }
                 }
-                // properties acquired from the source reference ConceptModel
-                this.set( 'name', this.conceptReference.get('name') );
-                this.set( 'id', this.conceptReference.get('id') );
-
             }
 
         });

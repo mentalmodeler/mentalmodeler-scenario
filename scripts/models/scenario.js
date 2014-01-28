@@ -39,8 +39,11 @@ define([
             },
 
             updateCollection: function() {
-                this.removeConcepts();
+                var sc = this.conceptCollection.toJSON();
+                console.log('BEFORE sc:',sc)
+                //this.removeConcepts();
                 this.addConcepts();
+                console.log('AFTER sc:',sc)
                 //console.log('updateCollection, this.conceptsSourceCollection:',this.conceptsSourceCollection);
             },
 
@@ -53,7 +56,7 @@ define([
                 this.conceptCollection.each( function( scenarioConceptModel ) {
                     var id = scenarioConceptModel.get('id');
                     if ( typeof that.conceptsSourceCollection.findWhere( {id: id} ) === "undefined" ) {
-                        //console.log('     removing scenario concept, id:',id);
+                        console.log('     removing scenario concept, id:',id);
                         that.conceptCollection.remove( scenarioConceptModel );
                     }
                 });
@@ -65,11 +68,12 @@ define([
             addConcepts: function() {
                 //console.log('addConcepts, this.conceptCollection:',this.conceptCollection,', this.conceptsSourceCollection:',this.conceptsSourceCollection);
                 var that = this;
+                that.conceptCollection.reset();
                 this.conceptsSourceCollection.each( function( conceptModel ) {
                     var id = conceptModel.get('id');
                     if ( typeof that.conceptCollection.findWhere( {id: id} ) === "undefined" ) {
-                        //console.log('     adding scenario concept, id:',id);
-                        that.conceptCollection.add( {data: {}, conceptReference: conceptModel} )
+                        console.log('     adding scenario concept, id:',id);
+                        that.conceptCollection.add( { conceptModel: { id: conceptModel.get('id'), name: conceptModel.get('name') } } );
                     }
                 });
             },
@@ -83,7 +87,7 @@ define([
                             var conceptReference = that.conceptsSourceCollection.findWhere( {id: concept.id} );
                             // if we found a source concept with an id matching the scenario concept, we are good to go
                             if ( typeof conceptReference !== 'undefined' ) {
-                               that.conceptCollection.add( {data: concept, conceptReference: conceptReference} );
+                               that.conceptCollection.add( {data: concept } );
                             }
                         });
                     }

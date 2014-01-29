@@ -128,10 +128,10 @@ define([
             },
 
             /**
-             * returns an object for scenario calculation contains 3 parallel arrays:
-             * 1. 1d array of concept model - called concepts
+             * returns an object for scenario calculation containing 3 parallel arrays:
+             * 1. 1d array of concept models - called concepts
              * 2. 2d array of influencing values per concept - called influences
-             * 3. 1d of clamp values per concept for said scenario - called clamps
+             * 3. 1d array of clamp values per concept for said scenario - called clamps
              */
             getDataForScenarioCalculation: function() {
                 var appModel = window.mentalmodeler.appModel;

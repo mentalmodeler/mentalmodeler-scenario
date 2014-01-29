@@ -59,7 +59,7 @@ define([
                 if (typeof data === 'undefined') {
                     data = {};
                 }
-                this.scenarioCollection.add( {data: data, sourceCollection:this.conceptCollection } );
+                this.scenarioCollection.add( data );
             },
 
             onScenarioAdded: function() {
@@ -128,18 +128,39 @@ define([
             },
 
             /**
-             * returns an object for scenario calculation contains 2 parallel arrays.
-             * the first, concepts, is a 1d array with concepts that correspond to each column
-             * of the second, a 2d array of influencing values
+             * returns an object for scenario calculation contains 3 parallel arrays:
+             * 1. 1d array of concept model - called concepts
+             * 2. 2d array of influencing values per concept - called influences
+             * 3. 1d of clamp values per concept for said scenario - called clamps
              */
             getDataForScenarioCalculation: function() {
+                var appModel = window.mentalmodeler.appModel;
                 var concepts = [];
                 var influences = [];
+                var clamps = [];
+                var scenarioConceptCollection = null;
+                
+                if ( appModel.curSelection instanceof ScenarioModel ) {
+                    scenarioConceptCollection = appModel.curSelection.conceptCollection;
+                }
+
                 this.conceptCollection.each( function( concept ) {
                     concepts.push( concept );
                     influences.push( concept.getInfluences() );
+                    
+                    if ( scenarioConceptCollection !== null ) {
+                        var scenarioConcept = scenarioConceptCollection.findWhere( { id: concept.get('id') });
+                        if (typeof scenarioConcept !== 'undefined' && scenarioConcept !== null) {
+                            clamps.push( appModel.getInfluenceValue( scenarioConcept.get('influence') ) );    
+                        }
+                        else {
+                            clamps.push( appModel.getInfluenceValue( '' ) );    
+                        }
+                    }
                 });
-                return { concepts:concepts, influences:influences};
+
+                return { concepts:concepts, influences:influences, clamps: clamps};
+
             }
         });
 

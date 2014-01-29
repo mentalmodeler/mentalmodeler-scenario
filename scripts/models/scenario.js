@@ -18,18 +18,16 @@ define([
             },
 
             conceptCollection: null,
-            conceptsSourceCollection: null,
             
             initialize: function ( options ) {
                 ScenarioModel.__super__.initialize.apply( this, arguments );
                 this.conceptCollection = new Backbone.Collection( [], {model: ScenarioConceptModel} );
                 
-                if (typeof options.sourceCollection !== 'undefined' && typeof options.data !== 'undefined') {
-                    this.conceptsSourceCollection = options.sourceCollection;
-                    this.setData( options.data );    
+                if ( typeof options !== 'undefined') {
+                    this.setData( options );    
                 }
                 else {
-                    console.log( 'ERROR >> ScenarioModel >> no concept source collection -or- scenario data provided')
+                    console.log( 'ERROR >> ScenarioModel >> no scenario data provided')
                 }
             },
 
@@ -54,17 +52,23 @@ define([
                 //console.log('addConcepts, this.conceptCollection:',this.conceptCollection,', this.conceptsSourceCollection:',this.conceptsSourceCollection);
                 var that = this;
                 that.conceptCollection.reset();
-                this.conceptsSourceCollection.each( function( conceptModel ) {
-                    var conceptRefProps =  { id: conceptModel.get('id'), name: conceptModel.get('name') };
-                    var id = conceptModel.get('id');
-                    var prevModel = prevCollection.findWhere( {id: id} );
-                    if ( typeof prevModel !== 'undefined' ) {
-                        conceptRefProps.selected = prevModel.get('selected');
-                        conceptRefProps.influence = prevModel.get('influence');
-                    }
-                    if (log) { console.log('     adding scenario concept, conceptRefProps:',conceptRefProps); }
-                    that.conceptCollection.add( { conceptRefProps: conceptRefProps } );
-                });
+                
+                var appModel = window.mentalmodeler.appModel;
+                if ( appModel.curModel !== null ) {
+                    var conceptsSourceCollection = appModel.curModel.conceptCollection;
+                    //this.conceptsSourceCollection.each( function( conceptModel ) {
+                    conceptsSourceCollection.each( function( conceptModel ) {
+                        var conceptRefProps =  { id: conceptModel.get('id'), name: conceptModel.get('name') };
+                        var id = conceptModel.get('id');
+                        var prevModel = prevCollection.findWhere( {id: id} );
+                        if ( typeof prevModel !== 'undefined' ) {
+                            conceptRefProps.selected = prevModel.get('selected');
+                            conceptRefProps.influence = prevModel.get('influence');
+                        }
+                        if (log) { console.log('     adding scenario concept, conceptRefProps:',conceptRefProps); }
+                        that.conceptCollection.add( { conceptRefProps: conceptRefProps } );
+                    });
+                }
                 if (log) { console.log('     newCollection:', that.conceptCollection); }
             },
 

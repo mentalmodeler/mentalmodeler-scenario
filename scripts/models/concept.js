@@ -33,6 +33,9 @@ define([
                 if ( typeof options !== 'undefined' ) {
                     this.setData( options );
                 }
+                else {
+                    console.log( 'ERROR >> ConceptModel >> no concept data provided')
+                }
             },
 
             toJSON:function ( forView ) {

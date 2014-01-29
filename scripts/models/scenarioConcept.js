@@ -25,7 +25,7 @@ define([
                     this.setData( options.conceptRefProps );    
                 }
                 else {
-                    console.log( 'ERROR >> ScenarioConcpetModel >> no source concept reference -or- concept data provided')
+                    console.log( 'ERROR >> ScenarioConceptModel >> no source concept reference -or- concept data provided')
                 }
             },
 

@@ -25,6 +25,14 @@ define([
             gridView: null,
             scenarioView: null,
             infoView:null,
+            values:{ 'H+' : 1,
+                     'M+' : 0.5,
+                     'L+' : 0.25,
+                     ''   : 0,
+                     'H-' : -1,
+                     'M-' : -0.5,
+                     'L-' : -0.25
+                   },
 
             initialize: function () {
                 AppModel.__super__.initialize.apply( this, arguments );
@@ -102,9 +110,43 @@ define([
                 }
             },
 
-            /*****************
+            /*
+             *  retrieve values
+             */
+            getInfluenceValue:function ( type ) {
+                var value = 0;
+                switch ( type ) {
+                    case 'H+':
+                    case '+++':
+                        value =  this.values[ 'H+' ];
+                        break;
+                    case 'M+':
+                    case '++':
+                        value =  this.values[ 'M+' ];
+                        break;
+                    case 'L+':
+                    case '+':
+                        value =  this.values[ 'L+' ];
+                        break;
+                    case 'H-':
+                    case '---':
+                        value =  this.values[ 'H-' ];
+                        break;
+                    case 'M-':
+                    case '--':
+                        value =  this.values[ 'M-' ];
+                        break;
+                    case 'L-':
+                    case '-':
+                        value =  this.values[ 'L-' ];
+                        break;
+                }
+                return value;
+            },
+
+            /*
              *  Remove files
-            ******************/
+             */
             remove:function (e) {
                 var mmps = this.get( 'mmps' );
                 if ( mmps.length > 1 && this.curModel) {
@@ -122,10 +164,9 @@ define([
                 }
             },
 
-            /*****************
+            /*
              *  Load files
-            ******************/
-
+             */
             loadFiles: function(e) {
                 var mmpFiles = [];
                 var files = e.target.files; // FileList object
@@ -143,6 +184,9 @@ define([
                 this.readFiles( mmpFiles );
             },
 
+            /*
+             *  read files
+             */
             readFiles: function( files ) {
               var that = this
               var reader = new FileReader();

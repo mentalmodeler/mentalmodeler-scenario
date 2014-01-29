@@ -30,8 +30,8 @@ define([
                 ConceptModel.__super__.initialize.apply( this, arguments );
                 this.relationshipCollection = new Backbone.Collection( [], {model: RelationshipModel} );
                 
-                if ( typeof options !== 'undefined' && typeof options.data !== 'undefined' ) {
-                    this.setData( options.data );
+                if ( typeof options !== 'undefined' ) {
+                    this.setData( options );
                 }
             },
 
@@ -45,9 +45,24 @@ define([
                         json.relationships = this.relationshipCollection.toJSON();
                 }
                 return json;
-                //console.log( 'toJSON > json:',json ); 
             },
 
+            getInfluences: function() {
+                var appModel = window.mentalmodeler.appModel;
+                var influences = [];
+                var id = this.get('id');
+                this.collection.each( function( concept) {
+                    var relationship = concept.relationshipCollection.findWhere( {id:id} );
+                    if ( typeof relationship !== 'undefined' && relationship.get('influence') != 'undefined' ) {
+                        influences.push( appModel.getInfluenceValue( relationship.get('influence') ) )
+                    }
+                    else {
+                        influences.push( appModel.getInfluenceValue('') );
+                    }
+                });
+                return influences;
+            },
+            
             getRelationshipsByIdHash:function() {
                 var relationships = this.relationshipCollection.toJSON();
                 var o = {};
@@ -62,14 +77,15 @@ define([
                 var that = this;
                 for (var key in data ) {
                     if ( key === 'relationships' ) { // assignment for relationships
-                        _.each( data.relationships, function( relationship ) {
-                            that.relationshipCollection.add( {data: relationship} )
+                        _.each( data[key], function( relationship ) {
+                            that.relationshipCollection.add( relationship );
                         });
                     }
                     else if ( data[key] !== '' ) {
                         this.set( key, data[key] );
                     }
                 }
+                delete this.data;
             }
 
         });

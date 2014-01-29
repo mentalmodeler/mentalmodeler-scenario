@@ -74,13 +74,8 @@ define([
                 this.conceptCollection.reset();
                 for (var key in data ) {
                     if ( key === 'concepts' ) { // assignment for concepts
-                        _.each( data.concepts, function( concept ) {
-                            var conceptReference = that.conceptsSourceCollection.findWhere( {id: concept.id} );
-                            // if we found a source concept with an id matching the scenario concept, we are good to go
-                            if ( typeof conceptReference !== 'undefined' ) {
-                               //console.log('     adding scenario concept, id:',id);
-                               that.conceptCollection.add( {data: concept } );
-                            }
+                        _.each( data[key], function( concept ) {
+                            that.conceptCollection.add( { conceptRefProps: concept } );
                         });
                     }
                     else if ( data[key] !== '' ) {

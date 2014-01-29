@@ -26,6 +26,7 @@ define([
 
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
+                
                 this.infoModel = new InfoModel();
                 this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );                
                 this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
@@ -80,14 +81,19 @@ define([
                 }
                 if (typeof data.concepts !== 'undefined') {
                     _.each( data.concepts, function( concept ) {
-                        that.conceptCollection.add( {data: concept} )
+                        that.conceptCollection.add( concept )
                     });
                 }
                 if (typeof data.scenarios !== 'undefined' && data.scenarios.length > 0 ) {
                     this.scenarioCollection.reset();
                     _.each( data.scenarios, function( scenario ) {
-                         that.addScenario( scenario )
+                         //console.log('    that.addScenario, scenario:',scenario )
+                         that.addScenario( scenario );
                     });
+                }
+                else {
+                    // add one scenario so the modle has at least one scenario
+                    that.addScenario();
                 }
             },
 
@@ -115,10 +121,25 @@ define([
             },
 
             /**
-             * returns array of concepts for the scenario view
+             * returns array of concepts for the scenario view table
              */
             getConceptsForScenario: function() {
                 return this.conceptCollection.toJSON( 'grid' );
+            },
+
+            /**
+             * returns an object for scenario calculation contains 2 parallel arrays.
+             * the first, concepts, is a 1d array with concepts that correspond to each column
+             * of the second, a 2d array of influencing values
+             */
+            getDataForScenarioCalculation: function() {
+                var concepts = [];
+                var influences = [];
+                this.conceptCollection.each( function( concept ) {
+                    concepts.push( concept );
+                    influences.push( concept.getInfluences() );
+                });
+                return { concepts:concepts, influences:influences};
             }
         });
 

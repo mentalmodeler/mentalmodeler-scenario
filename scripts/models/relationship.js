@@ -21,8 +21,8 @@ define([
             initialize: function ( options ) {
                 RelationshipModel.__super__.initialize.apply( this, arguments );
                 
-                if ( typeof options !== 'undefined' && typeof options.data !== 'undefined' ) {
-                    this.setData( options.data );
+                if ( typeof options !== 'undefined' ) {
+                    this.setData( options );
                 }
             },
             

@@ -24,13 +24,19 @@ define([
 
        events: {
             'change input[type="checkbox"]' : 'onSelectedChange',
-            'change select': 'onInfluenceChange'
+            'change select': 'onInfluenceChange',
+            'click button#refreshScenario': 'refreshScenario'
         },
 
         initialize: function() {
             ScenarioView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.checkToRender );
             this.listenTo( Backbone, 'section:change', this.checkToRender );
+        },
+
+        refreshScenario:function() {
+            var data = window.mentalmodeler.appModel.curModel.getDataForScenarioCalculation();
+            console.log('refreshScenario, data:',data);            
         },
 
         onSelectedChange:function(e) {

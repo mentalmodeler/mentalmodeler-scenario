@@ -1,5 +1,5 @@
 <script type="text/template" class="template">
-	<table>
+	<table class="">
 	  <thead>
 	  	<tr>
 	  		<td></td>
@@ -10,20 +10,19 @@
 	  </thead>
 	  <tbody>
 	  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
-	    <tr>
+	    <tr data-id="<%= concept.id %>">
 	    	<td class="node"><%= concept.name %></td>
-	    	<% for (var j=0; j<concepts.length; j++) { var influenceeId = concepts[j].id; var label = concept.relationships[ influenceeId ]; if (typeof label === 'undefined') { label = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" }%>
-	    		<td>
-	    			<a href="#" data-dropdown="drop" class="button dropdown"><%= label %></a><br>
-					<ul id="drop" data-dropdown-content class="f-dropdown">
-					  <li><a href="#">+++</a></li>
-					  <li><a href="#">++</a></li>
-					  <li><a href="#">+</a></li>
-					  <li><a href="#">&nbsp;&nbsp;&nbsp;</a></li>
-					  <li><a href="#">-</a></li>
-					  <li><a href="#">---</a></li>
-					  <li><a href="#">---</a></li>
-					</ul>
+	    	<% for (var j=0; j<concepts.length; j++) { var influenceeId = concepts[j].id; var label = concept.relationships[ influenceeId ]; %>
+	    		<td data-id="<%= influenceeId %>">
+	    			<select>
+						  <option value="H+" <%= label === "H+" ? "selected" : "" %> >+++</option>
+						  <option value="M+" <%= label === "M+" ? "selected" : "" %> >++</option>
+						  <option value="L+" <%= label === "L+" ? "selected" : "" %> >+</option>
+						  <option value="" <%= label === undefined ? "selected" : "" %> ></option>
+						  <option value="L-" <%= label === "L-" ? "selected" : "" %> >-</option>
+						  <option value="M-" <%= label === "M-" ? "selected" : "" %> >--</option>
+						  <option value="H-" <%= label === "H-" ? "selected" : "" %> >---</option>
+					</select>
 	    		</td>
 	    	<% } %>
 	    </tr>

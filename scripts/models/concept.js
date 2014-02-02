@@ -54,9 +54,11 @@ define([
                 var appModel = window.mentalmodeler.appModel;
                 var influences = [];
                 var id = this.get('id');
+                //console.log('ConceptModel >> getInfluences');
                 this.collection.each( function( concept) {
                     var relationship = concept.relationshipCollection.findWhere( {id:id} );
-                    if ( typeof relationship !== 'undefined' && relationship.get('influence') != 'undefined' ) {
+                    console.log( '     relationship:',relationship);
+                    if ( typeof relationship !== 'undefined' && relationship && relationship.get('influence') != 'undefined' ) {
                         influences.push( appModel.getInfluenceValue( relationship.get('influence') ) )
                     }
                     else {
@@ -69,6 +71,7 @@ define([
             getRelationshipsByIdHash:function() {
                 var relationships = this.relationshipCollection.toJSON();
                 var o = {};
+                //console.log('ConceptModel > ' + this.get('id') +' > getRelationshipsByIdHash, relationships:',relationships );
                 for (var i=0; i<relationships.length; i++) {
                     var r = relationships[i];
                     o[r.id] = r.influence;

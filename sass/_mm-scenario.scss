@@ -294,6 +294,22 @@ div.right-main {
   //border-left: solid $panel-border-width #000;
   padding-left: $padding;
   
+  table tr > td > select {
+    background-position-x: 85%;
+    border:none;
+    outline:none;
+    background-color: transparent;
+    padding: 2px 0px 2px 1px;
+    margin: 0;
+    font-size: 1.2em;
+    height:auto;
+    cursor: pointer;
+    @include border-radius( 4px );
+    &:hover {
+      background-color: rgba(255,255,255,0.25);
+      @include dd-shadow();
+    }
+  }
   div.tab-panel {
     //-webkit-box-shadow: 0 0 12px 0 rgba(0,0,0,0.5);
     //box-shadow: 0 0 12px 0 rgba(0,0,0,0.5);
@@ -324,7 +340,8 @@ div.right-main {
           background-color: lighten( $gray, 30%);
           color: #fff;
           td {
-            padding: 2px 7px;
+            padding: 6px; //2px 7px;
+            vertical-align: bottom;
             &:nth-child(n+2) {
               border-left: solid 1px $border-color;  
             }
@@ -339,6 +356,8 @@ div.right-main {
           }   
           td {
             background-color: none;
+            padding: 2px;
+            text-align: right;
             a.button.dropdown {
                 $color: #333;
                 background-color: rgba(0, 0, 0, 0);
@@ -498,24 +517,6 @@ div.right-main {
                 input[type="checkbox"] {
                   margin:0;
                 }
-                select {
-                  background-position-x: 85%;
-                  border:none;
-                  outline:none;
-                  background-color: transparent;
-                  padding: 2px 0px 2px 1px;
-                  margin: 0;
-                  font-size: 1.2em;
-                  height:auto;
-                  cursor: pointer;
-                  text-align: center;
-                  @include border-radius( 4px );
-                  &:hover {
-                    background-color: rgba(255,255,255,0.25);
-                    @include dd-shadow();
-
-                  }
-                }
               }
             }
             thead > tr > td {
@@ -562,6 +563,22 @@ div.right-main {
      *  Grid Panel
      */
     > div.content#panel-grid {
+      table {
+        tbody {
+
+        }
+        tr > td > select {
+          min-width: 50px;
+          font-size: 1.5em;
+          margin-left: 5px;
+          width: calc(100% - 5px);
+          @include box-sizing(border-box);
+          option {
+            text-align: right;
+          }
+        }  
+      }
+      
     }
   }
   /*

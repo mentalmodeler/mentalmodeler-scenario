@@ -19,7 +19,7 @@ define([
             },
 
             conceptCollection: null,
-            doLog: true,
+            doLog: false,
             
             initialize: function ( options ) {
                 ScenarioModel.__super__.initialize.apply( this, arguments );
@@ -36,7 +36,7 @@ define([
             close: function() {
                 this.log('ScenarioModel > close');
             },
-            
+
             getConceptsForScenario: function() {
                 this.updateCollection();
                 return this.conceptCollection.toJSON();

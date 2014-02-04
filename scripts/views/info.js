@@ -15,8 +15,12 @@ define([
         tagName: 'div',
         className: 'info',
         template: _.template( $(Template).html() ),
+        doLog: true,
         
         events: {
+            'change #authorText' : 'onAuthorChange',
+            'change #nameText' : 'onNameChange',
+            'change #descriptionText' : 'onDescrChange',
         },
         
         initialize: function() {
@@ -34,9 +38,31 @@ define([
             return this;
         },
 
+        onAuthorChange: function( e ) {
+            //var val = this.$el.find('')
+            this.saveInfo( 'author', $(e.target).val() );
+        },
+
+        onNameChange: function( e ) {
+            this.saveInfo( 'name', $(e.target).val() );
+        },
+
+        onDescrChange: function( e ) {
+            this.saveInfo( 'description', $(e.target).val() );
+        },
+
         onSelectionChange: function( model, target, section ) {
             this.render();
+        },
+
+        saveInfo: function( type, value) {
+            var curModel = window.mentalmodeler.appModel.curModel;
+            if ( curModel ) {
+                curModel.infoModel.set( type, value );
+                Backbone.trigger( 'info:change' );
+            }
         }
+
     });
 
     return InfoView;

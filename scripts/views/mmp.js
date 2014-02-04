@@ -27,6 +27,7 @@ define([
         initialize: function() {
             MmpView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
+            this.listenTo( Backbone, 'info:change', this.render );
             //console.log('this.model:',this.model);
             //this.listenTo( this.model, 'mmp:scenarioschange', this.onScenarioChange );
         },

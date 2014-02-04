@@ -76,7 +76,14 @@ define([
             
             // simulate a tab click
             if (typeof section !== 'undefined' ) {
-                this.$el.find( 'a[href="#panel-' + section + '"]' ).click();
+                if ( section === 'modeling' ) {
+                    if ( window.mentalmodeler.appModel.curSection === 'scenario') {
+                        this.$el.find( 'a[href="#panel-' + section + '"]' ).click();
+                    }
+                }
+                else {
+                    this.$el.find( 'a[href="#panel-' + section + '"]' ).click();
+                }
             }
         },
 

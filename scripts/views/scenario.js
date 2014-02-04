@@ -21,6 +21,7 @@ define([
 
         availableHeight: 0,
         tableHeight: 0,
+        doLog: false,
 
        events: {
             'change input[type="checkbox"]' : 'onSelectedChange',
@@ -62,7 +63,7 @@ define([
         },
 
         render: function() {
-            //console.log( 'ScenarioView > render ');
+            this.log( 'ScenarioView > render ');
             var data = { concepts: [] };
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
@@ -80,8 +81,9 @@ define([
         },
 
         checkToRender: function() {
+            this.log( 'ScenarioView > checkToRender ');
             var appModel = window.mentalmodeler.appModel;
-            if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' && appModel.curSection === 'scenario' ) {
+            if ( appModel.curSelection !== null && appModel.curSelectionType === 'scenario' && appModel.curSection === 'scenario' ) {
                 this.render();
             }
         },

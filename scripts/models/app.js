@@ -124,12 +124,16 @@ define([
             },
 
             setSection: function( section ) {
-                //this.log('AppModel > setSection, section:',section);
+                this.log('AppModel > setSection, section:',section);
                 
                 var sectionChanged = this.curSection !== section;
                 if ( sectionChanged ) {
                     this.saveModelData();
-                    this.curSection = section;
+                    this.curSection = section;                    
+                    if ( section === 'scenario' && this.curSelectionType !== 'scenario') {
+                        // auto select a scenario
+                        this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(0) );
+                    }
                     Backbone.trigger( 'section:change', section );
                 }
             },

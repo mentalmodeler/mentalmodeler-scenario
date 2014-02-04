@@ -18,7 +18,7 @@ define([
             },
 
             conceptReference: null,
-            doLog: true,
+            doLog: false,
             
             initialize: function ( options ) {
                 ScenarioConceptModel.__super__.initialize.apply( this, arguments );

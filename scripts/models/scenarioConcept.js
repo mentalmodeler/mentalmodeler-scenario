@@ -18,6 +18,7 @@ define([
             },
 
             conceptReference: null,
+            doLog: true,
             
             initialize: function ( options ) {
                 ScenarioConceptModel.__super__.initialize.apply( this, arguments );
@@ -27,6 +28,11 @@ define([
                 else {
                     console.log( 'ERROR >> ScenarioConceptModel >> no concept reference data provided')
                 }
+            },
+
+
+            close: function() {
+                this.log('ScenarioConceptModel > close');
             },
 
             setData: function( data ) {

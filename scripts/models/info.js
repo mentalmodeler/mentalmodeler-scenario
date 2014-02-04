@@ -22,6 +22,8 @@ define([
                 InfoModel.__super__.initialize.apply( this, arguments );
             },
 
+            close: function() {},
+
             setData: function( data ) {
                 for (var key in data ) {
                     if ( data[key] !== '' ) {

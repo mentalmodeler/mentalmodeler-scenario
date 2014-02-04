@@ -19,7 +19,7 @@ define([
         contentView: null,
         template: _.template( $(Template).html() ),
         resizeTimer: null,
-        resizeDelay: 750, // milliseconds
+        resizeDelay: 500, // milliseconds
         
         initialize: function() {
             AppView.__super__.initialize.apply( this, arguments );

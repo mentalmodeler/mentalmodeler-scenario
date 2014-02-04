@@ -6,9 +6,10 @@ define([
     'backbone',
     'models/abstract',
     'models/concept',
-    'models/scenarioConcept'
+    'models/scenarioConcept',
+    'util/dataUtils'
 
-], function ( $, _, Backbone, AbstractModel, ConceptModel, ScenarioConceptModel ) {
+], function ( $, _, Backbone, AbstractModel, ConceptModel, ScenarioConceptModel, DataUtils ) {
     'use strict';
 
     var ScenarioModel = AbstractModel.extend({
@@ -18,19 +19,24 @@ define([
             },
 
             conceptCollection: null,
+            doLog: true,
             
             initialize: function ( options ) {
                 ScenarioModel.__super__.initialize.apply( this, arguments );
                 this.conceptCollection = new Backbone.Collection( [], {model: ScenarioConceptModel} );
                 
                 if ( typeof options !== 'undefined') {
-                    this.setData( options );    
+                    this.setData( options );
                 }
                 else {
                     console.log( 'ERROR >> ScenarioModel >> no scenario data provided')
                 }
             },
 
+            close: function() {
+                this.log('ScenarioModel > close');
+            },
+            
             getConceptsForScenario: function() {
                 this.updateCollection();
                 return this.conceptCollection.toJSON();

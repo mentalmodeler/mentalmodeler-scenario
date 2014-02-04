@@ -15,6 +15,7 @@ define([
         tagName: 'div',
         className: 'mmp',
         template: _.template( $(Template).html() ),
+        doLog: false,
 
         events: {
             'click .map' : 'selectMap',
@@ -48,6 +49,16 @@ define([
             return this;
         },
 
+        close: function() {
+            // not needed? backbonejs remove should call stopListening and $.empty
+            /* 
+            this.undelegateEvents();
+            this.stopListening();
+            this.$el.empty();
+            */
+            this.remove();
+        },
+
         onScenariosChange: function() {
             this.render();
         },
@@ -78,23 +89,57 @@ define([
             }
         },
 
+        findTarget: function ( curSelection, curSelectionType, target ) {
+            var $elem;
+            if (typeof target !== 'undefined') {
+                $elem = this.$el.find( target );
+            }
+            else if ( curSelection && curSelectionType ) {
+                // find the target based on the curSelection type and its index
+                if ( curSelectionType === 'mmp' ) {
+                    // map files targets are easy because there is only one per view
+                    $elem = this.$el.find( '.map' );    
+                }
+                else {
+                    // scenario targets require use to check against the selected scenario index
+                    // to know what target to select
+                    var idx = curSelection.collection.indexOf( curSelection );
+                    if ( idx !== -1 ) {
+                        $elem = this.$el.find( '.scenario:nth-child('+(idx+1)+')' );
+                    }
+                }
+            }
+            return $elem;
+        },
+
         onSelectionChange:function ( model, target ) {
-            //console.log('--- mmp > onSelectionChange');
-            var curModel = window.mentalmodeler.appModel.curModel;
+            var appModel = window.mentalmodeler.appModel;
+            var curModel = appModel.curModel;
+            var curSelectionType = appModel.curSelectionType;
+            var curSelection = appModel.curSelection;
             this.$el.removeClass( 'selected' );
             this.$el.find( '.map' ).removeClass( 'selected' );
             this.$el.find( '.scenario' ).removeClass( 'selected' );
-            //console.log('selectionChange, model:',model,', target:',target,', curModel === this.model:',curModel === this.model );
-            if ( curModel === this.model ) {
+            this.log('----- MmpView > selectionChange, model:',model,', target:',target,', curModel === this.model:',curModel === this.model );
+            this.log('          curSelection:',curSelection,', curSelectionType:', curSelectionType);
+            if ( curModel === this.model ) { 
+                // this model is selected
                 var $elem;
-                if (typeof target !== 'undefined') {
-                    $elem = this.$el.find( target );
+                if ( curSelection === null) 
+                {
+                    // something was removed
                 }
                 else {
-                    $elem = this.$el.find( '.map' );
+                    // selection changed or something was added. find the right target
+                    $elem = this.findTarget( curSelection, curSelectionType, target);
                 }
-                $elem.addClass( 'selected' );
-                $elem.closest( '.mmp' ).addClass( 'selected' );
+                
+                if ( $elem ) {
+                    // select the target elem
+                    $elem.addClass( 'selected' );
+                    // highlight the parent model ui group as having a selected target
+                    $elem.closest( '.mmp' ).addClass( 'selected' );    
+                }
             }
         },
         

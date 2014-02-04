@@ -9,20 +9,32 @@ define([
     'use strict';
 
     var AbstractModel = Backbone.Model.extend({
-            defaults: {
-                view: null
-            },
+        defaults: {
+            view: null
+        },
+        doLog: true,
 
-            setView: function (view) {
-                // console.log( 'BaseModel > setView, view:',view );
-                this.set('view', view);
-            },
+        close: function () {
+            this.log('AbstractModel > close');
+        },
 
-            getView: function() {
-                // console.log( 'BaseModel > getView, view:', view );
-                return this.get('view');
+        setView: function (view) {
+            // console.log( 'BaseModel > setView, view:',view );
+            this.set('view', view);
+        },
+
+        getView: function() {
+            // console.log( 'BaseModel > getView, view:', view );
+            return this.get('view');
+        },
+
+
+        log: function() {
+            if ( this.doLog === true ) {
+                console.log.apply( console, arguments );
             }
-        });
+        }
+    });
 
     return AbstractModel;
 });

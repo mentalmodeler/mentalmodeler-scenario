@@ -17,7 +17,7 @@ define([
         var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var startIndexForNumbers = 53;
         // modified to ensure the first character is always a letter
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < length; i++) {
             if ( i === 0 ) {
                 id += possible.charAt(Math.floor(Math.random() * startIndexForNumbers));
             } else {

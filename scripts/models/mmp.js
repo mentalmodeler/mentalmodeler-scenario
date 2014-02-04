@@ -23,6 +23,7 @@ define([
             infoModel: null,
             conceptCollection: null,
             scenarioCollection: null,
+            doLog: true,
 
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
@@ -36,6 +37,30 @@ define([
                 
                 // for scenarios added after model and view is first created
                 this.listenTo( this.scenarioCollection, 'add', this.onScenarioAdded );
+            },
+
+            close: function() {
+                this.log('MmpModel > close');
+                
+                // destroy the view
+                if ( this.getView() ) {
+                    this.getView().close();
+                }
+
+                // destroy all the scenario models and delete collection
+                this.scenarioCollection.each( function( scenario ) {
+                    scenario.close();
+                });
+                this.scenarioCollection.reset();
+                this.scenarioCollection = null;
+
+                // destroy concept collection
+                this.conceptCollection.reset();                
+                this.conceptCollection = null;
+                
+                // destroy info model
+                 this.infoModel.close(); 
+                this.infoModel = null;
             },
 
             /*
@@ -60,6 +85,7 @@ define([
                     data = {};
                 }
                 this.scenarioCollection.add( data );
+                Backbone.trigger( 'scenario:add' );
             },
 
             onScenarioAdded: function() {

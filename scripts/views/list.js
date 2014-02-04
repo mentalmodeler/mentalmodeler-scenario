@@ -23,7 +23,8 @@ define([
         initialize: function() {
             ListView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'mmp:add', this.onModelAdded );
-            this.listenTo( Backbone, 'mmp:remove', this.onModelAdded );
+            this.listenTo( Backbone, 'mmp:remove', this.onModelRemoved );
+            this.listenTo( Backbone, 'scenario:remove', this.onScenarioRemoved );
         },
 
         render: function() {
@@ -38,7 +39,7 @@ define([
             var $body = this.$el.find( 'div.body' ); 
             $body.empty();
             var $holder = $('<div class="holder"></div>');
-            var models =  window.mentalmodeler.appModel.get( 'mmps' );
+            var models =  window.mentalmodeler.appModel.mmps;
             for (var i=0; i<models.length; i++) {
                 var model = models.at(i);
                 $holder.append( model.getView().render().el );
@@ -48,6 +49,16 @@ define([
 
         onModelAdded: function ( mmpModel ) {
             //console.log( 'ListView > onModelAdded');
+            this.renderList();
+        },
+
+        onModelRemoved: function ( mmpModel ) {
+            //console.log( 'ListView > onModelRemoved');
+            this.renderList();
+        },
+
+        onScenarioRemoved: function ( mmpModel ) {
+            console.log( 'ListView > onScenarioRemoved');
             this.renderList();
         },
 

@@ -131,6 +131,7 @@ nav section ul li a.wrapper {
          &:hover {
           background-color: #000;
         }
+        cursor: not-allowed;
       }
       i {
         margin-right: 5px;
@@ -174,7 +175,7 @@ div.left-main {
       $spacing: 5px;
       //@include border-radius( 4px );
       
-      padding: 10px 5px 10px 5px;
+      padding: 10px 5px; //10px 0px 10px 5px;
       font-size: 0.85em;
       margin: 0;
       &.selected {
@@ -188,7 +189,7 @@ div.left-main {
         $color: $gray;
         $pct: 23%;
         padding: 3px;
-        @include border-radius( 4px );
+        @include border-radius( 4px ); //4px 0 0 4px);
         cursor: pointer;
         &.selected {
           background-color: $color;

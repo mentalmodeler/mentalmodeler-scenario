@@ -19,7 +19,7 @@ define([
             mmps: null,
             curModel: null,
             prevSection: null,
-            curSection: null,
+            curSection: 'modeling',
             curSelection: null,
             curSelectionType: null, // 'scenario' or 'mmp'
             modelingView: null,
@@ -124,9 +124,10 @@ define([
             },
 
             setSection: function( section ) {
-                this.log('AppModel > setSection, section:',section);
-                
                 var sectionChanged = this.curSection !== section;
+                var prevSection = this.curSection;
+                this.log('------- AppModel > setSection, section:',section,', prevSection:',prevSection,', sectionChanged:',sectionChanged);
+                
                 if ( sectionChanged ) {
                     this.saveModelData();
                     this.curSection = section;                    
@@ -134,7 +135,7 @@ define([
                         // auto select a scenario
                         this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(0) );
                     }
-                    Backbone.trigger( 'section:change', section );
+                    Backbone.trigger( 'section:change', section, prevSection );
                 }
             },
 

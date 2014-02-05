@@ -24,6 +24,7 @@ define([
             //Backbone.on( 'file:onload', this.onFileLoaded, this );
             window.mentalmodeler.appModel.modelingView = this;
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
+            this.listenTo( Backbone, 'section:change', this.onSectionChange );
         },
 
         render: function() {            
@@ -46,12 +47,26 @@ define([
 
         onSelectionChange: function( model, target, section ) {
             //console.log('ModelingView > onSelectionChange');
-            var xml = model.getXML();
+            var xml = model.getModelingXML(); //getXML();
             this.$el.flash(
                 function() {
                     this.doLoad( xml );
                 }
             );
+        },
+
+        onSectionChange: function( section ) {
+            //console.log('ModelingView > onSelectionChange');
+            var appModel = window.mentalmodeler.appModel;
+            if ( section === 'modeling' && appModel.curModel ) {
+                var xml = appModel.curModel.getModelingXML(); //getXML();
+                this.$el.flash(
+                    function() {
+                        this.doLoad( xml );
+                    }
+                );    
+            }
+            
         }
     });
 

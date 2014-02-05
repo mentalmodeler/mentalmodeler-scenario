@@ -4,9 +4,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/abstract'
+    'models/abstract',
+    'util/xmlUtils'
 
-], function ( $, _, Backbone, AbstractModel ) {
+], function ( $, _, Backbone, AbstractModel, XML ) {
     'use strict';
 
     var RelationshipModel = AbstractModel.extend({
@@ -32,6 +33,10 @@ define([
                         this.set( key, data[key] );
                     }
                 }
+            },
+
+            toXML:function() {
+                return XML.elementNL( 'relationship', XML.elementsFromJSON( this.attributes ) );
             }
         });
 

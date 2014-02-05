@@ -9,9 +9,46 @@ define([
     'use strict';
 
     var xmlUtils = {};
+    xmlUtils.JOIN_STR = '\n';
+    xmlUtils.header = '<?xml version="1.0" encoding="UTF-8"?>';
 
     // used for parsing nested lists
     xmlUtils.nestedLists = ['relationships', 'concepts'];
+
+    xmlUtils.elementsFromJSON = function ( json, exclude ) {
+        if ( typeof exclude === 'undefined' ) {
+            exclude = [];
+        }
+        var xml = [];
+        for ( var key in json ) {
+            if ( exclude.indexOf(key) === -1 ) {
+                xml.push( this.elementNL(key, json[key]) );
+            }
+        }
+
+        return xml.join('');
+    };
+
+    xmlUtils.element = function ( name, content, cdata ) {
+        var xml;
+        if ( typeof content === 'undefined' ){
+            xml='<' + name + '/>';
+        }
+        else {
+            if ( typeof cdata !== 'undefined' && cdata === true ) {
+                xml='<'+ name + '><![CDATA[' + content + ']]></' + name + '>';
+            }
+            else {
+                xml='<'+ name + '>' + content + '</' + name + '>';    
+            }
+            
+        }
+        return xml;
+    };
+    
+    xmlUtils.elementNL = function ( name, content, cdata ) {
+        return this.element( name, content, cdata ) + '\n';
+    };
 
     xmlUtils.parseMmpFile = function( xmlString, excludeArray ) {
         if ( typeof excludeArray === 'undefined' ) {

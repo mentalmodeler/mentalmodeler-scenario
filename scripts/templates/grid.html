@@ -14,15 +14,17 @@
 	    	<td class="node"><%= concept.name %></td>
 	    	<% for (var j=0; j<concepts.length; j++) { var influenceeId = concepts[j].id; var label = concept.relationships[ influenceeId ]; %>
 	    		<td data-id="<%= influenceeId %>">
-	    			<select>
-						  <option value="H+" <%= label === "H+" ? "selected" : "" %> >+++</option>
-						  <option value="M+" <%= label === "M+" ? "selected" : "" %> >++</option>
-						  <option value="L+" <%= label === "L+" ? "selected" : "" %> >+</option>
-						  <option value="" <%= label === undefined ? "selected" : "" %> ></option>
-						  <option value="L-" <%= label === "L-" ? "selected" : "" %> >-</option>
-						  <option value="M-" <%= label === "M-" ? "selected" : "" %> >--</option>
-						  <option value="H-" <%= label === "H-" ? "selected" : "" %> >---</option>
-					</select>
+	    			<% if ( j !== i) { %>
+		    			<select>
+							  <option value="H+" <%= label === "H+" ? "selected" : "" %> >+++</option>
+							  <option value="M+" <%= label === "M+" ? "selected" : "" %> >++</option>
+							  <option value="L+" <%= label === "L+" ? "selected" : "" %> >+</option>
+							  <option value="" <%= label === 'undefined' || label === undefined ? "selected" : "" %> ></option>
+							  <option value="L-" <%= label === "L-" ? "selected" : "" %> >-</option>
+							  <option value="M-" <%= label === "M-" ? "selected" : "" %> >--</option>
+							  <option value="H-" <%= label === "H-" ? "selected" : "" %> >---</option>
+						</select>
+					<% } %>
 	    		</td>
 	    	<% } %>
 	    </tr>

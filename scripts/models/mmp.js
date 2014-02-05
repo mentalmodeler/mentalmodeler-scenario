@@ -23,7 +23,7 @@ define([
             infoModel: null,
             conceptCollection: null,
             scenarioCollection: null,
-            doLog: true,
+            doLog: false,
 
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );
@@ -126,6 +126,19 @@ define([
             /*
              * gets xml string
              */ 
+            getModelingXML: function() {
+                // eventually this .mmp xml should get generated from the info model,
+                // conecpts collection, and scenario collection 
+                var concepts = [];
+                this.conceptCollection.each( function( concept ) {
+                    concepts.push( concept.toXML() );
+                });
+                var c = XMLUtils.elementNL( 'concepts', concepts.join(XMLUtils.JOIN_STR) )
+                var xml = XMLUtils.header + XMLUtils.elementNL( 'mentalmodeler', c );
+                //console.log( 'mmp xml:' + xml);
+                return xml; //this.get('xml');
+            },
+
             getXML: function() {
                 // eventually this .mmp xml should get generated from the info model,
                 // conecpts collection, and scenario collection 

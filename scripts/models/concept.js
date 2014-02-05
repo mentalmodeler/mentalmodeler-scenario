@@ -5,9 +5,10 @@ define([
     'underscore',
     'backbone',
     'models/abstract',
-    'models/relationship'
+    'models/relationship',
+    'util/xmlUtils'
 
-], function ( $, _, Backbone, AbstractModel, RelationshipModel ) {
+], function ( $, _, Backbone, AbstractModel, RelationshipModel, XML ) {
     'use strict';
 
     var ConceptModel = AbstractModel.extend({
@@ -47,7 +48,20 @@ define([
                     default:
                         json.relationships = this.relationshipCollection.toJSON();
                 }
+
+                this.toXML();
                 return json;
+            },
+
+            toXML: function() {                
+                var nodes = [];
+                nodes.push( XML.elementsFromJSON( this.attributes, ['selected','influence','relationships'] ) );
+                var relationships = [];
+                this.relationshipCollection.each( function( relationship ) {
+                    relationships.push( relationship.toXML() );
+                });
+                nodes.push( XML.elementNL( 'relationships', relationships.join('') ) );
+                return XML.elementNL( 'concept', nodes.join('') )
             },
 
             getInfluences: function() {

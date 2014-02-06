@@ -19,7 +19,7 @@ define([
                 x: '',
                 y: '',
                 units: '',
-               
+
                 // for scenario use
                 selected: '',
                 influence: ''
@@ -30,7 +30,7 @@ define([
             initialize: function ( options ) {
                 ConceptModel.__super__.initialize.apply( this, arguments );
                 this.relationshipCollection = new Backbone.Collection( [], {model: RelationshipModel} );
-                
+
                 if ( typeof options !== 'undefined' ) {
                     this.setData( options );
                 }
@@ -53,7 +53,7 @@ define([
                 return json;
             },
 
-            toXML: function() {                
+            toXML: function() {
                 var nodes = [];
                 nodes.push( XML.elementsFromJSON( this.attributes, ['selected','influence','relationships'] ) );
                 var relationships = [];
@@ -71,7 +71,7 @@ define([
                 //console.log('ConceptModel >> getInfluences');
                 this.collection.each( function( concept) {
                     var relationship = concept.relationshipCollection.findWhere( {id:id} );
-                    console.log( '     relationship:',relationship);
+                    //console.log( '     relationship:',relationship);
                     if ( typeof relationship !== 'undefined' && relationship && relationship.get('influence') != 'undefined' ) {
                         influences.push( appModel.getInfluenceValue( relationship.get('influence') ) )
                     }
@@ -81,7 +81,7 @@ define([
                 });
                 return influences;
             },
-            
+
             getRelationshipsByIdHash:function() {
                 var relationships = this.relationshipCollection.toJSON();
                 var o = {};
@@ -92,7 +92,7 @@ define([
                 }
                 return o;
             },
-            
+
             setData: function( data ) {
                 var that = this;
                 for (var key in data ) {

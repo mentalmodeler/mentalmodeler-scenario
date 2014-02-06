@@ -5,12 +5,13 @@ define([
     'underscore',
     'backbone',
     'foundation',
-    'd3',
     'views/abstract',
+    'views/scenarioGraph',
     'models/scenario',
     'models/mmp',
+    'models/scenarioGraph',
     'text!templates/scenario.html'
-], function ($, _, Backbone, Foundation, d3, AbstractView, ScenarioModel, MmpModel, Template) {
+], function ($, _, Backbone, Foundation, AbstractView, ScenarioGraphView, ScenarioModel, MmpModel, ScenarioGraphModel, Template) {
     'use strict';
 
     var ScenarioView = AbstractView.extend({
@@ -35,28 +36,30 @@ define([
             this.listenTo( Backbone, 'section:change', this.checkToRender );
         },
 
-        refreshScenario:function() {
-            var data = window.mentalmodeler.appModel.curModel.getDataForScenarioCalculation();
-            console.log('refreshScenario, data:',data);            
+        refreshScenario: function() {
+            var scenarioData = window.mentalmodeler.appModel.curModel.getDataForScenarioCalculation();
+            var sgView = new ScenarioGraphView( { model : new ScenarioGraphModel( scenarioData ) } );
+            sgView.render();
+            this.$el.find('> .panel-right').html(sgView.el);
         },
 
-        onSelectedChange:function(e) {
+        onSelectedChange: function(e) {
             var $cb = $( e.target );
             var id = $cb.closest('tr').attr('data-id');
             var value = e.target.checked;
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
-            //console.log('onSelectedChange,  $cb:', $cb,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);            
+            //console.log('onSelectedChange,  $cb:', $cb,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
             if ( scenarioConcept ) {
                 scenarioConcept.set( 'selected', value );
             }
         },
 
-        onInfluenceChange:function(e) {
+        onInfluenceChange: function(e) {
             var $select = $( e.target );
             var id = $select.closest('tr').attr('data-id');
             var value = $select.find('option:selected').val();
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
-            //console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);            
+            //console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
             if ( scenarioConcept ) {
                 scenarioConcept.set( 'influence', value );
             }
@@ -70,12 +73,12 @@ define([
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
             }
             this.$el.html( this.template( data ) );
-            
-            // size table    
+
+            // size table
             var $button = this.$el.find('> .panel-left > button');
             var top = $button.position().top < 1 ? 38 : $button.position().top;
             this.$el.find('#scenarioTable').outerHeight( this.tableHeight - top + 10);
-            
+
             //$(document).foundation();
             return this;
         },

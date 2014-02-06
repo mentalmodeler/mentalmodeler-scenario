@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mentalModeler>
+  <info>
+    <id><![CDATA[6ecbe43a-94e0-4b8e-84e4-66caa3764420]]></id>
+    <name><![CDATA[FCM]]></name>
+    <version>1.0</version>
+    <date>Wed Feb 5 16:42:59 GMT-0600 2014</date>
+    <author><![CDATA[arousset]]></author>
+  </info>
+  <concepts>
+    <concept>
+      <id>1</id>
+      <name><![CDATA[Fish population]]></name>
+      <x>604</x>
+      <y>200</y>
+      <relationships>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[H+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>2</id>
+      <name><![CDATA[Amount of wetland]]></name>
+      <x>200</x>
+      <y>205</y>
+      <relationships>
+        <relationship>
+          <id>1</id>
+          <name><![CDATA[Fish population]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[H+]]></influence>
+        </relationship>
+        <relationship>
+          <id>8</id>
+          <name><![CDATA[Pollution]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[M+]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>6</id>
+      <name><![CDATA[Enforcement of laws]]></name>
+      <x>395</x>
+      <y>44</y>
+      <relationships>
+        <relationship>
+          <id>2</id>
+          <name><![CDATA[Amount of wetland]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L+]]></influence>
+        </relationship>
+        <relationship>
+          <id>1</id>
+          <name><![CDATA[Fish population]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[M+]]></influence>
+        </relationship>
+        <relationship>
+          <id>8</id>
+          <name><![CDATA[Pollution]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[M-]]></influence>
+        </relationship>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>7</id>
+      <name><![CDATA[Livelihood]]></name>
+      <x>682</x>
+      <y>458</y>
+    </concept>
+    <concept>
+      <id>8</id>
+      <name><![CDATA[Pollution]]></name>
+      <x>281</x>
+      <y>467</y>
+      <relationships>
+        <relationship>
+          <id>2</id>
+          <name><![CDATA[Amount of wetland]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+        <relationship>
+          <id>1</id>
+          <name><![CDATA[Fish population]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[H-]]></influence>
+        </relationship>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <confidence>0</confidence>
+          <influence><![CDATA[L-]]></influence>
+        </relationship>
+      </relationships>
+    </concept>
+  </concepts>
+  <scenarios>
+    <scenario>
+      <name><![CDATA[A lot of fish die]]></name>
+      <concepts>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Fish population]]></name>
+          <id><![CDATA[1]]></id>
+          <influence><![CDATA[H-]]></influence>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Amount of wetland]]></name>
+          <id><![CDATA[2]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Enforcement of laws]]></name>
+          <id><![CDATA[6]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Livelihood]]></name>
+          <id><![CDATA[7]]></id>
+        </concept>
+        <concept>
+          <selected>True</selected>
+          <name><![CDATA[Pollution]]></name>
+          <id><![CDATA[8]]></id>
+        </concept>
+      </concepts>
+    </scenario>
+  </scenarios>
+</mentalModeler>

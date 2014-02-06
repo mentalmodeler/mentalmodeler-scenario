@@ -35,7 +35,8 @@ require.config({
         foundation: '../vendor/foundation/foundation.min',
         text: '../vendor/requirejs-text/text',
         filesaver: '../vendor/filesaver/FileSaver',
-        d3: '../vendor/d3/d3.v3.min'
+        d3: '../vendor/d3/d3.v3.min',
+        sylvester: '../vendor/sylvester/sylvester'
     }
 });
 

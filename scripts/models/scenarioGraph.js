@@ -22,6 +22,15 @@ define([
                 return scenarioState.subtract( steadyState );
             },
 
+            getConcepts: function() {
+                var conceptModels = this.data.concepts;
+                var concepts = [];
+                for(var i = 0; i < conceptModels.length; i++) {
+                    concepts.push( conceptModels[ i ].attributes.name );
+                }
+                return concepts;
+            },
+
             converge: function( data, clamps ) {
                 var steps = 0;
                 var adjMatrix = Matrix.create( data );

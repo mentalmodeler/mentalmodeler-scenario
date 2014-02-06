@@ -22,7 +22,7 @@ define([
 
         render: function() {
         	var data = this.model.getData();
-        	console.log( data );
+        	var concepts = this.model.getConcepts();
         	this.$el.html( this.template() );
         }
     });

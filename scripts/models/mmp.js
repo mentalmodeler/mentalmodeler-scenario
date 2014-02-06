@@ -23,6 +23,7 @@ define([
             infoModel: null,
             conceptCollection: null,
             scenarioCollection: null,
+            scenarioIndex: 0,
             doLog: false,
 
             initialize: function () {

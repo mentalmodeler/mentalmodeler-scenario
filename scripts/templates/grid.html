@@ -12,14 +12,14 @@
 	  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
 	    <tr data-id="<%= concept.id %>">
 	    	<td class="node"><%= concept.name %></td>
-	    	<% for (var j=0; j<concepts.length; j++) { var influenceeId = concepts[j].id; var label = concept.relationships[ influenceeId ]; %>
+	    	<% for (var j=0; j<concepts.length; j++) { var influenceeId = concepts[j].id; var label = concept.relationships[ influenceeId ]; var hasNoValue =  label === 'undefined' || label === undefined;%>
 	    		<td data-id="<%= influenceeId %>">
 	    			<% if ( j !== i) { %>
-		    			<select>
+		    			<select <%= hasNoValue ? "" : "class='hasValue'" %> >
 							  <option value="H+" <%= label === "H+" ? "selected" : "" %> >+++</option>
 							  <option value="M+" <%= label === "M+" ? "selected" : "" %> >++</option>
 							  <option value="L+" <%= label === "L+" ? "selected" : "" %> >+</option>
-							  <option value="" <%= label === 'undefined' || label === undefined ? "selected" : "" %> ></option>
+							  <option value="" <%= hasNoValue ? "selected" : "" %> ></option>
 							  <option value="L-" <%= label === "L-" ? "selected" : "" %> >-</option>
 							  <option value="M-" <%= label === "M-" ? "selected" : "" %> >--</option>
 							  <option value="H-" <%= label === "H-" ? "selected" : "" %> >---</option>

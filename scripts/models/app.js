@@ -97,6 +97,7 @@ define([
                     // this is coming from a a user click on a model map or scenario
                     if ( $target.hasClass('scenario') ) {
                         var idx = $target.index();
+                        model.scenarioIndex = idx;
                         this.curSelection = model.scenarioCollection.at(idx);
                         this.curSelectionType = "scenario";
                     }
@@ -112,10 +113,11 @@ define([
                         this.log('        passed scenario:',scenario);
                         this.curSelection = scenario;
                         this.curSelectionType = "scenario";
+                        model.scenarioIndex = scenario.collection.indexOf( scenario );
                     }
                 }
 
-                this.log('AppModel > selectionChange, model:',model,', target:',target,', (this.curSelection:',this.curSelection,', prevSelection:',prevSelection,')' );
+                this.log('AppModel > selectionChange, model:',model,', target:',target,', model.scenarioIndex:',model.scenarioIndex ,',  (this.curSelection:',this.curSelection,', prevSelection:',prevSelection,')' );
 
                 if ( model !== this.curModel ) {
                     this.curModel = model;
@@ -133,7 +135,7 @@ define([
                     this.curSection = section;                    
                     if ( section === 'scenario' && this.curSelectionType !== 'scenario') {
                         // auto select a scenario
-                        this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(0) );
+                        this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(this.curModel.scenarioIndex) );
                     }
                     Backbone.trigger( 'section:change', section, prevSection );
                 }

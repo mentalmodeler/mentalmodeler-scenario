@@ -1,6 +1,6 @@
 <script type="text/template" class="template">
 	<div class="panel-left">
-		<textarea id="scenarioName" placeholder="Scenario Name"></textarea>
+		<textarea id="scenarioName" placeholder="Scenario Name"><%= name === 'New Scenario' ? "" : name %></textarea>
 		<button id="refreshScenario"><i class="fa fa-refresh"></i>Refresh Scenario</button>
 		<div id="scenarioTable">
 			<table>

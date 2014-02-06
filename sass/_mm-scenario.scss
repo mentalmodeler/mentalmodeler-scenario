@@ -318,10 +318,17 @@ div.right-main {
     font-size: 1.2em;
     height:auto;
     cursor: pointer;
+    margin-left: 5px;
+    min-width: 50px;
+    max-width: 70px;
+    width: calc(100% - 5px);
     @include border-radius( 4px );
     &:hover {
       background-color: rgba(255,255,255,0.25);
       @include dd-shadow();
+    }
+    &.hasValue {
+      background-color: rgba(191, 0, 191, 0.06);
     }
   }
   div.tab-panel {
@@ -528,6 +535,9 @@ div.right-main {
                   padding: $padding 3px;
                 }
 
+                select.hasValue {
+                  background-color: rgba(191, 15, 0, 0.06);
+                }
                 input[type="checkbox"] {
                   margin:0;
                 }
@@ -584,8 +594,8 @@ div.right-main {
         tr > td > select {
           min-width: 50px;
           font-size: 1.5em;
-          margin-left: 5px;
-          width: calc(100% - 5px);
+          //margin-left: 5px;
+          //width: calc(100% - 5px);
           @include box-sizing(border-box);
           option {
             text-align: right;

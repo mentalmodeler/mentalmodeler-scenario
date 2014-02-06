@@ -58,7 +58,6 @@ define([
         },
 
         onScenarioRemoved: function ( mmpModel ) {
-            console.log( 'ListView > onScenarioRemoved');
             this.renderList();
         },
 

@@ -33,6 +33,10 @@ define([
         onInfluenceChange: function( e ) {
             var $select = $( e.target );
             var value = $select.find('option:selected').val();
+            value !== '' ? $select.addClass('hasValue') : $select.removeClass('hasValue');
+
+            
+
             var id = $select.closest('td').attr('data-id');
             var influencerId = $select.closest('tr').attr('data-id');
             this.log( 'onInfluenceChange, value:',value,', id:',id,', influencerId:',influencerId );

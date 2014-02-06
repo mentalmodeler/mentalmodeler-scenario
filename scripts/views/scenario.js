@@ -25,6 +25,7 @@ define([
         doLog: false,
 
        events: {
+            'input textarea#scenarioName' : 'onNameChange',
             'change input[type="checkbox"]' : 'onSelectedChange',
             'change select': 'onInfluenceChange',
             'click button#refreshScenario': 'refreshScenario'
@@ -58,6 +59,9 @@ define([
             var $select = $( e.target );
             var id = $select.closest('tr').attr('data-id');
             var value = $select.find('option:selected').val();
+            console.log('value:',value);
+            value !== '' ? $select.addClass('hasValue') : $select.removeClass('hasValue');
+
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
             //console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
             if ( scenarioConcept ) {
@@ -65,12 +69,18 @@ define([
             }
         },
 
+        onNameChange:function(e) {            
+            window.mentalmodeler.appModel.curSelection.set( 'name', this.$el.find('textarea#scenarioName').val() );
+            Backbone.trigger( 'scenario:name-change' );
+        },
+
         render: function() {
             this.log( 'ScenarioView > render ');
-            var data = { concepts: [] };
+            var data = { concepts: [], name: '' };
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
+                data.name = window.mentalmodeler.appModel.curSelection.get('name');
             }
             this.$el.html( this.template( data ) );
 
@@ -95,7 +105,7 @@ define([
             this.availableHeight = availableHeight
             var $button = this.$el.find('> .panel-left > button');
             console.log()
-            this.tableHeight = availableHeight - $button.outerHeight(true);
+            this.tableHeight = availableHeight - $button.outerHeight(true)  - parseInt( $('div.tabs-content').css('padding-bottom'), 10 );
             //console.log('ScenarioView < setHeight, this.availableHeight:',this.availableHeight,' this.tableHeight:',this.tableHeight);
             this.render();
         }

@@ -28,6 +28,7 @@ define([
             MmpView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
             this.listenTo( Backbone, 'info:change', this.render );
+            this.listenTo( Backbone, 'scenario:name-change', this.render );
             //console.log('this.model:',this.model);
             //this.listenTo( this.model, 'mmp:scenarioschange', this.onScenarioChange );
         },
@@ -38,7 +39,7 @@ define([
             this.$el.html( this.template( { model: this.model } ) );
             this.delegateEvents();
             
-            // for models that are just added, select that model and the modeing view
+            // for models that are just added, select that model and the modeling view
             if ( this.model.get( 'justAdded' ) === true ) {
                 this.model.set( 'justAdded', false );
                 this.$el.find( '.map' ).click();

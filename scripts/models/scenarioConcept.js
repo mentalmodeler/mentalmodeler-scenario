@@ -4,9 +4,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/abstract'
+    'models/abstract',
+    'util/xmlUtils'
 
-], function ( $, _, Backbone, AbstractModel ) {
+], function ( $, _, Backbone, AbstractModel, XML ) {
     'use strict';
 
     var ScenarioConceptModel = AbstractModel.extend({
@@ -30,7 +31,6 @@ define([
                 }
             },
 
-
             close: function() {
                 this.log('ScenarioConceptModel > close');
             },
@@ -44,6 +44,10 @@ define([
                         this.set( key, data[key] );
                     }
                 }
+            },
+
+            toXML:function() {
+                return XML.elementNL( 'concept', XML.elementsFromJSON(this.attributes, ['conceptRefProps'], true) )
             }
 
         });

@@ -7,9 +7,10 @@ define([
     'models/abstract',
     'models/concept',
     'models/scenarioConcept',
-    'util/dataUtils'
+    'util/dataUtils',
+    'util/xmlUtils'
 
-], function ( $, _, Backbone, AbstractModel, ConceptModel, ScenarioConceptModel, DataUtils ) {
+], function ( $, _, Backbone, AbstractModel, ConceptModel, ScenarioConceptModel, DataUtils, XML ) {
     'use strict';
 
     var ScenarioModel = AbstractModel.extend({
@@ -109,6 +110,16 @@ define([
 
                 // aggregate concepts 
                 this.updateCollection();
+            },
+
+            toXML:function() { 
+                var concepts = [ XML.JOIN_STR ];
+                this.conceptCollection.each( function( concept ) {
+                    concepts.push( concept.toXML() );
+                });
+                var nodes = [ XML.JOIN_STR, XML.elementNL( 'name', this.get('name'), true ) ];
+                nodes.push( XML.elementNL( 'concepts', concepts.join('') ) );
+                return XML.elementNL( 'scenario', nodes.join( '' ) );
             }
 
         });

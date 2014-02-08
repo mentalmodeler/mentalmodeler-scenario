@@ -55,8 +55,8 @@ define([
 
             toXML: function() {
                 var nodes = [];
-                nodes.push( XML.elementsFromJSON( this.attributes, ['selected','influence','relationships'] ) );
-                var relationships = [];
+                nodes.push( XML.elementsFromJSON( this.attributes, ['selected','influence','relationships'], true ) );
+                var relationships = [ XML.JOIN_STR ];
                 this.relationshipCollection.each( function( relationship ) {
                     relationships.push( relationship.toXML() );
                 });

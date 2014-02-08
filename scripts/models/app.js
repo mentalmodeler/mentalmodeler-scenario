@@ -14,6 +14,8 @@ define([
 
     var AppModel = AbstractModel.extend({
             
+            version: '1.1',
+
             defaults: {
             },
             mmps: null,
@@ -35,16 +37,17 @@ define([
                      'L-' : -0.25
                    },
             doLog: true,
+            logPrefix: '======== AppModel > ',
 
             initialize: function () {
                 AppModel.__super__.initialize.apply( this, arguments );
                 this.mmps = new Backbone.Collection( [], {model: MmpModel} );
-                this.listenTo( this.mmps, 'remove', this.onMmpRemoved );
+                //this.listenTo( this.mmps, 'remove', this.onMmpRemoved );
                 //this.log('AppModel > initialize, this.get(mmps):',this.get('mmps') );
             },
 
             onMmpRemoved:function( e ) {
-                this.log('==== AppModel > onMmpRemoved, e:',e,'e.index:',e.index);
+                this.log('onMmpRemoved, e:',e,'e.index:',e.index);
             },
 
             /*
@@ -94,7 +97,7 @@ define([
                 var prevSelection = this.curSelection;
                 var prevSelectionType = this.curSelectionType;
                 var selectionType = model instanceof MmpModel ? 'mmp' : 'scenario';
-                this.log('============== AppModel > selectionChange, selectionType:',selectionType );
+                this.log('selectionChange, selectionType:',selectionType );
 
                 this.saveModelData();
 
@@ -122,7 +125,7 @@ define([
                     }
                 }
 
-                this.log('AppModel > selectionChange, model:',model,', target:',target,', model.scenarioIndex:',model.scenarioIndex ,',  (this.curSelection:',this.curSelection,', prevSelection:',prevSelection,')' );
+                this.log('selectionChange, model:',model,', target:',target,', model.scenarioIndex:',model.scenarioIndex ,',  (this.curSelection:',this.curSelection,', prevSelection:',prevSelection,')' );
 
                 if ( model !== this.curModel ) {
                     this.curModel = model;
@@ -134,7 +137,7 @@ define([
             setSection: function( section ) {
                 var sectionChanged = this.curSection !== section;
                 var prevSection = this.curSection;
-                this.log('------- AppModel > setSection, section:',section,', prevSection:',prevSection,', sectionChanged:',sectionChanged);
+                this.log('setSection, section:',section,', prevSection:',prevSection,', sectionChanged:',sectionChanged);
                 
                 if ( sectionChanged ) {
                     this.saveModelData();
@@ -194,7 +197,7 @@ define([
              *  Remove files
              */
             remove:function (e) {
-                this.log('AppModel > remove');
+                this.log('remove');
                 if ( this.curModel && this.curSelection ) {
                     if ( this.curSelection instanceof ScenarioModel ) {
                         var scenario = this.curSelection;
@@ -216,7 +219,7 @@ define([
                     } else if ( this.curSelection instanceof MmpModel ) {
                         this.log('remove mmp');
                         if ( this.mmps.length > 1 ) {
-                            this.log('     mmp.length > 1');
+                            this.log('mmp.length > 1');
                             var modelToRemove = this.curModel;
                             var idx = this.mmps.indexOf( this.curModel );
                             if ( idx  === this.mmps.length - 1 ) {
@@ -234,6 +237,16 @@ define([
                     else {
                       this.log('remove called for other type');  
                     }
+                }
+            },
+
+             /*
+             *  Save file
+             */
+            saveFile: function() {
+                this.log('saveFile, this.curModel:',this.curModel );
+                if ( this.curModel ) {
+                    var xml = this.curModel.getXML();
                 }
             },
 

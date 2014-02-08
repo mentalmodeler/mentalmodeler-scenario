@@ -84,7 +84,7 @@ define([
         ******************/
 
         saveFile: function(e) {
-            console.log('saveFile');
+            window.mentalmodeler.appModel.saveFile();
         },
 
         /*****************

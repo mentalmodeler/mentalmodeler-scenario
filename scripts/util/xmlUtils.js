@@ -15,14 +15,14 @@ define([
     // used for parsing nested lists
     xmlUtils.nestedLists = ['relationships', 'concepts'];
 
-    xmlUtils.elementsFromJSON = function ( json, exclude ) {
+    xmlUtils.elementsFromJSON = function ( json, exclude, cdata ) {
         if ( typeof exclude === 'undefined' ) {
             exclude = [];
         }
-        var xml = [];
+        var xml = [ xmlUtils.JOIN_STR  ];
         for ( var key in json ) {
             if ( exclude.indexOf(key) === -1 ) {
-                xml.push( this.elementNL(key, json[key]) );
+                xml.push( this.elementNL(key, json[key], cdata) );
             }
         }
 

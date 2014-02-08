@@ -128,23 +128,39 @@ define([
              * gets xml string
              */ 
             getModelingXML: function() {
-                // eventually this .mmp xml should get generated from the info model,
-                // conecpts collection, and scenario collection 
-                var concepts = [];
-                this.conceptCollection.each( function( concept ) {
-                    concepts.push( concept.toXML() );
-                });
-                var c = XMLUtils.elementNL( 'concepts', concepts.join(XMLUtils.JOIN_STR) )
-                var xml = XMLUtils.header + XMLUtils.elementNL( 'mentalmodeler', c );
-                //console.log( 'mmp xml:' + xml);
-                return xml; //this.get('xml');
+                var xml = XMLUtils.header + XMLUtils.elementNL( 'mentalmodeler', this.getConceptsXML() );
+                return xml;
             },
 
             getXML: function() {
-                // eventually this .mmp xml should get generated from the info model,
-                // conecpts collection, and scenario collection 
-                return this.get('xml');
+                var nodes = [ XMLUtils.JOIN_STR, this.infoModel.toXML(), this.getConceptsXML(), this.getScenariosXML() ];
+                var xml = XMLUtils.header + XMLUtils.JOIN_STR + XMLUtils.elementNL( 'mentalmodeler', nodes.join('') );
+                this.set( 'xml', xml );
+
+                console.log('getXML, xml:',xml);
+                return xml;
+                //return this.get('xml');
             },
+
+            /**
+             * returns concepts xml section as a string
+             */
+            getConceptsXML:function() {
+                var concepts = [ XMLUtils.JOIN_STR ];
+                this.conceptCollection.each( function( concept ) {
+                    concepts.push( concept.toXML() );
+                });
+                return XMLUtils.elementNL( 'concepts', concepts.join('') );
+            },
+
+            getScenariosXML:function() {
+                var scenarios = [ XMLUtils.JOIN_STR ];
+                this.scenarioCollection.each( function( scenario ) {
+                    scenarios.push( scenario.toXML() );
+                });
+                return XMLUtils.elementNL( 'scenarios', scenarios.join( '') );
+            },
+
 
             /**
              * returns object with model info

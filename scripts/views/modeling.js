@@ -45,26 +45,33 @@ define([
             return xml;
         },
 
-        onSelectionChange: function( model, target, section ) {
-            console.log('ModelingView > onSelectionChange, model:',model,', target:',target,', section:',section);
-            var xml = model.getModelingXML(); //getXML();
-            this.$el.flash(
+        reloadSwf:function( xml ) {
+             this.$el.flash(
                 function() {
-                    this.doLoad( xml );
+                    if ( this.hasOwnProperty('doLoad') ) {
+                        this.doLoad( xml );    
+                    }
+                    else {
+                        console.log('--ERROR-- ModelingView, reload swf > no doLoad in this:',this)
+                    }
+                    
                 }
-            );    
+            );   
+        },
+
+        onSelectionChange: function( model, target, section ) {
+            //console.log('ModelingView > onSelectionChange, model:',model,', target:',target,', section:',section);
+            var appModel = window.mentalmodeler.appModel;
+            if ( appModel.curSection === 'modeling' && appModel.curModel ) {
+                this.reloadSwf( appModel.curModel.getModelingXML() ); 
+            }  
         },
 
         onSectionChange: function( section ) {
             //console.log('ModelingView > onSelectionChange');
             var appModel = window.mentalmodeler.appModel;
             if ( section === 'modeling' && appModel.curModel ) {
-                var xml = appModel.curModel.getModelingXML(); //getXML();
-                this.$el.flash(
-                    function() {
-                        this.doLoad( xml );
-                    }
-                );    
+                this.reloadSwf( appModel.curModel.getModelingXML() ); 
             }
             
         }

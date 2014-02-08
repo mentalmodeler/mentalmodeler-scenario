@@ -36,7 +36,7 @@ define([
             },
 
             toXML:function() {
-                return XML.elementNL( 'relationship', XML.elementsFromJSON( this.attributes ) );
+                return XML.elementNL( 'relationship', XML.elementsFromJSON( this.attributes, [], true ) );
             }
         });
 

@@ -7,7 +7,6 @@ define([
     'foundation',
     'views/abstract',
     'text!templates/grid.html',
-    'responsiveTables'
 ], function ($, _, Backbone, Foundation, AbstractView, Template ) {
     'use strict';
 

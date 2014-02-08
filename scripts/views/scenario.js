@@ -82,6 +82,7 @@ define([
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
                 data.name = window.mentalmodeler.appModel.curSelection.get('name');
             }
+            //console.log('data.concepts:',data.concepts);
             this.$el.html( this.template( data ) );
 
             // size table

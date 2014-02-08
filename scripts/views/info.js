@@ -58,7 +58,6 @@ define([
         saveInfo: function( type, value) {
             var curModel = window.mentalmodeler.appModel.curModel;
             if ( curModel ) {
-                console.log('value:',value)
                 curModel.infoModel.set( type, value );
                 Backbone.trigger( 'info:change' );
             }

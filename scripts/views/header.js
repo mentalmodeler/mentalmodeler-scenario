@@ -75,6 +75,7 @@ define([
         ******************/
 
         loadFiles: function(e) {
+            console.log('loadfiles, e:',e);
             window.mentalmodeler.appModel.loadFiles(e);
         },
 

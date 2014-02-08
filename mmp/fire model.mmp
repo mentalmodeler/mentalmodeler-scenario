@@ -451,6 +451,7 @@
           <selected>True</selected>
           <name><![CDATA[Property Damage]]></name>
           <id><![CDATA[2]]></id>
+          <influence><![CDATA[L-]]></influence>
         </concept>
         <concept>
           <selected>True</selected>

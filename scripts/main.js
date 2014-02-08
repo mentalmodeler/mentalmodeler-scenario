@@ -20,15 +20,10 @@ require.config({
         jquerySwfobject: {
             deps: ['jquery'],
             exports: 'jquerySwfobject'
-        },
-        responsiveTables: {
-            deps: ['jquery'],
-            exports: 'responsiveTables'
         }
     },
     paths: {
         jquery: '../vendor/jquery/jquery.min',
-        responsiveTables: '../vendor/declanbright/responsive-tables',
         jquerySwfobject: '../vendor/jquery-swfobject',
         backbone: '../vendor/backbone/backbone-min',
         underscore: '../vendor/underscore/underscore-min',

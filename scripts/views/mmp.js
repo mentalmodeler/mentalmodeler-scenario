@@ -156,6 +156,7 @@ define([
         },
 
         onSelect: function( target, section ) {
+            console.log('onSelect, this.model:',this.model)
             window.mentalmodeler.appModel.selectionChange( this.model, target, section );          
         }
     });

@@ -19,7 +19,9 @@ define([
             },
 
             conceptCollection: null,
+            sourceConceptCollection: null, // reference to mmp model concept collection
             doLog: false,
+            logPrefix: '', // ===== ScenarioModel > ',
             
             initialize: function ( options ) {
                 ScenarioModel.__super__.initialize.apply( this, arguments );
@@ -29,12 +31,16 @@ define([
                     this.setData( options );
                 }
                 else {
-                    console.log( 'ERROR >> ScenarioModel >> no scenario data provided')
+                    this.log( 'ERROR >> ScenarioModel >> no scenario data provided')
                 }
             },
 
             close: function() {
                 this.log('ScenarioModel > close');
+                this.conceptCollection.reset();
+                this.conceptCollection = null;
+
+                this.sourceConceptCollection = null;
             },
 
             getConceptsForScenario: function() {
@@ -46,16 +52,16 @@ define([
                 // pass the previous collection to addConcepts so that selected/influence values for models
                 // can be passed on to new version of smae model
                 var prevCollection = this.conceptCollection.clone();
+                //this.log('+++++++ ScenarioModel > updateCollection, this.conceptCollection:',this.conceptCollection,', prevCollection',prevCollection );
                 this.addConcepts( prevCollection );
             },
             
             /*
-             * update scenario concept collection based on new concpet models
+             * update scenario concept collection based on new concept models
              */
             addConcepts: function( prevCollection ) {
-                var log = false;
-                if (log) { console.log('addConcepts, prevCollection:',prevCollection); }
-                //console.log('addConcepts, this.conceptCollection:',this.conceptCollection,', this.conceptsSourceCollection:',this.conceptsSourceCollection);
+                this.log('======= ScenarioModel >> addConcepts, prevCollection:',prevCollection);
+                //this.log('addConcepts, this.conceptCollection:',this.conceptCollection,', this.conceptsSourceCollection:',this.conceptsSourceCollection);
                 var that = this;
                 that.conceptCollection.reset();
                 
@@ -63,27 +69,35 @@ define([
                 if ( appModel.curModel !== null ) {
                     var conceptsSourceCollection = appModel.curModel.conceptCollection;
                     //this.conceptsSourceCollection.each( function( conceptModel ) {
-                    conceptsSourceCollection.each( function( conceptModel ) {
+                    //console.log('      appModel.curModel:',appModel.curModel);//conceptsSourceCollection:',conceptsSourceCollection );
+                    this.sourceConceptCollection.each( function( conceptModel ) {
                         var conceptRefProps =  { id: conceptModel.get('id'), name: conceptModel.get('name') };
                         var id = conceptModel.get('id');
                         var prevModel = prevCollection.findWhere( {id: id} );
                         if ( typeof prevModel !== 'undefined' ) {
                             conceptRefProps.selected = prevModel.get('selected');
                             conceptRefProps.influence = prevModel.get('influence');
+                            that.log('     modifying scenario concept, conceptRefProps:',conceptRefProps);
+                        } else {
+                            that.log('     adding scenario concept, conceptRefProps:',conceptRefProps);    
                         }
-                        if (log) { console.log('     adding scenario concept, conceptRefProps:',conceptRefProps); }
+                        
                         that.conceptCollection.add( { conceptRefProps: conceptRefProps } );
                     });
                 }
-                if (log) { console.log('     newCollection:', that.conceptCollection); }
+                this.log('     newCollection:', that.conceptCollection);
             },
 
             setData: function( data ) {
-                //console.log('setData');
+                //this.log('setData');
                 var that = this;
                 this.conceptCollection.reset();
                 for (var key in data ) {
-                    if ( key === 'concepts' ) { // assignment for concepts
+                    if ( key === 'sourceConceptCollection' ) { // concpets source collection
+                        this.sourceConceptCollection = data[key]
+                        this.log('==== ScenarioModel > this.sourceConceptCollection:',this.sourceConceptCollection  );
+                    }
+                    else if ( key === 'concepts' ) { // assignment for concepts
                         _.each( data[key], function( concept ) {
                             that.conceptCollection.add( { conceptRefProps: concept } );
                         });

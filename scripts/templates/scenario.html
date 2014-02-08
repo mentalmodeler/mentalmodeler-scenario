@@ -12,12 +12,12 @@
 			  	</tr>
 			  </thead>
 			  <tbody>
-			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; %>
+			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; hasNoValue =  concept.influence === ""; %>
 			  	<tr data-id="<%= concept.id %>">
 			    	<td class="col-1"><input type="checkbox" name="selected" <%= concept.selected ? "checked" : ""%> ></td>
 			    	<td class="col-2"><%= concept.name %></td>
 			    	<td class="col-3">
-			    		<select>
+			    		<select <%= hasNoValue ? "" : "class='hasValue'" %> >
 						  <option value="H+" <%= concept.influence === "H+" ? "selected" : "" %> >+++</option>
 						  <option value="M+" <%= concept.influence === "M+" ? "selected" : "" %> >++</option>
 						  <option value="L+" <%= concept.influence === "L+" ? "selected" : "" %> >+</option>

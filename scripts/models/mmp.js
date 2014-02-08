@@ -85,6 +85,7 @@ define([
                 if (typeof data === 'undefined') {
                     data = {};
                 }
+                data.sourceConceptCollection = this.conceptCollection;
                 this.scenarioCollection.add( data );
                 Backbone.trigger( 'scenario:add' );
             },
@@ -111,15 +112,14 @@ define([
                         that.conceptCollection.add( concept )
                     });
                 }
-                if (typeof data.scenarios !== 'undefined' && data.scenarios.length > 0 ) {
+                if ( data.hasOwnProperty('scenarios') && data.scenarios.length > 0 ) {
                     this.scenarioCollection.reset();
                     _.each( data.scenarios, function( scenario ) {
-                         //console.log('    that.addScenario, scenario:',scenario )
                          that.addScenario( scenario );
                     });
                 }
                 else {
-                    // add one scenario so the modle has at least one scenario
+                    // add one scenario so the module has at least one scenario
                     that.addScenario();
                 }
             },

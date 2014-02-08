@@ -37,9 +37,10 @@ define([
 
             setData: function( data ) {
                 // properties unique to the ScenarioConceptModel
+                //console.log('ScenarioConceptModel > setData');
                 for (var key in data ) {
                     if ( data[key] !== '' ) {
-                        //console.log( '     data['+key+']:',data[key],', typeof data[key] is String:',typeof data[key] );
+                        //console.log( '     data['+key+']:',data[key] );
                         this.set( key, data[key] );
                     }
                 }

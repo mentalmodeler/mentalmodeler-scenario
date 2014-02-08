@@ -13,6 +13,7 @@ define([
             view: null
         },
         doLog: true,
+        logPrefix: '',
 
         close: function () {
             this.log('AbstractModel > close');
@@ -28,10 +29,11 @@ define([
             return this.get('view');
         },
 
-
         log: function() {
-            if ( this.doLog === true ) {
-                console.log.apply( console, arguments );
+            if ( this.doLog ) {
+                var args = Array.prototype.slice.call(arguments);
+                args.unshift( this.logPrefix );
+                console.log.apply( console, args );
             }
         }
     });

@@ -34,12 +34,17 @@ define([
                      'M-' : -0.5,
                      'L-' : -0.25
                    },
-            doLog: false,
+            doLog: true,
 
             initialize: function () {
                 AppModel.__super__.initialize.apply( this, arguments );
                 this.mmps = new Backbone.Collection( [], {model: MmpModel} );
+                this.listenTo( this.mmps, 'remove', this.onMmpRemoved );
                 //this.log('AppModel > initialize, this.get(mmps):',this.get('mmps') );
+            },
+
+            onMmpRemoved:function( e ) {
+                this.log('==== AppModel > onMmpRemoved, e:',e,'e.index:',e.index);
             },
 
             /*
@@ -122,6 +127,7 @@ define([
                 if ( model !== this.curModel ) {
                     this.curModel = model;
                 }
+                //.log('Trigger selection:change, model:',model,', target:',target,', section:',section );
                 Backbone.trigger( 'selection:change', model, target, section );
             },
 
@@ -188,8 +194,9 @@ define([
              *  Remove files
              */
             remove:function (e) {
+                this.log('AppModel > remove');
                 if ( this.curModel && this.curSelection ) {
-                    if ( this.curSelectionType === 'scenario' ) {
+                    if ( this.curSelection instanceof ScenarioModel ) {
                         var scenario = this.curSelection;
                         if ( scenario && scenario.collection && scenario.collection.length > 1 ) {
                             var idx = scenario.collection.indexOf( scenario );
@@ -206,7 +213,7 @@ define([
                             Backbone.trigger( 'scenario:remove');
                         }
                         
-                    } else if ( this.curSelectionType === 'mmp' ) {
+                    } else if ( this.curSelection instanceof MmpModel ) {
                         this.log('remove mmp');
                         if ( this.mmps.length > 1 ) {
                             this.log('     mmp.length > 1');
@@ -224,6 +231,9 @@ define([
                             Backbone.trigger( 'mmp:remove');         
                         }
                     }
+                    else {
+                      this.log('remove called for other type');  
+                    }
                 }
             },
 
@@ -231,6 +241,7 @@ define([
              *  Load files
              */
             loadFiles: function(e) {
+                this.log('loadFiles');
                 var mmpFiles = [];
                 var files = e.target.files; // FileList object
                 //this.log('loadFiles, e.target.files:',e.target.files)
@@ -251,6 +262,7 @@ define([
              *  read files
              */
             readFiles: function( files ) {
+              this.log('readFiles');
               var that = this
               var reader = new FileReader();
               var file = files.pop();
@@ -263,6 +275,8 @@ define([
                     //Backbone.trigger( 'file:onload', e.target.result );
                     if ( files.length > 0 ) {
                         that.readFiles( files );
+                    } else {
+                        $('input[type="file"]').val(null);
                     }
                 };
               })(file);

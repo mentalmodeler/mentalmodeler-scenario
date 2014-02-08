@@ -71,9 +71,10 @@ define([
                     }
                     break;
                 case 'scenarios':
-                    if ( excludeArray.indexOf( 'scenario' ) === -1 ) {
+                    if ( excludeArray.indexOf( 'scenarivo' ) === -1 ) {
                         o.scenarios = this.getJSONFromArray( this.getChildNodes( node ) );
                     }
+                    //console.log('o.scenarios:',o.scenarios);
                     break;        
             }
         }

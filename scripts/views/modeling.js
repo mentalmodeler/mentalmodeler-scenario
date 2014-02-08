@@ -46,13 +46,13 @@ define([
         },
 
         onSelectionChange: function( model, target, section ) {
-            //console.log('ModelingView > onSelectionChange');
+            console.log('ModelingView > onSelectionChange, model:',model,', target:',target,', section:',section);
             var xml = model.getModelingXML(); //getXML();
             this.$el.flash(
                 function() {
                     this.doLoad( xml );
                 }
-            );
+            );    
         },
 
         onSectionChange: function( section ) {

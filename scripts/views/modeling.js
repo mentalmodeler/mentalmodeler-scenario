@@ -28,7 +28,7 @@ define([
         },
 
         render: function() {            
-            this.$el.flash({ swf: 'img/mentalmodeler.swf',
+            this.$el.flash({ swf: 'swf/mentalmodeler.swf',
                              height: '100%',
                              width: '100%'
             });

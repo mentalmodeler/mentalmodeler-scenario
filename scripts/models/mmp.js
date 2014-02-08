@@ -136,10 +136,8 @@ define([
                 var nodes = [ XMLUtils.JOIN_STR, this.infoModel.toXML(), this.getConceptsXML(), this.getScenariosXML() ];
                 var xml = XMLUtils.header + XMLUtils.JOIN_STR + XMLUtils.elementNL( 'mentalmodeler', nodes.join('') );
                 this.set( 'xml', xml );
-
-                console.log('getXML, xml:',xml);
+                //console.log('getXML, xml:',xml);
                 return xml;
-                //return this.get('xml');
             },
 
             /**

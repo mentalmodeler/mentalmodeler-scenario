@@ -1,0 +1,14 @@
+g.bars > .bar {
+	fill: #87CEEB;
+}
+
+g.axis text {
+	font: 10px sans-serif;
+}
+
+g.axis path,
+g.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}

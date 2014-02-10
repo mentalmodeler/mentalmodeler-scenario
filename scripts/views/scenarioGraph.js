@@ -15,21 +15,27 @@ define([
         initialize: function() {
             ScenarioGraphView.__super__.initialize.apply( this, arguments );
             _.bindAll( this, 'render' );
+            var that = this;
+            window.onresize = function() {
+              that.render();
+            }
         },
 
         render: function() {
         	var data = this.model.getData();
+            var $container = $('.panel-right');
+            $container.height( $container.parent().height() - 10 );
             d3.select(this.el)
               .datum( data )
                 .call( this.renderBarGraph()
-                    .width( 934 )
-                    .height( 300 )
+                    .width( $container.width() )
+                    .height( $container.height() )
                     .x( function( d, i ) { return d[0]; } )
                     .y( function( d, i ) { return d[1]; } ) );
         },
 
         renderBarGraph: function() {
-          var margin = {top: 30, right: 10, bottom: 50, left: 50},
+          var margin = {top: 30, right: 10, bottom: 200, left: 50},
               width = 420,
               height = 420,
               xRoundBands = 0.2,
@@ -63,8 +69,8 @@ define([
               gEnter.append("g").attr("class", "x axis");
               gEnter.append("g").attr("class", "x axis zero");
 
-              svg .attr("width", width)
-                  .attr("height", height);
+              svg.attr("width", width)
+                 .attr("height", height);
 
               var g = svg.select("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -72,15 +78,22 @@ define([
               var bar = svg.select(".bars").selectAll(".bar").data(data);
               bar.enter().append("rect");
               bar.exit().remove();
-              bar .attr("class", function(d, i) { return d[1] < 0 ? "bar negative" : "bar positive"; })
-                  .attr("x", function(d) { return X(d); })
-                  .attr("y", function(d, i) { return d[1] < 0 ? Y0() : Y(d); })
-                  .attr("width", xScale.rangeBand())
-                  .attr("height", function(d, i) { return Math.abs( Y(d) - Y0() ); });
+              bar.attr("class", function(d, i) { return d[1] < 0 ? "bar negative" : "bar positive"; })
+                 .attr("x", function(d) { return X(d); })
+                 .attr("y", function(d, i) { return d[1] < 0 ? Y0() : Y(d); })
+                 .attr("width", xScale.rangeBand())
+                 .attr("height", function(d, i) { return Math.abs( Y(d) - Y0() ); });
 
              g.select(".x.axis")
                 .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
-                .call(xAxis.orient("bottom"));
+                .call(xAxis.orient("bottom"))
+                .selectAll("text")
+                    .style("text-anchor", "end")
+                    .attr("dx", "-.8em")
+                    .attr("dy", ".15em")
+                    .attr("transform", function(d) {
+                        return "rotate(-65)";
+                    });
             
              g.select(".x.axis.zero")
                 .attr("transform", "translate(0," + Y0() + ")")

@@ -19,7 +19,12 @@ define([
             getData: function() {
                 var steadyState = this.converge( this.data.influences );
                 var scenarioState = this.converge( this.data.influences, this.data.clamps );
-                return scenarioState.subtract( steadyState );
+                var relativeDifference = scenarioState.subtract( steadyState ).elements;
+                var concepts = this.getConcepts();
+
+                return _.map(relativeDifference, function(d) {
+                    return [ concepts.shift(), d ];
+                });
             },
 
             getConcepts: function() {

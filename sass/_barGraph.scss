@@ -6,6 +6,12 @@ g.bars > .bar.negative {
 	fill: brown;
 }
 
+g.barLabels > text.barLabel {
+	fill: white;
+	font: 10px sans-serif;
+	text-anchor: middle;
+}
+
 g.axis text {
 	font: 10px sans-serif;
 }

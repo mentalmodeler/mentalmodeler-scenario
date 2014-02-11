@@ -23,6 +23,7 @@ define([
 
         render: function() {
           if(this.model) {
+            this.$el.find('svg').remove();
           	var data = this.model.getData();
               this.$el.height( this.$el.parent().height() );
               d3.select(this.el)
@@ -71,6 +72,7 @@ define([
               var svg = d3.select(this).selectAll("svg").data([data]);
               var gEnter = svg.enter().append("svg").append("g");
               gEnter.append("g").attr("class", "bars");
+              gEnter.append("g").attr("class", "barLabels");
               gEnter.append("g").attr("class", "y axis");
               gEnter.append("g").attr("class", "x axis");
               gEnter.append("g").attr("class", "x axis zero");
@@ -86,11 +88,23 @@ define([
               bar.exit().remove();
               bar.attr("class", function(d, i) { return d[1] < 0 ? "bar negative" : "bar positive"; })
                  .attr("x", function(d) { return X(d); })
-                 .attr("y", function(d, i) { return d[1] < 0 ? Y0() : Y(d); })
+                 .attr("y", function(d) { return d[1] < 0 ? Y0() : Y(d); })
                  .attr("width", xScale.rangeBand())
-                 .attr("height", function(d, i) { return Math.abs( Y(d) - Y0() ); });
+                 .attr("height", function(d) { return Math.abs( Y(d) - Y0() ); });
 
-             g.select(".x.axis")
+              var barLabel = svg.select(".barLabels").selectAll(".barLabel").data(data);
+              barLabel.enter()
+                      .append("text")
+                      .attr("class", "barLabel")
+                      .attr("x", function(d) { return X(d) + xScale.rangeBand() / 2; })
+                      .attr("y", function(d) { return d[1] >= 0 ? Y(d) + 15 : Y(d) - 8; })
+                      .text(function(d) { return d3.round(d[1], 2); });
+
+              //remove bars & labels w/ value of 0
+              bar.filter(function(d) { return d3.round(d[1], 2) == 0; }).remove();
+              barLabel.filter(function(d) { return d3.round(d[1], 2) == 0; }).remove();
+
+              g.select(".x.axis")
                 .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
                 .call(xAxis.orient("bottom"))
                 .selectAll("text")
@@ -100,11 +114,11 @@ define([
                     .attr("transform", function(d) {
                         return "rotate(-65)";
                     });
-            
-             g.select(".x.axis.zero")
+              
+              g.select(".x.axis.zero")
                 .attr("transform", "translate(0," + Y0() + ")")
                 .call(xAxis.tickFormat("").tickSize(0));
-            
+              
               g.select(".y.axis")
                 .call(yAxis);
                   

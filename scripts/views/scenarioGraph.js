@@ -96,8 +96,9 @@ define([
               barLabel.enter()
                       .append("text")
                       .attr("class", "barLabel")
+                      .attr("fill", function(d) { return d[1] < 0 ? "white" : "black"; } )
                       .attr("x", function(d) { return X(d) + xScale.rangeBand() / 2; })
-                      .attr("y", function(d) { return d[1] >= 0 ? Y(d) + 15 : Y(d) - 8; })
+                      .attr("y", function(d) { return d[1] >= 0 ? Y(d) - 3 : Y(d) - 5; })
                       .text(function(d) { return d3.round(d[1], 2); });
 
               //remove bars & labels w/ value of 0

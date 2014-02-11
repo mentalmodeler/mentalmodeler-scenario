@@ -456,7 +456,7 @@ div.right-main {
      *  Scenario Panel
      */
     > div.content#panel-scenario > div.scenario { 
-      $scenario-panel-left-width: 200px;
+      $scenario-panel-left-width: 300px; //200
       max-width: none;
       > div {
         @include box-sizing(border-box);
@@ -464,7 +464,7 @@ div.right-main {
         vertical-align: top;
 
         &.panel-right {
-          width: calc(100% - 221px);
+          width: calc(100% - 321px); //221px);
           background-color:#f2f2f2;
           height: 300px;
         }  

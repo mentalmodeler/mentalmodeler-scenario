@@ -8,8 +8,9 @@ define([
     'views/header',
     'views/list',
     'views/content',
-    'text!templates/app.html'
-], function ($, _, Backbone, AbstractView, HeaderView, ListView, ContentView, Template ) {
+    'text!templates/app.html',
+    'util/displayUtils'
+], function ($, _, Backbone, AbstractView, HeaderView, ListView, ContentView, Template, DisplayUtils ) {
     'use strict';
 
     var AppView = AbstractView.extend({
@@ -50,12 +51,16 @@ define([
         
         resizeScrollPanels: function() {
             //console.log('resizeScrollPanels');
-            var viewportHeight = $(window).height();
+            var vp = DisplayUtils.getViewportSize();
+            
+            var viewportHeight = vp.height; //$(window).height();
+            /*
             if (window.innerWidth) {
                 viewportHeight = window.innerHeight;
             } else {
                 viewportHeight = document.body.clientHeight;
             }
+            */
             var $workspace = this.$el.find( '#workspace' );
             var padding = parseInt( $workspace.css('padding-top'), 10 ) + parseInt( $workspace.css('padding-bottom'), 10 )
             var headerHeight = this.$el.find( '#header' ).outerHeight();
@@ -65,7 +70,7 @@ define([
             $workspace.height( availableHeight );
             this.listView.setAvailableHeight( availableHeight );
             this.contentView.setHeight( availableHeight );
-            //Backbone.trigger('window:resize', { availableHeight: availableHeight } );
+            Backbone.trigger('window:resize', { availableHeight: availableHeight } );
         }
   
     });

@@ -465,6 +465,9 @@ div.right-main {
     /*
      *  Scenario Panel
      */
+    div.content#panel-scenario {
+      overflow: hidden;
+    }
     > div.content#panel-scenario > div.scenario { 
       $scenario-panel-left-width: 200px; //200
       $scenario-panel-right-width-adj: 21px;
@@ -477,7 +480,8 @@ div.right-main {
         &.panel-right {
           width: calc(100% - 221px); // calc( 100% - ( $scenario-panel-left-width + $scenario-panel-right-width-adj ))
           background-color:#f2f2f2;
-          height: 300px;
+          //height: 300px;
+          overflow: auto;
         }  
 
         &.panel-left {

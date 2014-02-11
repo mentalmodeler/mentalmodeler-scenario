@@ -8296,10 +8296,14 @@ div.right-main div.tabs-content > div.content#panel-modeling.active #flash-model
   border-width: 1px;
 }
 /* line 468, ../sass/_mm-scenario.scss */
+div.right-main div.tabs-content div.content#panel-scenario {
+  overflow: hidden;
+}
+/* line 471, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario {
   max-width: none;
 }
-/* line 472, ../sass/_mm-scenario.scss */
+/* line 475, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -8307,27 +8311,27 @@ div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > di
   display: inline-block;
   vertical-align: top;
 }
-/* line 477, ../sass/_mm-scenario.scss */
+/* line 480, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-right {
   width: calc(100% - 221px);
   background-color: #f2f2f2;
-  height: 300px;
+  overflow: auto;
 }
-/* line 483, ../sass/_mm-scenario.scss */
+/* line 487, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left {
   width: 200px;
   margin: 0 16px 0 0;
   padding-left: 0;
 }
-/* line 488, ../sass/_mm-scenario.scss */
+/* line 492, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left label {
   margin-bottom: 0.35rem;
 }
-/* line 491, ../sass/_mm-scenario.scss */
+/* line 495, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left #scenarioTable {
   overflow: auto;
 }
-/* line 494, ../sass/_mm-scenario.scss */
+/* line 498, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left button {
   width: 100%;
   font-size: 1em;
@@ -8369,15 +8373,15 @@ div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > di
   position: relative;
   top: 1px;
 }
-/* line 507, ../sass/_mm-scenario.scss */
+/* line 511, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left button i {
   margin-right: 7px;
 }
-/* line 510, ../sass/_mm-scenario.scss */
+/* line 514, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left button:hover {
   background-color: #a60d00;
 }
-/* line 514, ../sass/_mm-scenario.scss */
+/* line 518, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left textarea {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -8397,67 +8401,67 @@ div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > di
   }
   */
 }
-/* line 530, ../sass/_mm-scenario.scss */
+/* line 534, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table {
   min-width: 100%;
   margin-bottom: 0;
 }
-/* line 534, ../sass/_mm-scenario.scss */
+/* line 538, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table thead tr > td, div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table tbody tr > td {
   word-break: break-all;
   padding: 5px;
   text-align: center;
 }
-/* line 539, ../sass/_mm-scenario.scss */
+/* line 543, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table thead tr > td.col-1, div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table tbody tr > td.col-1 {
   min-width: 10%;
   max-width: 10%;
   width: 10%;
 }
-/* line 544, ../sass/_mm-scenario.scss */
+/* line 548, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table thead tr > td.col-2, div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table tbody tr > td.col-2 {
   min-width: 60%;
   max-width: 60%;
   width: 60%;
 }
-/* line 549, ../sass/_mm-scenario.scss */
+/* line 553, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table thead tr > td.col-3, div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table tbody tr > td.col-3 {
   min-width: 30%;
   max-width: 30%;
   width: 30%;
   padding: 5px 3px;
 }
-/* line 556, ../sass/_mm-scenario.scss */
+/* line 560, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table thead tr > td select.hasValue, div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table tbody tr > td select.hasValue {
   background-color: rgba(191, 15, 0, 0.07);
 }
-/* line 559, ../sass/_mm-scenario.scss */
+/* line 563, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table thead tr > td input[type="checkbox"], div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table tbody tr > td input[type="checkbox"] {
   margin: 0;
 }
-/* line 564, ../sass/_mm-scenario.scss */
+/* line 568, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table thead > tr > td {
   text-align: center;
 }
-/* line 567, ../sass/_mm-scenario.scss */
+/* line 571, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left table tbody > tr > td {
   text-align: left;
 }
-/* line 577, ../sass/_mm-scenario.scss */
+/* line 581, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-info {
   background-color: #f4f4f4;
 }
-/* line 579, ../sass/_mm-scenario.scss */
+/* line 583, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-info .info {
   height: 100%;
   width: 100%;
   padding: 30px;
 }
-/* line 583, ../sass/_mm-scenario.scss */
+/* line 587, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-info .info label {
   margin-bottom: 0.35rem;
 }
-/* line 586, ../sass/_mm-scenario.scss */
+/* line 590, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-info .info textarea {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -8469,18 +8473,18 @@ div.right-main div.tabs-content > div.content#panel-info .info textarea {
   resize: vertical;
   height: auto;
 }
-/* line 592, ../sass/_mm-scenario.scss */
+/* line 596, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-info .info textarea.single-line {
   resize: none;
   min-height: 2.75em;
   height: 2.75em;
 }
-/* line 597, ../sass/_mm-scenario.scss */
+/* line 601, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-info .info textarea#descriptionText {
   height: calc(100% - 185px);
   min-height: 5em;
 }
-/* line 612, ../sass/_mm-scenario.scss */
+/* line 616, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-grid table tr > td > select {
   min-width: 50px;
   font-size: 1.5em;
@@ -8488,11 +8492,11 @@ div.right-main div.tabs-content > div.content#panel-grid table tr > td > select 
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-/* line 618, ../sass/_mm-scenario.scss */
+/* line 622, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-grid table tr > td > select option {
   text-align: right;
 }
-/* line 630, ../sass/_mm-scenario.scss */
+/* line 634, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd {
   text-align: center;
   padding: 0;
@@ -8506,7 +8510,7 @@ div.right-main dl.tabs dd {
   position: relative;
   top: 0px;
 }
-/* line 635, ../sass/_mm-scenario.scss */
+/* line 639, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd a {
   background-color: transparent;
   color: #fff;
@@ -8520,47 +8524,47 @@ div.right-main dl.tabs dd a {
   text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
-/* line 652, ../sass/_mm-scenario.scss */
+/* line 656, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd i {
   margin-right: 5px;
 }
-/* line 659, ../sass/_mm-scenario.scss */
+/* line 663, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(1):hover {
   background-color: rgba(165, 200, 37, 0.35);
 }
-/* line 662, ../sass/_mm-scenario.scss */
+/* line 666, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(1).active {
   background-color: #819d1d;
 }
-/* line 667, ../sass/_mm-scenario.scss */
+/* line 671, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(2):hover {
   background-color: rgba(191, 0, 191, 0.35);
 }
-/* line 670, ../sass/_mm-scenario.scss */
+/* line 674, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(2).active {
   background-color: #bf00bf;
 }
-/* line 675, ../sass/_mm-scenario.scss */
+/* line 679, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(3):hover {
   background-color: rgba(191, 15, 0, 0.35);
 }
-/* line 678, ../sass/_mm-scenario.scss */
+/* line 682, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(3).active {
   background-color: #8c0b00;
 }
-/* line 683, ../sass/_mm-scenario.scss */
+/* line 687, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(4):hover {
   background-color: rgba(204, 204, 39, 0.35);
 }
-/* line 686, ../sass/_mm-scenario.scss */
+/* line 690, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd:nth-child(4).active {
   background-color: #cccc27;
 }
-/* line 693, ../sass/_mm-scenario.scss */
+/* line 697, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd.active {
   top: 0;
 }
-/* line 698, ../sass/_mm-scenario.scss */
+/* line 702, ../sass/_mm-scenario.scss */
 div.right-main dl.tabs dd.active a {
   top: 0px;
   position: relative;

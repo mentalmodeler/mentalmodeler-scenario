@@ -19,7 +19,7 @@ define([
         tagName: 'div',
         className: 'scenario row',
         template: _.template( $(Template).html() ),
-
+        sgView: null,
         availableHeight: 0,
         tableHeight: 0,
         doLog: false,
@@ -35,13 +35,12 @@ define([
             ScenarioView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.checkToRender );
             this.listenTo( Backbone, 'section:change', this.checkToRender );
+            this.sgView = new ScenarioGraphView();
         },
 
         refreshScenario: function() {
             var scenarioData = window.mentalmodeler.appModel.curModel.getDataForScenarioCalculation();
-            var sgView = new ScenarioGraphView( { model : new ScenarioGraphModel( scenarioData ) } );
-            sgView.render();
-            this.$el.find('> .panel-right').html(sgView.el);
+            this.sgView.setModel( new ScenarioGraphModel( scenarioData ) ); 
         },
 
         onSelectedChange: function(e) {
@@ -82,15 +81,15 @@ define([
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
                 data.name = window.mentalmodeler.appModel.curSelection.get('name');
             }
-            //console.log('data.concepts:',data.concepts);
+            
             this.$el.html( this.template( data ) );
+            this.sgView.setElement( this.$el.find('div.right-panel') );
 
             // size table
             var $button = this.$el.find('> .panel-left > button');
             var top = $button.position().top < 1 ? 38 : $button.position().top;
             this.$el.find('#scenarioTable').outerHeight( this.tableHeight - top + 10);
 
-            //$(document).foundation();
             return this;
         },
 

@@ -1,5 +1,4 @@
-@charset "UTF-8";
-/* normalize.css v2.1.2 | MIT License | git.io/normalize */
+/*! normalize.css v2.1.2 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
    ========================================================================== */
@@ -8301,13 +8300,13 @@ div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > di
 }
 /* line 466, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-right {
-  width: calc(100% - 221px);
+  width: calc(100% - 321px);
   background-color: #f2f2f2;
   height: 300px;
 }
 /* line 472, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-scenario > div.scenario > div.panel-left {
-  width: 200px;
+  width: 300px;
   margin: 0 16px 0 0;
   padding-left: 0;
 }

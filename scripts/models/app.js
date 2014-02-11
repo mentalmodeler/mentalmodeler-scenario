@@ -36,7 +36,7 @@ define([
                      'M-' : -0.5,
                      'L-' : -0.25
                    },
-            doLog: true,
+            doLog: false,
             logPrefix: '======== AppModel > ',
 
             initialize: function () {

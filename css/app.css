@@ -7833,11 +7833,18 @@ g.bars > .bar.negative {
 }
 
 /* line 9, ../sass/_barGraph.scss */
+g.barLabels > text.barLabel {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+/* line 15, ../sass/_barGraph.scss */
 g.axis text {
   font: 10px sans-serif;
 }
 
-/* line 14, ../sass/_barGraph.scss */
+/* line 20, ../sass/_barGraph.scss */
 g.axis path,
 g.axis line {
   fill: none;

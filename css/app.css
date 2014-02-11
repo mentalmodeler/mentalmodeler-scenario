@@ -7823,16 +7823,21 @@ th.hide-for-touch {
 }
 
 /* line 1, ../sass/_barGraph.scss */
-g.bars > .bar {
-  fill: #87CEEB;
+g.bars > .bar.positive {
+  fill: steelblue;
 }
 
 /* line 5, ../sass/_barGraph.scss */
+g.bars > .bar.negative {
+  fill: brown;
+}
+
+/* line 9, ../sass/_barGraph.scss */
 g.axis text {
   font: 10px sans-serif;
 }
 
-/* line 10, ../sass/_barGraph.scss */
+/* line 14, ../sass/_barGraph.scss */
 g.axis path,
 g.axis line {
   fill: none;

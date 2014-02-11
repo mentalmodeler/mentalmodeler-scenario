@@ -1,5 +1,9 @@
-g.bars > .bar {
-	fill: #87CEEB;
+g.bars > .bar.positive {
+	fill: steelblue;
+}
+
+g.bars > .bar.negative {
+	fill: brown;
 }
 
 g.axis text {

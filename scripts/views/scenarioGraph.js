@@ -12,6 +12,9 @@ define([
 
     var ScenarioGraphView = AbstractView.extend({   
 
+        minHeight: 300,
+        minWidth: 400,
+
         initialize: function() {
             ScenarioGraphView.__super__.initialize.apply( this, arguments );
             _.bindAll( this, 'render' );
@@ -21,12 +24,12 @@ define([
         render: function() {
           if(this.model) {
           	var data = this.model.getData();
-              this.$el.height( this.$el.parent().height() - 5 );
+              this.$el.height( this.$el.parent().height() );
               d3.select(this.el)
                 .datum( data )
                   .call( this.renderBarGraph()
-                      .width( this.$el.width() )
-                      .height( this.$el.height() )
+                      .width( this.$el.width() > this.minWidth ? this.$el.width() : this.minWidth )
+                      .height( this.$el.height() - 5 > this.minHeight ? this.$el.height() - 5 : this.minHeight )
                       .x( function( d, i ) { return d[0]; } )
                       .y( function( d, i ) { return d[1]; } ) );
           }

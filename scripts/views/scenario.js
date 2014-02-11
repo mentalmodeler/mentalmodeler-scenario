@@ -21,7 +21,6 @@ define([
         template: _.template( $(Template).html() ),
         sgView: null,
         availableHeight: 0,
-        tableHeight: 0,
         doLog: false,
 
        events: {
@@ -86,10 +85,10 @@ define([
             this.sgView.setElement( this.$el.find('div.panel-right') );
 
             // size table
-            var $button = this.$el.find('> .panel-left > button');
-            var top = $button.position().top < 1 ? 38 : $button.position().top;
-            this.$el.find('#scenarioTable').outerHeight( this.tableHeight - top + 10);
-
+            var $scenarioTable = this.$el.find('#scenarioTable');
+            var top = $scenarioTable.position().top < 1 ? 95 : $scenarioTable.position().top;
+            $scenarioTable.outerHeight( this.availableHeight - top + 10);
+            
             return this;
         },
 
@@ -103,10 +102,6 @@ define([
 
         setHeight: function ( availableHeight ) {
             this.availableHeight = availableHeight
-            var $button = this.$el.find('> .panel-left > button');
-            console.log()
-            this.tableHeight = availableHeight - $button.outerHeight(true)  - parseInt( $('div.tabs-content').css('padding-bottom'), 10 );
-            //console.log('ScenarioView < setHeight, this.availableHeight:',this.availableHeight,' this.tableHeight:',this.tableHeight);
             this.render();
         }
     });

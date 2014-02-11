@@ -83,7 +83,7 @@ define([
             }
             
             this.$el.html( this.template( data ) );
-            this.sgView.setElement( this.$el.find('div.right-panel') );
+            this.sgView.setElement( this.$el.find('div.panel-right') );
 
             // size table
             var $button = this.$el.find('> .panel-left > button');

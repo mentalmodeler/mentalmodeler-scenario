@@ -15,23 +15,26 @@ define([
         initialize: function() {
             ScenarioGraphView.__super__.initialize.apply( this, arguments );
             _.bindAll( this, 'render' );
-            var that = this;
-            window.onresize = function() {
-              that.render();
-            }
+            this.listenTo( Backbone, 'window:resize', this.render );
         },
 
         render: function() {
-        	var data = this.model.getData();
-            var $container = $('.panel-right');
-            $container.height( $container.parent().height() - 10 );
-            d3.select(this.el)
-              .datum( data )
-                .call( this.renderBarGraph()
-                    .width( $container.width() )
-                    .height( $container.height() )
-                    .x( function( d, i ) { return d[0]; } )
-                    .y( function( d, i ) { return d[1]; } ) );
+          if(this.model) {
+          	var data = this.model.getData();
+              this.$el.height( this.$el.parent().height() - 5 );
+              d3.select(this.el)
+                .datum( data )
+                  .call( this.renderBarGraph()
+                      .width( this.$el.width() )
+                      .height( this.$el.height() )
+                      .x( function( d, i ) { return d[0]; } )
+                      .y( function( d, i ) { return d[1]; } ) );
+          }
+        },
+
+        setModel: function(newModel) {
+          this.model = newModel;
+          this.render();
         },
 
         renderBarGraph: function() {

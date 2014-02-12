@@ -480,7 +480,7 @@ div.right-main {
         &.panel-right {
           width: calc(100% - 221px); // calc( 100% - ( $scenario-panel-left-width + $scenario-panel-right-width-adj ))
           background-color:#f2f2f2;
-          //height: 300px;
+          // height: 300px;
           overflow: auto;
         }  
 
@@ -494,6 +494,8 @@ div.right-main {
           }
           #scenarioTable {
             overflow: auto;
+            border-top: solid 1px #cecece;
+            border-bottom: solid 1px #cecece;
           }
           button {
             width: 100%;

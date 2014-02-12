@@ -22,6 +22,7 @@ define([
         },
 
         render: function() {
+          console.log( 'sgView > render' );
           if(this.model) {
             this.$el.find('svg').remove();
           	var data = this.model.getData();
@@ -29,8 +30,8 @@ define([
               d3.select(this.el)
                 .datum( data )
                   .call( this.renderBarGraph()
-                      .width( this.$el.width() > this.minWidth ? this.$el.width() : this.minWidth )
-                      .height( this.$el.height() - 5 > this.minHeight ? this.$el.height() - 5 : this.minHeight )
+                      .width( this.getGraphSize().width ) //this.$el.width() > this.minWidth ? this.$el.width() : this.minWidth )
+                      .height( this.getGraphSize().height ) //this.$el.height() - 5 > this.minHeight ? this.$el.height() - 5 : this.minHeight )
                       .x( function( d, i ) { return d[0]; } )
                       .y( function( d, i ) { return d[1]; } ) );
           }
@@ -39,6 +40,34 @@ define([
         setModel: function(newModel) {
           this.model = newModel;
           this.render();
+        },
+
+        getGraphSize: function() {
+          var scrollsize = 15;
+          var useMinWidth = false;
+          var useMinHeight = false;
+          var w = this.$el.width();
+          var h = this.$el.height();
+          
+          if ( w < this.minWidth ) {
+            w = this.minWidth;
+            useMinWidth = true;
+          }
+
+          if ( h < this.minHeight ) {
+            h = this.minHeight;
+            useMinHeight = true;
+          }
+
+          // adjust for scrollbars
+          if ( useMinWidth && !useMinHeight) {
+            h -= scrollsize;
+          }
+          else if ( !useMinWidth && useMinHeight ) {
+            w -= scrollsize;
+          }
+
+          return { width:w, height:h };
         },
 
         renderBarGraph: function() {

@@ -21,7 +21,7 @@ define([
         template: _.template( $(Template).html() ),
         sgView: null,
         availableHeight: 0,
-        doLog: false,
+        doLog: true,
 
        events: {
             'input textarea#scenarioName' : 'onNameChange',
@@ -31,6 +31,7 @@ define([
         },
 
         initialize: function() {
+            _.bindAll( this, 'refreshScenario' );
             ScenarioView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.checkToRender );
             this.listenTo( Backbone, 'section:change', this.checkToRender );
@@ -38,8 +39,13 @@ define([
         },
 
         refreshScenario: function() {
-            var scenarioData = window.mentalmodeler.appModel.curModel.getDataForScenarioCalculation();
-            this.sgView.setModel( new ScenarioGraphModel( scenarioData ) ); 
+            var curModel = window.mentalmodeler.appModel.curModel;
+            this.log('refreshScenario, curModel:',curModel);
+            if ( curModel && curModel.conceptCollection.length > 0 ) {
+                this.log('     curModel.conceptCollection:',curModel.conceptCollection );
+                var scenarioData = curModel.getDataForScenarioCalculation();
+                this.sgView.setModel( new ScenarioGraphModel( scenarioData ) );    
+            }
         },
 
         onSelectedChange: function(e) {
@@ -50,6 +56,7 @@ define([
             //console.log('onSelectedChange,  $cb:', $cb,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
             if ( scenarioConcept ) {
                 scenarioConcept.set( 'selected', value );
+                this.refreshScenario();
             }
         },
 
@@ -57,13 +64,14 @@ define([
             var $select = $( e.target );
             var id = $select.closest('tr').attr('data-id');
             var value = $select.find('option:selected').val();
-            console.log('value:',value);
+            this.log('value:',value);
             value !== '' ? $select.addClass('hasValue') : $select.removeClass('hasValue');
 
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
             //console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
             if ( scenarioConcept ) {
                 scenarioConcept.set( 'influence', value );
+                this.refreshScenario();
             }
         },
 
@@ -88,7 +96,7 @@ define([
             var $scenarioTable = this.$el.find('#scenarioTable');
             var top = $scenarioTable.position().top < 1 ? 95 : $scenarioTable.position().top;
             $scenarioTable.outerHeight( this.availableHeight - top + 10);
-            
+
             return this;
         },
 
@@ -97,6 +105,7 @@ define([
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection !== null && appModel.curSelectionType === 'scenario' && appModel.curSection === 'scenario' ) {
                 this.render();
+                setTimeout( this.refreshScenario, 100);
             }
         },
 

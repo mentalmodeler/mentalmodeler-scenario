@@ -108,7 +108,7 @@ define([
                     $this.css( 'visibility', id === section ? 'visible' : 'hidden' );    
                 }
                 else {
-                    (id === section) ? $this.css('display', 'block') : $this.css('display', 'none');
+                   // (id === section) ? $this.css('display', 'block') : $this.css('display', 'none');
                 }
                 $this.css( 'z-index', id === section ? 10 : 0 );
             });

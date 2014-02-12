@@ -62,10 +62,18 @@ define([
 
         onInfluenceChange: function(e) {
             var $select = $( e.target );
-            var id = $select.closest('tr').attr('data-id');
+            var $tr = $select.closest('tr');
+            var id = $tr.attr('data-id');
             var value = $select.find('option:selected').val();
             this.log('value:',value);
-            value !== '' ? $select.addClass('hasValue') : $select.removeClass('hasValue');
+            if ( value !== '' ) {
+                $select.addClass('hasValue');
+                $tr.addClass('hasValue');
+            }
+            else {
+                $select.removeClass('hasValue');
+                $tr.removeClass('hasValue');
+            }
 
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
             //console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
@@ -88,7 +96,6 @@ define([
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
                 data.name = window.mentalmodeler.appModel.curSelection.get('name');
             }
-            
             this.$el.html( this.template( data ) );
             this.sgView.setElement( this.$el.find('div.panel-right') );
 
@@ -96,6 +103,10 @@ define([
             var $scenarioTable = this.$el.find('#scenarioTable');
             var top = $scenarioTable.position().top < 1 ? 95 : $scenarioTable.position().top;
             $scenarioTable.outerHeight( this.availableHeight - top + 10);
+
+            var $table = this.$el.find('#tableTable');
+            console.log( '$scenarioTable.height():',$scenarioTable.height(),', $table.height()):', $table.height() );
+            console.log( '$table:',$table,', $table.prop(scrollHeight):',$table.prop('scrollHeight'),', $table.height():',$table.outerHeight() );
 
             return this;
         },

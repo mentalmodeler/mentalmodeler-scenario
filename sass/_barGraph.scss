@@ -1,9 +1,9 @@
 g.bars > .bar.positive {
-	fill: steelblue;
+	fill: $red;
 }
 
 g.bars > .bar.negative {
-	fill: brown;
+	fill: darken( $red, 10%)
 }
 
 g.barLabels > text.barLabel {

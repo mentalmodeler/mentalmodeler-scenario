@@ -46,8 +46,8 @@ define([
           var scrollsize = 15;
           var useMinWidth = false;
           var useMinHeight = false;
-          var w = this.$el.width();
-          var h = this.$el.height();
+          var w = this.$el.width() - scrollsize;
+          var h = this.$el.height() - scrollsize;
           
           if ( w < this.minWidth ) {
             w = this.minWidth;
@@ -66,7 +66,7 @@ define([
           else if ( !useMinWidth && useMinHeight ) {
             w -= scrollsize;
           }
-
+          console.log('getGraphSize, w:',w,', h:',h,', this.$el.width():',this.$el.width(),', this.$el.height():',this.$el.height() )
           return { width:w, height:h };
         },
 

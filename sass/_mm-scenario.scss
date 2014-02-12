@@ -494,10 +494,13 @@ div.right-main {
           }
           #scenarioTable {
             overflow: auto;
-            border-top: solid 1px #cecece;
-            border-bottom: solid 1px #cecece;
+            &.hasOverflow {
+              border-top: solid 1px #cecece;
+              border-bottom: solid 1px #cecece;  
+            }
           }
           button {
+            display: none;
             width: 100%;
             $h: 2em;
             font-size:1em;
@@ -537,9 +540,17 @@ div.right-main {
             min-width: 100%;
             margin-bottom: 0;
             thead, tbody {
+              tr.hasValue {
+                input[type="checkbox"] {
+                  display: none;
+                }
+                td.col-2 {
+                  opacity: 0.65;
+                }
+              }
               tr > td {
                 $padding: 5px;
-                word-break: break-all;
+                //word-break: break-all;
                 padding: $padding;
                 text-align: center;
                 &.col-1 {

@@ -8287,11 +8287,11 @@ div.right-main div.tabs-content > div.content {
 /* line 440, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content.active {
   height: 100%;
-  display: block;
+  display: inline-block;
 }
 /* line 448, ../sass/_mm-scenario.scss */
 div.right-main div.tabs-content > div.content#panel-modeling {
-  display: block;
+  display: inline-block;
   height: 0;
   overflow: hidden;
 }

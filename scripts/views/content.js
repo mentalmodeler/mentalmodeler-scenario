@@ -24,9 +24,9 @@ define([
         infoView: null,
         scenarioView: null,
         contentPanelHeight: 0,
-        events: {
-        },
-        
+        doLog: true,
+        logPrefix: '_-_-_ ContentView > ',
+
         initialize: function() {
             ContentView.__super__.initialize.apply( this, arguments );
             
@@ -36,7 +36,7 @@ define([
             this.scenarioView = new ScenarioView();
 
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
-            this.listenTo( Backbone, 'section:change', this.onSectionChange );
+            this.listenTo( Backbone, 'section:pre-change', this.onSectionPreChange );
         },
 
         render: function() {
@@ -72,7 +72,7 @@ define([
         },
 
         onSelectionChange: function( model, target, section ) {
-            //console.log('ContentView > onSelectionChange, model:',model,', target:',target,', section:', section);
+            this.log('onSelectionChange, model:',model,', target:',target,', section:', section);
             
             // simulate a tab click
             if (typeof section !== 'undefined' ) {
@@ -87,8 +87,8 @@ define([
             }
         },
 
-        onSectionChange: function( section ) {
-            //console.log('ContentView > onSectionChange, section:', section);
+        onSectionPreChange: function( section, prevSection ) {
+            this.log('onSectionPreChange, section:', section, ', prevSection:',prevSection );
             
             // update the current selected tab display
             this.$el.find('.tabs > dd').each( function (index, elem) {
@@ -103,15 +103,17 @@ define([
                 var id = $this.attr('id').split('-')[1];
                 section === id ? $this.addClass('active') : $this.removeClass('active');
 
-                // special treatment for modeling section necause of embedded .swf
+                // special treatment for modeling section because of embedded .swf
                 if ( id === "modeling" ) {
                     $this.css( 'visibility', id === section ? 'visible' : 'hidden' );    
                 }
                 else {
-                   // (id === section) ? $this.css('display', 'block') : $this.css('display', 'none');
+                   (id === section) ? $this.css('display', 'block') : $this.css('display', 'none');
                 }
                 $this.css( 'z-index', id === section ? 10 : 0 );
             });
+
+            Backbone.trigger( 'section:change', section, prevSection );
         },
 
         updateContentPanel: function( activeId ) {

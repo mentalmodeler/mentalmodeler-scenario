@@ -12,12 +12,15 @@ define([
 
     var InfoModel = AbstractModel.extend({
             defaults: {
-                name: 'New Model',
+                name: 'Model',
                 author: '',
                 description: '',
                 version: '',
                 date: ''
             },
+
+            doLog: false,
+            logPrefix: '==*== InfoModel > ',
 
             initialize: function () {
                 InfoModel.__super__.initialize.apply( this, arguments );
@@ -26,7 +29,7 @@ define([
             close: function() {},
 
             setData: function( data ) {
-                console.log('InfoModel > setData, data:',data);
+                this.log('setData, data:',data);
                 for (var key in data ) {
                     if ( data[key] !== '' ) {
                         this.set( key, data[key] );

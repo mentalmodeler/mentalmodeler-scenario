@@ -42,8 +42,6 @@ define([
             initialize: function () {
                 AppModel.__super__.initialize.apply( this, arguments );
                 this.mmps = new Backbone.Collection( [], {model: MmpModel} );
-                //this.listenTo( this.mmps, 'remove', this.onMmpRemoved );
-                //this.log('AppModel > initialize, this.get(mmps):',this.get('mmps') );
             },
 
             onMmpRemoved:function( e ) {
@@ -146,7 +144,7 @@ define([
                         // auto select a scenario
                         this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(this.curModel.scenarioIndex) );
                     }
-                    Backbone.trigger( 'section:change', section, prevSection );
+                    Backbone.trigger( 'section:pre-change', section, prevSection );
                 }
             },
 

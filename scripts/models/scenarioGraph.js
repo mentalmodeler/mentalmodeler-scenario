@@ -10,6 +10,9 @@ define([
 
     var ScenarioGraphModel = AbstractModel.extend({
 
+            doLog: false,
+            logPrefix: '+=+=+ ScenarioGraphModel > ',
+            
             initialize: function ( data ) {
                 Sylvester.precision = 0.0000000000000001;
                 ScenarioGraphModel.__super__.initialize.apply( this, arguments );

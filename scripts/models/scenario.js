@@ -16,7 +16,7 @@ define([
     var ScenarioModel = AbstractModel.extend({
             defaults: {
                 xml: '',
-                name: 'New Scenario'
+                name: 'Scenario'
             },
 
             conceptCollection: null,

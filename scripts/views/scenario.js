@@ -22,6 +22,7 @@ define([
         sgView: null,
         availableHeight: 0,
         doLog: true,
+        logPrefix: '-*-*- ScenarioView > ',
 
        events: {
             'input textarea#scenarioName' : 'onNameChange',
@@ -33,8 +34,8 @@ define([
         initialize: function() {
             _.bindAll( this, 'refreshScenario' );
             ScenarioView.__super__.initialize.apply( this, arguments );
-            this.listenTo( Backbone, 'selection:change', this.checkToRender );
-            this.listenTo( Backbone, 'section:change', this.checkToRender );
+            this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
+            this.listenTo( Backbone, 'section:change', this.onSectionChange );
             this.sgView = new ScenarioGraphView();
         },
 
@@ -42,7 +43,7 @@ define([
             var curModel = window.mentalmodeler.appModel.curModel;
             this.log('refreshScenario, curModel:',curModel);
             if ( curModel && curModel.conceptCollection.length > 0 ) {
-                this.log('     curModel.conceptCollection:',curModel.conceptCollection );
+                this.log('curModel.conceptCollection:',curModel.conceptCollection );
                 var scenarioData = curModel.getDataForScenarioCalculation();
                 this.sgView.setModel( new ScenarioGraphModel( scenarioData ) );    
             }
@@ -89,7 +90,7 @@ define([
         },
 
         render: function() {
-            this.log( 'ScenarioView > render ');
+            this.log( 'render, this.availableHeight:',this.availableHeight );
             var data = { concepts: [], name: '' };
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
@@ -101,23 +102,36 @@ define([
 
             // size table
             var $scenarioTable = this.$el.find('#scenarioTable');
+            var pos = $scenarioTable.position();
+            var offset = $scenarioTable.offset();
             var top = $scenarioTable.position().top < 1 ? 95 : $scenarioTable.position().top;
+            var tableDivHeight = this.availableHeight - top + 10;
+            this.log('pos:',pos,', offset:',offset,', tableDivHeight:',tableDivHeight,', top:',top );
             $scenarioTable.outerHeight( this.availableHeight - top + 10);
 
-            var $table = this.$el.find('#tableTable');
+            var $table = this.$el.find('table');
             console.log( '$scenarioTable.height():',$scenarioTable.height(),', $table.height()):', $table.height() );
-            console.log( '$table:',$table,', $table.prop(scrollHeight):',$table.prop('scrollHeight'),', $table.height():',$table.outerHeight() );
+            //console.log( '$table:',$table,', $table.prop(scrollHeight):',$table.prop('scrollHeight'),', $table.height():',$table.outerHeight() );
 
             return this;
         },
 
-        checkToRender: function() {
-            this.log( 'ScenarioView > checkToRender ');
+        checkToRender: function( calledFrom ) {
+            this.log( 'checkToRender, calledFrom:',calledFrom );
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection !== null && appModel.curSelectionType === 'scenario' && appModel.curSection === 'scenario' ) {
                 this.render();
-                setTimeout( this.refreshScenario, 100);
+                this.refreshScenario();
+                //setTimeout( this.refreshScenario, 100);
             }
+        },
+
+        onSelectionChange: function() {
+            this.checkToRender( 'onSelectionChange' );
+        },
+
+        onSectionChange: function() {
+            this.checkToRender( 'onSectionChange' );
         },
 
         setHeight: function ( availableHeight ) {

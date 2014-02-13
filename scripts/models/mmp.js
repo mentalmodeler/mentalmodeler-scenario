@@ -213,7 +213,7 @@ define([
                     }
                 });
 
-                return { concepts:concepts, influences:influences, clamps: clamps};
+                return { concepts:concepts, influences:influences, clamps: clamps };
 
             }
         });

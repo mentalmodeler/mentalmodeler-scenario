@@ -439,14 +439,14 @@ div.right-main {
       overflow: auto;
       &.active {
         height: 100%;
-        display: block;
+        display: inline-block;
       }
     }
     /*
      *  Modeling Panel
      */
     > div.content#panel-modeling {
-        display: block;
+        display: inline-block;
         height: 0;
         overflow: hidden;
         #flash-model {

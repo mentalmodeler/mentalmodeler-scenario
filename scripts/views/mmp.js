@@ -16,6 +16,7 @@ define([
         className: 'mmp',
         template: _.template( $(Template).html() ),
         doLog: false,
+        logPrefix: '----- MmpView > ',
 
         events: {
             'click .map' : 'selectMap',
@@ -122,8 +123,7 @@ define([
             this.$el.removeClass( 'selected' );
             this.$el.find( '.map' ).removeClass( 'selected' );
             this.$el.find( '.scenario' ).removeClass( 'selected' );
-            this.log('----- MmpView > selectionChange, model:',model,', target:',target,', curModel === this.model:',curModel === this.model );
-            this.log('          curSelection:',curSelection,', curSelectionType:', curSelectionType);
+            this.log('selectionChange, model:',model,', target:',target,', curModel === this.model:',curModel === this.model,', curSelection:',curSelection,', curSelectionType:', curSelectionType);
             if ( curModel === this.model ) { 
                 // this model is selected
                 var $elem;
@@ -156,7 +156,7 @@ define([
         },
 
         onSelect: function( target, section ) {
-            console.log('onSelect, this.model:',this.model)
+            this.log('onSelect, this.model:',this.model)
             window.mentalmodeler.appModel.selectionChange( this.model, target, section );          
         }
     });

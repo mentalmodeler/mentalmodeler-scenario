@@ -19,7 +19,7 @@ define([
         if ( typeof exclude === 'undefined' ) {
             exclude = [];
         }
-        var xml = [ xmlUtils.JOIN_STR  ];
+        var xml = [ xmlUtils.JOIN_STR ];
         for ( var key in json ) {
             if ( exclude.indexOf(key) === -1 ) {
                 xml.push( this.elementNL(key, json[key], cdata) );

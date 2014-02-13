@@ -14,6 +14,8 @@ define([
 
         minHeight: 300,
         minWidth: 400,
+        doLog: false,
+        logPrefix: '--+-- ScenarioGraphView > ',
 
         initialize: function() {
             ScenarioGraphView.__super__.initialize.apply( this, arguments );
@@ -22,7 +24,7 @@ define([
         },
 
         render: function() {
-          console.log( 'sgView > render' );
+          this.log( 'render' );
           if(this.model) {
             this.$el.find('svg').remove();
           	var data = this.model.getData();
@@ -66,7 +68,9 @@ define([
           else if ( !useMinWidth && useMinHeight ) {
             w -= scrollsize;
           }
-          console.log('getGraphSize, w:',w,', h:',h,', this.$el.width():',this.$el.width(),', this.$el.height():',this.$el.height() )
+          
+          this.log('getGraphSize, w:',w,', h:',h,', this.$el.width():',this.$el.width(),', this.$el.height():',this.$el.height() );
+          
           return { width:w, height:h };
         },
 

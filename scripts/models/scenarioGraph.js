@@ -17,23 +17,32 @@ define([
             },
 
             getData: function() {
-                var steadyState = this.converge( this.data.influences );
-                var scenarioState = this.converge( this.data.influences, this.data.clamps );
-                var relativeDifference = scenarioState.subtract( steadyState ).elements;
-                var concepts = this.getConcepts();
+                var concepts = this.data.concepts;
+                var influences = this.data.influences;
+                var clamps = this.data.clamps;
+                var conceptNames = this.getConceptNames( concepts );
+                var steadyState = this.converge( influences );
+                var scenarioState = this.converge( influences, clamps );
+                var relativeDifferences = scenarioState.subtract( steadyState ).elements;
 
-                return _.map(relativeDifference, function(d) {
-                    return [ concepts.shift(), d ];
+                var filterFunc = function(value, i) { 
+                    return clamps[ i ] == 0; //&& concepts[ i ].attributes.selected == 'true'; 
+                };
+
+                var filteredDifferences = _.filter( relativeDifferences, filterFunc );
+                var filteredConceptNames = _.filter( conceptNames, filterFunc );
+
+                return _.map(filteredDifferences, function(d) {
+                    return [ filteredConceptNames.shift(), d ];
                 });
             },
 
-            getConcepts: function() {
-                var conceptModels = this.data.concepts;
-                var concepts = [];
-                for(var i = 0; i < conceptModels.length; i++) {
-                    concepts.push( conceptModels[ i ].attributes.name );
+            getConceptNames: function( concepts ) {
+                var conceptNames = [];
+                for(var i = 0; i < concepts.length; i++) {
+                    conceptNames.push( concepts[ i ].attributes.name );
                 }
-                return concepts;
+                return conceptNames;
             },
 
             converge: function( data, clamps ) {

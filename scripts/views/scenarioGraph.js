@@ -28,14 +28,14 @@ define([
           if(this.model) {
             this.$el.find('svg').remove();
           	var data = this.model.getData();
-              this.$el.height( this.$el.parent().height() );
-              d3.select(this.el)
-                .datum( data )
-                  .call( this.renderBarGraph()
-                      .width( this.getGraphSize().width ) //this.$el.width() > this.minWidth ? this.$el.width() : this.minWidth )
-                      .height( this.getGraphSize().height ) //this.$el.height() - 5 > this.minHeight ? this.$el.height() - 5 : this.minHeight )
-                      .x( function( d, i ) { return d[0]; } )
-                      .y( function( d, i ) { return d[1]; } ) );
+            this.$el.height( this.$el.parent().height() );
+            d3.select( this.el )
+              .datum( data )
+                .call( this.renderBarGraph()
+                    .width( this.getGraphSize().width )
+                    .height( this.getGraphSize().height )
+                    .x( function( d, i ) { return d[0]; } )
+                    .y( function( d, i ) { return d[1]; } ) );
           }
         },
 

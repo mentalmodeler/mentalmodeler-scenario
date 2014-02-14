@@ -22,3 +22,10 @@ g.axis line {
 	stroke: #000;
 	shape-rendering: crispEdges;
 }
+
+g.grid line {
+	fill: none;
+	stroke: #c2c2c2;
+	shape-rendering: crispEdges;
+	opacity: 0.75;
+}

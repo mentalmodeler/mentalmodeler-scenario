@@ -105,6 +105,7 @@ define([
                   
               var svg = d3.select(this).selectAll("svg").data([data]);
               var gEnter = svg.enter().append("svg").append("g");
+              gEnter.append("g").attr("class", "grid");
               gEnter.append("g").attr("class", "bars");
               gEnter.append("g").attr("class", "barLabels");
               gEnter.append("g").attr("class", "y axis");
@@ -112,19 +113,30 @@ define([
               gEnter.append("g").attr("class", "x axis zero");
 
               svg.attr("width", width)
-                 .attr("height", height);
+                  .attr("height", height);
 
               var g = svg.select("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+              //build grid
+              var gridLines = g.select(".grid").selectAll('line.gridLine').data(data);
+              gridLines.enter().append("line");
+              gridLines.attr({
+                'class' : 'gridLine',
+                'x1' : function(d) { return X(d) + xScale.rangeBand() / 2; },
+                'x2' : function(d) { return X(d) + xScale.rangeBand() / 2; },
+                'y1' : 0,
+                'y2' : height - margin.top - margin.bottom
+              });
 
               var bar = svg.select(".bars").selectAll(".bar").data(data);
               bar.enter().append("rect");
               bar.exit().remove();
               bar.attr("class", function(d, i) { return d[1] < 0 ? "bar negative" : "bar positive"; })
-                 .attr("x", function(d) { return X(d); })
-                 .attr("y", function(d) { return d[1] < 0 ? Y0() : Y(d); })
-                 .attr("width", xScale.rangeBand())
-                 .attr("height", function(d) { return Math.abs( Y(d) - Y0() ); });
+                  .attr("x", function(d) { return X(d); })
+                  .attr("y", function(d) { return d[1] < 0 ? Y0() : Y(d); })
+                  .attr("width", xScale.rangeBand())
+                  .attr("height", function(d) { return Math.abs( Y(d) - Y0() ); });
 
               var barLabel = svg.select(".barLabels").selectAll(".barLabel").data(data);
               barLabel.enter()

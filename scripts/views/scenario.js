@@ -54,7 +54,7 @@ define([
             var id = $cb.closest('tr').attr('data-id');
             var value = e.target.checked;
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
-            //console.log('onSelectedChange,  $cb:', $cb,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
+            //console.log('onSelectedChange,  $cb:', $cb,', id :',id,', value:',value,', typeof value:',typeof value,', scenarioConcept:',scenarioConcept);
             if ( scenarioConcept ) {
                 scenarioConcept.set( 'selected', value );
                 this.refreshScenario();

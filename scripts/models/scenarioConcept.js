@@ -12,7 +12,7 @@ define([
 
     var ScenarioConceptModel = AbstractModel.extend({
             defaults: {
-                selected: 'true',
+                selected: true,
                 influence: '',
                 id: '',
                 name: ''
@@ -40,8 +40,17 @@ define([
                 //console.log('ScenarioConceptModel > setData');
                 for (var key in data ) {
                     if ( data[key] !== '' ) {
-                        //console.log( '     data['+key+']:',data[key] );
-                        this.set( key, data[key] );
+                        if ( key === 'selected' ) {
+                            if ( data[key] === true || data[key] === 'True' || data[key] === 'true')  {
+                                this.set( key, true );    
+                            }
+                            else {
+                                this.set( key, false );    
+                            }
+                        }
+                        else {
+                            this.set( key, data[key] );    
+                        }
                     }
                 }
             },

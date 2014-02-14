@@ -119,7 +119,7 @@ define([
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
               //build grid
-              var gridLines = g.select(".grid").selectAll('line.gridLine').data(data);
+              var gridLines = g.select(".grid").selectAll('.gridLine').data(data);
               gridLines.enter().append("line");
               gridLines.attr({
                 'class' : 'gridLine',

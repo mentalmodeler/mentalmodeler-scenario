@@ -29,7 +29,7 @@ define([
                 var relativeDifferences = scenarioState.subtract( steadyState ).elements;
 
                 var filterFunc = function(value, i) { 
-                    return clamps[ i ] == 0; //&& concepts[ i ].attributes.selected == 'true'; 
+                    return clamps[ i ] == 0 && concepts[ i ].get( 'selected' ); 
                 };
 
                 var filteredDifferences = _.filter( relativeDifferences, filterFunc );

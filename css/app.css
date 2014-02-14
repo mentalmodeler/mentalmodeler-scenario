@@ -7829,21 +7829,22 @@ g.bars > .bar.positive {
 
 /* line 5, ../sass/_barGraph.scss */
 g.bars > .bar.negative {
-  fill: #730900;
+  fill: #dc9690;
 }
 
 /* line 9, ../sass/_barGraph.scss */
 g.barLabels > text.barLabel {
   font: 10px sans-serif;
   text-anchor: middle;
+  fill: black;
 }
 
-/* line 14, ../sass/_barGraph.scss */
+/* line 15, ../sass/_barGraph.scss */
 g.axis text {
   font: 10px sans-serif;
 }
 
-/* line 19, ../sass/_barGraph.scss */
+/* line 20, ../sass/_barGraph.scss */
 g.axis path,
 g.axis line {
   fill: none;

@@ -24,7 +24,7 @@ define([
         infoView: null,
         scenarioView: null,
         contentPanelHeight: 0,
-        doLog: true,
+        doLog: false,
         logPrefix: '_-_-_ ContentView > ',
 
         initialize: function() {
@@ -128,6 +128,7 @@ define([
                         h = 0;
                 }
                 $this.height( h );
+                that.log('updateContentPanel, h:',h,', $this:',$this);
             });
         },
 

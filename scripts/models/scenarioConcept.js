@@ -37,7 +37,7 @@ define([
 
             setData: function( data ) {
                 // properties unique to the ScenarioConceptModel
-                //console.log('ScenarioConceptModel > setData');
+                //this.log('ScenarioConceptModel > setData');
                 for (var key in data ) {
                     if ( data[key] !== '' ) {
                         if ( key === 'selected' ) {

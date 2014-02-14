@@ -3,12 +3,13 @@ g.bars > .bar.positive {
 }
 
 g.bars > .bar.negative {
-	fill: darken( $red, 15%);
+	fill: $red-light;
 }
 
 g.barLabels > text.barLabel {
 	font: 10px sans-serif;
 	text-anchor: middle;
+	fill: black;
 }
 
 g.axis text {

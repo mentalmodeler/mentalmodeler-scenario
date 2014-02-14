@@ -16,6 +16,7 @@ define([
         el: '#header',
         template: _.template( $(Template).html() ),
         doLog: false,
+        logPrefix: '==#== HeaderView > ',
 
         events: {
             'change input#load-file' : 'loadFiles',
@@ -35,14 +36,14 @@ define([
                 e.preventDefault();
                 return false;
             });
-            //console.log('header > render > this.el:',this.el,', this.$el:',this.$el);
+            this.log('render > this.el:',this.el,', this.$el:',this.$el);
             return this;
         },
 
         onSelectionChange: function() {
             var removeEnabled = false;
             var appModel = window.mentalmodeler.appModel;
-            this.log('HeaderView > onSelectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curSelectionType:',appModel.curSelectionType );
+            this.log('onSelectionChange, appModel.curSelection:',appModel.curSelection,', appModel.curSelectionType:',appModel.curSelectionType );
             if ( appModel.curModel && appModel.curSelection ) {
                 if ( appModel.curSelectionType === 'scenario' ) {
                     if ( appModel.curSelection.collection.length > 1 ) {
@@ -75,7 +76,7 @@ define([
         ******************/
 
         loadFiles: function(e) {
-            console.log('loadfiles, e:',e);
+            this.log('loadfiles, e:',e);
             window.mentalmodeler.appModel.loadFiles(e);
         },
 

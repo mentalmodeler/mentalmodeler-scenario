@@ -21,7 +21,7 @@ define([
         template: _.template( $(Template).html() ),
         sgView: null,
         availableHeight: 0,
-        doLog: true,
+        doLog: false,
         logPrefix: '-*-*- ScenarioView > ',
 
        events: {
@@ -101,18 +101,16 @@ define([
             this.sgView.setElement( this.$el.find('div.panel-right') );
 
             // size table
+            var $textarea = this.$el.find('textarea#scenarioName');
             var $scenarioTable = this.$el.find('#scenarioTable');
-            var pos = $scenarioTable.position();
-            var offset = $scenarioTable.offset();
-            var top = $scenarioTable.position().top < 1 ? 95 : $scenarioTable.position().top;
-            var tableDivHeight = this.availableHeight - top + 10;
-            this.log('pos:',pos,', offset:',offset,', tableDivHeight:',tableDivHeight,', top:',top );
-            $scenarioTable.outerHeight( this.availableHeight - top + 10);
-
             var $table = this.$el.find('table');
-            console.log( '$scenarioTable.height():',$scenarioTable.height(),', $table.height()):', $table.height() );
-            //console.log( '$table:',$table,', $table.prop(scrollHeight):',$table.prop('scrollHeight'),', $table.height():',$table.outerHeight() );
 
+            $scenarioTable.outerHeight( this.availableHeight - $textarea.outerHeight(true) );
+            // if table scrolls, add border to top and bottom
+            if ( $table.height() > $scenarioTable.height() ) {
+                $scenarioTable.addClass( 'hasOverflow' );
+            }
+            
             return this;
         },
 

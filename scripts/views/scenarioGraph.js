@@ -28,7 +28,8 @@ define([
           if(this.model) {
             this.$el.find('svg').remove();
           	var data = this.model.getData();
-            this.$el.height( this.$el.parent().height() );
+            var height = this.$el.closest('#panel-scenario').height(); // this.$el.parent().height()
+            this.$el.height( height );
             d3.select( this.el )
               .datum( data )
                 .call( this.renderBarGraph()

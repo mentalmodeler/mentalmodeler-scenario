@@ -43,7 +43,7 @@ define([
             getConceptNames: function( concepts ) {
                 var conceptNames = [];
                 for(var i = 0; i < concepts.length; i++) {
-                    conceptNames.push( concepts[ i ].attributes.name );
+                    conceptNames.push( concepts[ i ].get( 'name' ) );
                 }
                 return conceptNames;
             },

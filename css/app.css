@@ -7852,6 +7852,14 @@ g.axis line {
   shape-rendering: crispEdges;
 }
 
+/* line 26, ../sass/_barGraph.scss */
+g.grid line {
+  fill: none;
+  stroke: #c2c2c2;
+  shape-rendering: crispEdges;
+  opacity: 0.75;
+}
+
 /* line 89, ../sass/_mm-scenario.scss */
 body {
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;

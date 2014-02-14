@@ -199,12 +199,12 @@ define([
                 }
 
                 this.conceptCollection.each( function( concept ) {
-                    concepts.push( concept );
                     influences.push( concept.getInfluences() );
                     
                     if ( scenarioConceptCollection !== null ) {
                         var scenarioConcept = scenarioConceptCollection.findWhere( { id: concept.get('id') });
                         if (typeof scenarioConcept !== 'undefined' && scenarioConcept !== null) {
+                            concepts.push( scenarioConcept );
                             clamps.push( appModel.getInfluenceValue( scenarioConcept.get('influence') ) );    
                         }
                         else {

@@ -82,6 +82,11 @@ $selected-select-bg-alpha: 0.07;
   box-sizing: $sizing;
 }
 
+@mixin box-shadow( $shadow ) {
+  -webkit-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
 @mixin text-dropshadow(){
   text-shadow: 0px 1px 6px rgba(0,0,0,0.5);
 }
@@ -200,22 +205,52 @@ div.left-main {
       $spacing: 5px;
       //@include border-radius( 4px );
       
-      padding: 10px 5px; //10px 0px 10px 5px;
+      padding: 10px 0px 10px 0px; //10px 5px; //10px 0px 10px 5px;
       font-size: 0.85em;
       margin: 0;
       &.selected {
-        background-color: #f2f2f2;  
+        background-color: $gray-light;
       }
       &:not(:last-child) {
         border-bottom:solid 1px #ccc;
       }
       // selected style
       .selectable {
-        $color: $gray;
-        $pct: 23%;
-        padding: 3px;
-        @include border-radius( 4px ); //4px 0 0 4px);
+        padding: 3px 5px;
+        @include border-radius( 0px ); //4px 0 0 4px);
         cursor: pointer;
+        &.selected {
+          color: #fff;
+          cursor: default;
+          background-image: $texture;
+          text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.35);
+        }
+        &.map {
+          $color: $green;
+          &.selected {
+            background-color: $color;
+            &:hover {
+              background-color: $color;    
+            }
+          }
+          &:hover {
+            background-color: lighten($color, 20%);    
+          }
+        }
+        &.scenario {
+          padding-left: 20px;
+          $color: $red;
+          &.selected {
+            background-color: $color;
+            &:hover {
+              background-color: $color;    
+            }
+          }
+          &:hover {
+            background-color: lighten($color, 30%);    
+          }
+        }
+        /*
         &.selected {
           background-color: $color;
           color: #fff;
@@ -238,6 +273,7 @@ div.left-main {
         &:active {
             background-color: lighten($color, $pct);    
         }
+        */
       }
       i {
           margin-right:5px;
@@ -255,7 +291,7 @@ div.left-main {
           font-style: italic;
           margin-bottom: $spacing;
           cursor: pointer;
-          margin: 7px 0px 3px 4px;
+          margin: 7px 0px 3px 7px;
         }
 
         .add-scenario {
@@ -270,17 +306,17 @@ div.left-main {
           padding: 0 7px;
           position:relative;
           top: -2px;
-          background-color: $green;
+          background-color: $gray;
           margin: 0;
           margin-left: 4px;
           &:hover {
-            background-color: darken($green, 5%);
+            background-color: darken($gray, 5%);
           }
         }
 
         // collapsable scenarios div
         .scenarios-list {
-          margin-left: 18px;
+          margin-left: 0px; //18px;
           .scenario {
             &:not(:last-child) {
             }
@@ -479,7 +515,7 @@ div.right-main {
 
         &.panel-right {
           width: calc(100% - 221px); // calc( 100% - ( $scenario-panel-left-width + $scenario-panel-right-width-adj ))
-          background-color:#f2f2f2;
+          background-color:$gray-light;
           // height: 300px;
           overflow: auto;
         }  

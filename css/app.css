@@ -7853,6 +7853,11 @@ g.axis line {
 }
 
 /* line 26, ../sass/_barGraph.scss */
+g.background {
+  fill: #fff;
+}
+
+/* line 30, ../sass/_barGraph.scss */
 g.grid line {
   fill: none;
   stroke: #c2c2c2;

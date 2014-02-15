@@ -105,6 +105,7 @@ define([
                   
               var svg = d3.select(this).selectAll("svg").data([data]);
               var gEnter = svg.enter().append("svg").append("g");
+              gEnter.append("g").attr("class", "background");
               gEnter.append("g").attr("class", "grid");
               gEnter.append("g").attr("class", "bars");
               gEnter.append("g").attr("class", "barLabels");
@@ -118,7 +119,12 @@ define([
               var g = svg.select("g")
                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-              //build grid
+              var background = g.select(".background").append("rect");
+              background.attr({
+                "width": width - margin.left - margin.right,
+                "height": height - margin.top - margin.bottom
+              });
+
               var gridLines = g.select(".grid").selectAll('.gridLine').data(data);
               gridLines.enter().append("line");
               gridLines.attr({

@@ -14,18 +14,24 @@ require.config({
             ],
             exports: 'Backbone'
         },
-        bootstrap: {
+        foundation: {
             deps: ['jquery'],
-            exports: 'bootstrap'
+            exports: 'foundation'
+        },
+        jquerySwfobject: {
+            deps: ['jquery'],
+            exports: 'jquerySwfobject'
         }
     },
     paths: {
-        /* all these are being added to the Gruntfile require.config under dist:options:excludeShallow AND copy */
         jquery: '../vendor/jquery/jquery.min',
+        jquerySwfobject: '../vendor/jquery-swfobject',
         backbone: '../vendor/backbone/backbone-min',
         underscore: '../vendor/underscore/underscore-min',
-        bootstrap: '../vendor/bootstrap/js/bootstrap.min',
+        foundation: '../vendor/foundation/foundation.min',
         text: '../vendor/requirejs-text/text',
-        d3: '../vendor/d3.v3.min'
+        filesaver: '../vendor/filesaver/FileSaver',
+        d3: '../vendor/d3/d3.v3.min',
+        sylvester: '../vendor/sylvester/sylvester'
     }
 });

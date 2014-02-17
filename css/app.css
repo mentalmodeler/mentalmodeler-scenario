@@ -7833,18 +7833,17 @@ g.bars > .bar.negative {
 }
 
 /* line 9, ../sass/_barGraph.scss */
-g.barLabels > text.barLabel {
+svg.bargraph text {
   font: 10px sans-serif;
+}
+
+/* line 13, ../sass/_barGraph.scss */
+g.barlabels > text.barlabel {
   text-anchor: middle;
   fill: black;
 }
 
-/* line 15, ../sass/_barGraph.scss */
-g.axis text {
-  font: 10px sans-serif;
-}
-
-/* line 20, ../sass/_barGraph.scss */
+/* line 19, ../sass/_barGraph.scss */
 g.axis path,
 g.axis line {
   fill: none;
@@ -7852,12 +7851,12 @@ g.axis line {
   shape-rendering: crispEdges;
 }
 
-/* line 26, ../sass/_barGraph.scss */
+/* line 25, ../sass/_barGraph.scss */
 g.background {
   fill: #fff;
 }
 
-/* line 30, ../sass/_barGraph.scss */
+/* line 29, ../sass/_barGraph.scss */
 g.grid line {
   fill: none;
   stroke: #f4f4f4;

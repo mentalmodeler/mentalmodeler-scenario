@@ -114,7 +114,7 @@ define([
                 return svgTextSize;
               }));
 
-              if(maxTextSize > 30)
+              if(maxTextSize > margin.bottom)
                 margin.bottom = maxTextSize + 5;
 
               if( yMin > 0) 

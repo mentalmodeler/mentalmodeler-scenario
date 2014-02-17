@@ -99,12 +99,16 @@ define([
                   .domain(data.map(function(d) { return d[0]; }))
                   .rangeRoundBands([0, width - margin.left - margin.right], xRoundBands);
                  
+              var yMinx = d3.min(dataValues);
               var yMax = d3.max(dataValues);
+
+              if( yMin > 0) 
+                yMin = 0;
               if( yMax < 0)
                 yMax = 0;
 
               yScale
-                  .domain([d3.min(dataValues), yMax])
+                  .domain([yMin, yMax])
                   .range([height - margin.top - margin.bottom, 0])
                   .nice();
                   

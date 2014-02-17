@@ -4,9 +4,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
+    'd3',
     'models/abstract',
     'sylvester' //lib for matrix/vector math
-], function ( $, _, Backbone, AbstractModel ) {
+], function ( $, _, Backbone, d3, AbstractModel ) {
 
     var ScenarioGraphModel = AbstractModel.extend({
 
@@ -36,7 +37,7 @@ define([
                 var filteredConceptNames = _.filter( conceptNames, filterFunc );
 
                 return _.map(filteredDifferences, function(d) {
-                    return [ filteredConceptNames.shift(), d ];
+                    return [ filteredConceptNames.shift(), d3.round(d, 2) ];
                 });
             },
 

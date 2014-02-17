@@ -92,8 +92,8 @@ define([
           function chart(selection) {
             selection.each(function(data) {
               data = data.map(function(d, i) {
-                conceptNames.push( d[0] );
-                dataValues.push( d[1] );
+                conceptNames.push(d[0]);
+                dataValues.push(d[1]);
                 return [xValue.call(data, d, i), yValue.call(data, d, i)];
               });
 
@@ -113,6 +113,8 @@ define([
                 svgEl.removeChild(svgText);
                 return svgTextSize;
               }));
+
+              console.log(dataValues);
 
 
               if(maxTextSize > 30)
@@ -178,11 +180,11 @@ define([
                       .attr("fill", function(d) { return d[1] < 0 ? "white" : "black"; } )
                       .attr("x", function(d) { return X(d) + xScale.rangeBand() / 2; })
                       .attr("y", function(d) { return d[1] >= 0 ? Y(d) - 3 : Y(d) - 5; })
-                      .text(function(d) { return d3.round(d[1], 2); });
+                      .text(function(d) { return d[1]; });
 
               //remove bars & labels w/ value of 0
-              bar.filter(function(d) { return d3.round(d[1], 2) == 0; }).remove();
-              barLabel.filter(function(d) { return d3.round(d[1], 2) == 0; }).remove();
+              bar.filter(function(d) { return d[1] == 0; }).remove();
+              barLabel.filter(function(d) { return d[1] == 0; }).remove();
 
               g.select(".x.axis")
                 .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")

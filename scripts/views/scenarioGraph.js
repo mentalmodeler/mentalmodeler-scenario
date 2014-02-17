@@ -76,7 +76,7 @@ define([
         },
 
         renderBarGraph: function() {
-          var margin = {top: 30, right: 10, bottom: 200, left: 50},
+          var margin = {top: 30, right: 10, bottom: 30, left: 50},
               width = 420,
               height = 420,
               xRoundBands = 0.2,
@@ -86,38 +86,58 @@ define([
               yScale = d3.scale.linear(),
               yAxis = d3.svg.axis().scale(yScale).orient("left"),
               xAxis = d3.svg.axis().scale(xScale),
-              dataValues = [];
+              dataValues = [],
+              conceptNames = [];
 
           function chart(selection) {
             selection.each(function(data) {
               data = data.map(function(d, i) {
+                conceptNames.push( d[0] );
                 dataValues.push( d[1] );
                 return [xValue.call(data, d, i), yValue.call(data, d, i)];
               });
-            
-              xScale
-                  .domain(data.map(function(d) { return d[0]; }))
-                  .rangeRoundBands([0, width - margin.left - margin.right], xRoundBands);
-                 
-              var yMinx = d3.min(dataValues);
+
+
+              var svg = d3.select(this).selectAll("svg").data([data]);
+              var gEnter = svg.enter().append("svg").attr("class", "bargraph").append("g");
+              var svgEl = svg[0][0];
+              var yMin = d3.min(dataValues);
               var yMax = d3.max(dataValues);
+              var maxTextSize = d3.max(conceptNames.map(function(conceptName) {
+                var textNode = document.createTextNode(conceptName);
+                var svgText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                var svgTextSize;
+                svgText.appendChild(textNode);
+                svgEl.appendChild(svgText);
+                console.log(svgText.getBBox());
+                svgTextSize = svgText.getComputedTextLength();
+                svgEl.removeChild(svgText);
+                return svgTextSize;
+              }));
+
+              console.log(maxTextSize);
+
+              if(maxTextSize > 30)
+                margin.bottom = maxTextSize + 5;
 
               if( yMin > 0) 
                 yMin = 0;
               if( yMax < 0)
-                yMax = 0;
+                yMax = 0;              
+            
+              xScale
+                  .domain(data.map(function(d) { return d[0]; }))
+                  .rangeRoundBands([0, width - margin.left - margin.right], xRoundBands);
 
               yScale
                   .domain([yMin, yMax])
                   .range([height - margin.top - margin.bottom, 0])
                   .nice();
                   
-              var svg = d3.select(this).selectAll("svg").data([data]);
-              var gEnter = svg.enter().append("svg").append("g");
               gEnter.append("g").attr("class", "background");
               gEnter.append("g").attr("class", "grid");
               gEnter.append("g").attr("class", "bars");
-              gEnter.append("g").attr("class", "barLabels");
+              gEnter.append("g").attr("class", "barlabels");
               gEnter.append("g").attr("class", "y axis");
               gEnter.append("g").attr("class", "x axis");
               gEnter.append("g").attr("class", "x axis zero");
@@ -153,10 +173,10 @@ define([
                   .attr("width", xScale.rangeBand())
                   .attr("height", function(d) { return Math.abs( Y(d) - Y0() ); });
 
-              var barLabel = svg.select(".barLabels").selectAll(".barLabel").data(data);
+              var barLabel = svg.select(".barlabels").selectAll(".barlabel").data(data);
               barLabel.enter()
                       .append("text")
-                      .attr("class", "barLabel")
+                      .attr("class", "barlabel")
                       .attr("fill", function(d) { return d[1] < 0 ? "white" : "black"; } )
                       .attr("x", function(d) { return X(d) + xScale.rangeBand() / 2; })
                       .attr("y", function(d) { return d[1] >= 0 ? Y(d) - 3 : Y(d) - 5; })
@@ -172,8 +192,8 @@ define([
                 .selectAll("text")
                     .style("text-anchor", "end")
                     .attr("dx", "-.8em")
-                    .attr("dy", ".15em")
-                    .attr("transform", function(d) {
+                    .attr("dy", ".15em"
+)                    .attr("transform", function(d) {
                         return "rotate(-65)";
                     });
               

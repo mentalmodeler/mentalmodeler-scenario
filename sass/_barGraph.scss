@@ -6,14 +6,13 @@ g.bars > .bar.negative {
 	fill: $red-light;
 }
 
-g.barLabels > text.barLabel {
+svg.bargraph text {
 	font: 10px sans-serif;
-	text-anchor: middle;
-	fill: black;
 }
 
-g.axis text {
-	font: 10px sans-serif;
+g.barlabels > text.barlabel {
+	text-anchor: middle;
+	fill: black;
 }
 
 g.axis path,

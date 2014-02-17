@@ -17,7 +17,8 @@ define([
             defaults: {
                 xml: '<?xml version="1.0" encoding="UTF-8"?><mentalModeler><info><id></id><name></name><version></version><date></date><author></author></info><concepts></concepts><scenarios></scenarios></mentalModeler>',
                 xmlDoc: null,
-                justAdded: false
+                justAdded: false,
+                filename:'project.mmp'
             },
 
             infoModel: null,
@@ -32,7 +33,6 @@ define([
                 this.infoModel = new InfoModel();
                 this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );                
                 this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
-                
                 this.setData( XMLUtils.parseMmpFile( this.get('xml') ) );
                 Backbone.trigger( 'mmp:change' );
                 

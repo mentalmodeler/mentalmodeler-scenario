@@ -5,11 +5,12 @@ define([
     'underscore',
     'backbone',
     'foundation',
-    'filesaver',
     'views/abstract',
     'text!templates/header.html',
-    'models/scenario'
-], function ($, _, Backbone, Foundation, FileSaver, AbstractView, Template, ScenarioModel) {
+    'models/scenario',
+    'downloadify',
+    'swfobject'
+], function ($, _, Backbone, Foundation, AbstractView, Template, ScenarioModel, Downloadify, SwfObject ) {
     'use strict';
 
     var HeaderView = AbstractView.extend({
@@ -21,7 +22,6 @@ define([
         events: {
             'change input#load-file' : 'loadFiles',
             'click #newFile': 'newFile',
-            'click #saveFile': 'saveFile',
             'click #deleteFile': 'remove'
         },
         
@@ -31,13 +31,53 @@ define([
         },
 
         render: function() {
+            var that = this;
             this.$el.html( this.template( {} ) );
             this.$el.find('a.disabled').click( function(e) {
                 e.preventDefault();
                 return false;
             });
-            this.log('render > this.el:',this.el,', this.$el:',this.$el);
+            
+            window.Downloadify.create('saveFile', {
+                filename: this.getFilename,
+                data: this.getXML,
+                onComplete: function(){ 
+                  //alert('Your File Has Been Saved!'); 
+                },
+                onCancel: function(){ 
+                  //alert('You have cancelled the saving of this file.');
+                },
+                onError: function(){ 
+                  //alert('You must put something in the File Contents or there will be nothing to save!'); 
+                },
+                transparent: true,
+                swf: 'swf/downloadify.swf',
+                downloadImage: 'img/save_button.png',
+                width: 75,
+                height: 45,
+                append: false
+            });
+
+            this.log('render > window.Downloadify:',window.Downloadify,', Downloadify:',Downloadify,', this.el:',this.el,', this.$el:',this.$el);
             return this;
+        },
+
+        getFilename: function() {
+            var filename = '';
+            var appModel = window.mentalmodeler.appModel;
+            if ( appModel.curModel ) {
+                filename = appModel.curModel.get('filename');
+            }
+            return filename;
+        },
+
+        getXML: function() {
+            var xml = '';
+            var appModel = window.mentalmodeler.appModel;
+            if ( appModel.curModel ) {
+                xml = appModel.curModel.getXML();
+            }
+            return xml;
         },
 
         onSelectionChange: function() {
@@ -63,34 +103,26 @@ define([
             
         },
 
-        /***************
+        /*
          *  new file
-        ****************/       
+         */       
         
         newFile: function() {
             window.mentalmodeler.appModel.addModel();
         },
 
-        /*****************
+        /*
          *  Load files
-        ******************/
+         */
 
         loadFiles: function(e) {
             this.log('loadfiles, e:',e);
             window.mentalmodeler.appModel.loadFiles(e);
         },
 
-        /*****************
-         *  save files
-        ******************/
-
-        saveFile: function(e) {
-            window.mentalmodeler.appModel.saveFile();
-        },
-
-        /*****************
+        /*
          *  remove files
-        ******************/
+         */
 
         remove: function(e) {
             window.mentalmodeler.appModel.remove();

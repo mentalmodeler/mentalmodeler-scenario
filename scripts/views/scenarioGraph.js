@@ -114,9 +114,6 @@ define([
                 return svgTextSize;
               }));
 
-              console.log(dataValues);
-
-
               if(maxTextSize > 30)
                 margin.bottom = maxTextSize + 5;
 

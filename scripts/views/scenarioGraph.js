@@ -109,13 +109,11 @@ define([
                 var svgTextSize;
                 svgText.appendChild(textNode);
                 svgEl.appendChild(svgText);
-                console.log(svgText.getBBox());
                 svgTextSize = svgText.getComputedTextLength();
                 svgEl.removeChild(svgText);
                 return svgTextSize;
               }));
 
-              console.log(maxTextSize);
 
               if(maxTextSize > 30)
                 margin.bottom = maxTextSize + 5;

@@ -59,12 +59,12 @@ define([
             /*
              * adds a new mmp model, passing the xml string
              */
-            addModel: function( xml ) {
+            addModel: function( xml, fileName ) {
                 var options = { justAdded: true };
                 if (typeof xml !== 'undefined' && xml !== '') {
                     options.xml = xml
                 }
-                
+                options.filename = fileName
                 var mmp = new MmpModel( options );
                 var mmpView = new MmpView( {model:mmp} );
                 this.mmps.add( mmp );
@@ -238,16 +238,6 @@ define([
                 }
             },
 
-             /*
-             *  Save file
-             */
-            saveFile: function() {
-                this.log('saveFile, this.curModel:',this.curModel );
-                if ( this.curModel ) {
-                    var xml = this.curModel.getXML();
-                }
-            },
-
             /*
              *  Load files
              */
@@ -280,9 +270,10 @@ define([
               //this.log('readFiles, file:',file,', files:',files);
               // Closure to capture the file information.
               reader.onload = (function(theFile) {
+                //that.log('reader.onload, theFile:',theFile)
                 return function(e) {
-                    //this.log('loaded, files:',files); //,', e.target.result:',e.target.result);
-                    that.addModel( e.target.result );
+                    //that.log('loaded, files:',files,', theFile:',theFile,', e.target.result:',e.target.result);
+                    that.addModel( e.target.result, theFile.name );
                     //Backbone.trigger( 'file:onload', e.target.result );
                     if ( files.length > 0 ) {
                         that.readFiles( files );

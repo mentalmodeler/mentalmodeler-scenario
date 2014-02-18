@@ -5,9 +5,9 @@ define([
     'underscore',
     'backbone',
     'foundation',
-    'jquerySwfobject',
-    'views/abstract'
-], function ($, _, Backbone, Foundation, $swfobject, AbstractView) {
+    'views/abstract',
+    'detect'
+], function ($, _, Backbone, Foundation, AbstractView, Detect) {
     'use strict';
 
     var ModelingView = AbstractView.extend({
@@ -21,47 +21,31 @@ define([
 
         initialize: function() {
             ModelingView.__super__.initialize.apply( this, arguments );
-            //Backbone.on( 'window:resize', this.onWindowResize, this );
-            //Backbone.on( 'file:onload', this.onFileLoaded, this );
             window.mentalmodeler.appModel.modelingView = this;
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
             this.listenTo( Backbone, 'section:change', this.onSectionChange );
         },
 
         render: function() {
-            /*this.$el.flash({ swf: 'swf/mentalmodeler.swf',
-                             height: '100%',
-                             width: '100%',
-                             id: 'flash-content'
-            });*/
-            this.$el.append("<embed id='flash-content' src='swf/mentalmodeler.swf' height='100%' width='100%' allowscriptaccess='always' type='application/x-shockwave-flash' />");
+            var ua = Detect.parse( navigator.userAgent );
+            switch ( ua.browser.family.toLowerCase() ) {
+            case 'firefox':
+                this.$el.append("<embed id='flash-content' src='swf/mentalmodeler.swf' height='100%' width='100%' allowscriptaccess='always' type='application/x-shockwave-flash' />");
+                break;
+            default:
+                this.$el.append("<object id='flash-content' type='application/x-shockwave-flash' height='100%' width='100%'><param name='movie' value='swf/mentalmodeler.swf'/> <param name='allowScriptAccess' value='always' /></object>");
+            }
+
             this.flash = this.$el.find('#flash-content')[0];
             return this;
         },
 
         getModelXML:function() {
-            var xml = '';
-            this.$el.flash(
-                function() {
-                   xml = this.doSave();
-                }
-            );
-            xml = this.flash.doSave();
+            var xml = this.flash.doSave();
             return xml;
         },
 
         reloadSwf:function( xml ) {
-             this.$el.flash(
-                function() {
-                    if ( this.hasOwnProperty('doLoad') ) {
-                        this.doLoad( xml );
-                    }
-                    else {
-                        console.log('--ERROR-- ModelingView, reload swf > no doLoad in this:',this)
-                    }
-
-                }
-            );
             this.flash.doLoad( xml );
         },
 

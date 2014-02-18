@@ -17,10 +17,6 @@ require.config({
             deps: ['jquery'],
             exports: 'foundation'
         },
-        jquerySwfobject: {
-            deps: ['jquery'],
-            exports: 'jquerySwfobject'
-        },
         downloadify: {
             deps: ['jquery'],
             exports: 'downloadify'
@@ -32,7 +28,6 @@ require.config({
     },
     paths: {
         jquery: '../vendor/jquery/jquery.min',
-        jquerySwfobject: '../vendor/jquery-swfobject',
         backbone: '../vendor/backbone/backbone-min',
         underscore: '../vendor/underscore/underscore-min',
         foundation: '../vendor/foundation/foundation.min',
@@ -40,7 +35,8 @@ require.config({
         d3: '../vendor/d3/d3.v3.min',
         sylvester: '../vendor/sylvester/sylvester',
         downloadify: '../vendor/downloadify/js/downloadify.min',
-        swfobject: '../vendor/downloadify/js/swfobject'
+        swfobject: '../vendor/downloadify/js/swfobject',
+        detect: '../vendor/detect/detect.min'
     }
 });
 

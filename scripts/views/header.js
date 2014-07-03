@@ -75,6 +75,10 @@ define([
             var xml = '';
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curModel ) {
+                // if section is modeling, update model from modeling data
+                if ( appModel.curSection === 'modeling' ) {
+                    appModel.saveModelData( true );
+                }
                 xml = appModel.curModel.getXML();
             }
             return xml;

@@ -29,12 +29,12 @@ define([
             scenarioView: null,
             infoView:null,
             values:{ 'H+' : 1,
-                     'M+' : 0.5,
-                     'L+' : 0.25,
+                     'M+' : 0.75,
+                     'L+' : 0.5,
                      ''   : 0,
                      'H-' : -1,
-                     'M-' : -0.5,
-                     'L-' : -0.25
+                     'M-' : -0.75,
+                     'L-' : -0.5
                    },
             doLog: false,
             logPrefix: '======== AppModel > ',
@@ -148,11 +148,11 @@ define([
                 }
             },
 
-            saveModelData:function() {
-                //this.log('AppModel > saveModelData, this.curSection:',this.curSection);
+            saveModelData:function( force ) {
+                this.log('AppModel > saveModelData, this.curSection:',this.curSection,' force:',force);
                 
                 // leaving from modeling section, so save data to model
-                if ( this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
+                if ( (typeof force !== 'undefined' && force ) || this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
                     this.curModel.updateFromModelSection( this.modelingView.getModelXML() );
                 }
             },

@@ -26,6 +26,7 @@ define([
             scenarioCollection: null,
             scenarioIndex: 0,
             doLog: false,
+            logPrefix: '======== MmpModel > ',
 
             initialize: function () {
                 MmpModel.__super__.initialize.apply( this, arguments );

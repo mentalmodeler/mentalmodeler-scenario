@@ -30,10 +30,10 @@ define([
             var ua = Detect.parse( navigator.userAgent );
             switch ( ua.browser.family.toLowerCase() ) {
             case 'firefox':
-                this.$el.append("<embed id='flash-content' src='swf/mentalmodeler.swf' height='100%' width='100%' allowscriptaccess='always' type='application/x-shockwave-flash' />");
+                this.$el.append("<embed id='flash-content' src='swf/mentalmodeler.swf' height='100%' width='100%' allowscriptaccess='always' allowFullScreen='true' type='application/x-shockwave-flash' />");
                 break;
             default:
-                this.$el.append("<object id='flash-content' type='application/x-shockwave-flash' height='100%' width='100%'><param name='movie' value='swf/mentalmodeler.swf'/> <param name='allowScriptAccess' value='always' /></object>");
+                this.$el.append("<object id='flash-content' type='application/x-shockwave-flash' height='100%' width='100%'><param name='movie' value='swf/mentalmodeler.swf'/><param name='allowScriptAccess' value='always' /><param name='allowFullScreen' value='true' /></object>");
             }
 
             this.flash = this.$el.find('#flash-content')[0];

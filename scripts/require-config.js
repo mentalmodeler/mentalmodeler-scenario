@@ -25,6 +25,9 @@ require.config({
         swfobject: {
             deps: [],
             exports: 'swfobject'
+        },
+        x2js: {
+            exports: 'x2js'
         }
     },
     paths: {
@@ -37,6 +40,7 @@ require.config({
         sylvester: '../vendor/sylvester/sylvester',
         downloadify: '../vendor/downloadify/js/downloadify.min',
         swfobject: '../vendor/downloadify/js/swfobject',
-        detect: '../vendor/detect/detect.min'
+        detect: '../vendor/detect/detect.min',
+        x2js: '../vendor/x2js/xml2json.min'
     }
 });

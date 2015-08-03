@@ -13,7 +13,7 @@ define([
     'use strict';
 
     var AppModel = AbstractModel.extend({
-            
+
             version: '1.1',
 
             defaults: {
@@ -28,14 +28,15 @@ define([
             gridView: null,
             scenarioView: null,
             infoView:null,
-            values:{ 'H+' : 1,
-                     'M+' : 0.75,
-                     'L+' : 0.5,
-                     ''   : 0,
-                     'H-' : -1,
-                     'M-' : -0.75,
-                     'L-' : -0.5
-                   },
+            values: {
+                'H+' : 1,
+                'M+' : 0.62, // 0.75,
+                'L+' : 0.25, // 0.5,
+                ''   : 0,
+                'H-' : -1,
+                'M-' : -0.62, // -0.75,
+                'L-' : -0.25 // -0.5
+            },
             doLog: false,
             logPrefix: '======== AppModel > ',
 
@@ -62,13 +63,13 @@ define([
             addModel: function( xml, fileName ) {
                 var options = { justAdded: true };
                 if (typeof xml !== 'undefined' && xml !== '') {
-                    options.xml = xml
+                    options.xml = xml;
                 }
-                options.filename = fileName
+                options.filename = fileName;
                 var mmp = new MmpModel( options );
                 var mmpView = new MmpView( {model:mmp} );
                 this.mmps.add( mmp );
-                
+
                 // this event will trigger a new model to be added to the list and it will automatically be selected
                 Backbone.trigger( 'mmp:add', mmp );
             },
@@ -79,13 +80,13 @@ define([
             addScenario: function( xml ) {
                 var options = { justAdded: true };
                 if (typeof xml !== 'undefined' && xml !== '') {
-                    options.xml = xml
+                    options.xml = xml;
                 }
-                
+
                 var mmp = new MmpModel( options );
                 var mmpView = new MmpView( {model:mmp} );
                 this.mmps.add( mmp );
-                
+
                 // this event will trigger a new model to be added to the list and it will automatically be selected
                 Backbone.trigger( 'mmp:add', mmp );
             },
@@ -111,7 +112,7 @@ define([
                         this.curSelection = model;
                         this.curSelectionType = "mmp";
                     }
-                    
+
                 }
                 else {
                     // no target
@@ -136,10 +137,10 @@ define([
                 var sectionChanged = this.curSection !== section;
                 var prevSection = this.curSection;
                 this.log('setSection, section:',section,', prevSection:',prevSection,', sectionChanged:',sectionChanged);
-                
+
                 if ( sectionChanged ) {
                     this.saveModelData();
-                    this.curSection = section;                    
+                    this.curSection = section;
                     if ( section === 'scenario' && this.curSelectionType !== 'scenario') {
                         // auto select a scenario
                         this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(this.curModel.scenarioIndex) );
@@ -150,7 +151,7 @@ define([
 
             saveModelData:function( force ) {
                 this.log('AppModel > saveModelData, this.curSection:',this.curSection,' force:',force);
-                
+
                 // leaving from modeling section, so save data to model
                 if ( (typeof force !== 'undefined' && force ) || this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
                     this.curModel.updateFromModelSection( this.modelingView.getModelXML() );
@@ -202,7 +203,7 @@ define([
                         if ( scenario && scenario.collection && scenario.collection.length > 1 ) {
                             var idx = scenario.collection.indexOf( scenario );
                             if ( idx  === scenario.collection.length - 1 ) {
-                                idx -= 1
+                                idx -= 1;
                             }
                             // clean up scenario
                             scenario.close();
@@ -210,10 +211,10 @@ define([
                             scenario.collection.remove( scenario );
                             this.curSelection = null;
                             this.selectionChange( this.curModel, undefined, undefined, collection.at(idx) );
-                            
+
                             Backbone.trigger( 'scenario:remove');
                         }
-                        
+
                     } else if ( this.curSelection instanceof MmpModel ) {
                         this.log('remove mmp');
                         if ( this.mmps.length > 1 ) {
@@ -228,12 +229,12 @@ define([
                             this.mmps.remove( modelToRemove );
                             this.curModel = null;
                             this.selectionChange( this.mmps.at(idx) );
-                            
-                            Backbone.trigger( 'mmp:remove');         
+
+                            Backbone.trigger( 'mmp:remove');
                         }
                     }
                     else {
-                      this.log('remove called for other type');  
+                      this.log('remove called for other type');
                     }
                 }
             },

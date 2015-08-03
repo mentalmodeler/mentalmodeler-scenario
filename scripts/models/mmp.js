@@ -25,25 +25,34 @@ define([
             conceptCollection: null,
             scenarioCollection: null,
             scenarioIndex: 0,
+            x2js: null,
             doLog: false,
             logPrefix: '======== MmpModel > ',
 
             initialize: function () {
+
                 MmpModel.__super__.initialize.apply( this, arguments );
-                
+
                 this.infoModel = new InfoModel();
-                this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );                
+                this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );
                 this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
+
+                this.parseXML( this.get('xml') );
+
                 this.setData( XMLUtils.parseMmpFile( this.get('xml') ) );
                 Backbone.trigger( 'mmp:change' );
-                
+
                 // for scenarios added after model and view is first created
                 this.listenTo( this.scenarioCollection, 'add', this.onScenarioAdded );
             },
 
+            parseXML: function(xml) {
+                //console.log( 'this.x2js:,',this.x2js,', parseXML, xml:',xml );
+            },
+
             close: function() {
                 this.log('MmpModel > close');
-                
+
                 // destroy the view
                 if ( this.getView() ) {
                     this.getView().close();
@@ -57,11 +66,11 @@ define([
                 this.scenarioCollection = null;
 
                 // destroy concept collection
-                this.conceptCollection.reset();                
+                this.conceptCollection.reset();
                 this.conceptCollection = null;
-                
+
                 // destroy info model
-                 this.infoModel.close(); 
+                 this.infoModel.close();
                 this.infoModel = null;
             },
 
@@ -98,7 +107,7 @@ define([
 
             /*
              * set data model with JSON values
-             */ 
+             */
             setData: function( data ) {
                 if ( typeof data === 'undefined' ) {
                     return false;
@@ -127,7 +136,7 @@ define([
 
             /*
              * gets xml string
-             */ 
+             */
             getModelingXML: function() {
                 var xml = XMLUtils.header + XMLUtils.elementNL( 'mentalmodeler', this.getConceptsXML() );
                 return xml;
@@ -194,22 +203,22 @@ define([
                 var influences = [];
                 var clamps = [];
                 var scenarioConceptCollection = null;
-                
+
                 if ( appModel.curSelection instanceof ScenarioModel ) {
                     scenarioConceptCollection = appModel.curSelection.conceptCollection;
                 }
 
                 this.conceptCollection.each( function( concept ) {
                     influences.push( concept.getInfluences() );
-                    
+
                     if ( scenarioConceptCollection !== null ) {
                         var scenarioConcept = scenarioConceptCollection.findWhere( { id: concept.get('id') });
                         if (typeof scenarioConcept !== 'undefined' && scenarioConcept !== null) {
                             concepts.push( scenarioConcept );
-                            clamps.push( appModel.getInfluenceValue( scenarioConcept.get('influence') ) );    
+                            clamps.push( appModel.getInfluenceValue( scenarioConcept.get('influence') ) );
                         }
                         else {
-                            clamps.push( appModel.getInfluenceValue( '' ) );    
+                            clamps.push( appModel.getInfluenceValue( '' ) );
                         }
                     }
                 });

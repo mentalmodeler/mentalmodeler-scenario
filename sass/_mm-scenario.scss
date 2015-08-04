@@ -714,24 +714,26 @@ div.right-main {
               display: block;
               position: absolute;
               z-index: 1114;
-              bottom: -8px;
+              bottom: -4px;
+              left: 0px;
+              width: 100%;
             }
           }
           input[type=range], ::-moz-range-track, ::-ms-track {
             -webkit-appearance: none;
             background-color: #3f91e5;
-            width: 100%
+            width: 100%;
+            outline: none;
             // width: 250px;
             // height:20px;
           }
-          /*
-          ::-webkit-slider-thumb, ::-moz-range-thumb, ::-ms-thumb {{
+          ::-webkit-slider-thumb, ::-moz-range-thumb, ::-ms-thumb {
             -webkit-appearance: none;
-            background-color: #666;
-            width: 10px;
-            height: 20px;
+            // background-color: #666;
+            // width: 10px;
+            // height: 20px;
+            outline: none;
           }
-          */
           .input {
             &:active, &:focus {
               z-index: 0;

@@ -84,6 +84,9 @@ define([
         observer.observe( domUtils.element(opts.container), {childList: true, subtree: true } );
     };
 
+
+
+
     domUtils.setSelection = function( $elem, start, end ) {
         // if passed jquery wrapped elem in not defined, return
         if ( _.isUndefined($elem) ) {
@@ -144,6 +147,27 @@ define([
             return rc.text.length;
         }
         return 0;
+    };
+
+
+    domUtils.createHumanReadableIdentifierPropValue = function( moduleId, identifier, hrid, isCustomScoring, isEnumeratedHrid ) {
+        if ( !_.isString(identifier) || _.isEmpty(identifier) ) {
+            console.error('domUtils.getHumanReadableIdentifierPropContent > identifier must be a non-empty string');
+        }
+        var labels = Intlize.getInstance().getLabels( [ ['identifier'] ] );
+        if ( _.isUndefined( hrid ) ) {
+            hrid = DataUtils.getHrid( moduleId, identifier );
+        }
+        if ( _.isUndefined(isCustomScoring) ) {
+            isCustomScoring = false;
+        }
+
+        if ( _.isUndefined(isEnumeratedHrid) ) {
+            isEnumeratedHrid = false;
+        }
+        //console.log('domUtils.getHumanReadableIdentifierPropValue, moduleId:',moduleId,', identifier:',identifier,', hrid:',hrid);
+        var template = JST['authoring/humanReadableIdentifier'];
+        return template( { labels:labels, identifier:identifier, hrid:hrid, isEditable:!isCustomScoring, isEnumeratedHrid:isEnumeratedHrid } );
     };
 
     return domUtils;

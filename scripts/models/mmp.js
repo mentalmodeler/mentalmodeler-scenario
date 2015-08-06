@@ -6,11 +6,12 @@ define([
     'backbone',
     'models/abstract',
     'models/info',
+    'models/group',
     'models/concept',
     'models/scenario',
     'util/xmlUtils'
 
-], function ( $, _, Backbone, AbstractModel, InfoModel, ConceptModel, ScenarioModel, XMLUtils ) {
+], function ( $, _, Backbone, AbstractModel, InfoModel, GroupModel, ConceptModel, ScenarioModel, XMLUtils ) {
     'use strict';
 
     var MmpModel = AbstractModel.extend({
@@ -22,6 +23,7 @@ define([
             },
 
             infoModel: null,
+            groupModel: null,
             conceptCollection: null,
             scenarioCollection: null,
             scenarioIndex: 0,
@@ -29,11 +31,13 @@ define([
             doLog: false,
             logPrefix: '======== MmpModel > ',
 
-            initialize: function () {
+            initialize: function( options ) {
 
+                console.log('mmp options:',options);
                 MmpModel.__super__.initialize.apply( this, arguments );
 
                 this.infoModel = new InfoModel();
+                this.groupModel = new GroupModel();
                 this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );
                 this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
 
@@ -117,6 +121,9 @@ define([
                 if (typeof data.info !== 'undefined') {
                     this.infoModel.setData( data.info );
                 }
+                if (typeof data.groupNames !== 'undefined') {
+                   this.groupModel.setData( data.groupNames );
+                }
                 if (typeof data.concepts !== 'undefined') {
                     _.each( data.concepts, function( concept ) {
                         that.conceptCollection.add( concept )
@@ -138,12 +145,14 @@ define([
              * gets xml string
              */
             getModelingXML: function() {
-                var xml = XMLUtils.header + XMLUtils.elementNL( 'mentalmodeler', this.getConceptsXML() );
+                //var xml = XMLUtils.header + XMLUtils.elementNL( 'mentalmodeler', this.getConceptsXML() );
+                var nodes = [ XMLUtils.JOIN_STR, this.groupModel.toXML(), this.getConceptsXML() ];
+                var xml = XMLUtils.header + XMLUtils.JOIN_STR + XMLUtils.elementNL( 'mentalmodeler', nodes.join('') );
                 return xml;
             },
 
             getXML: function() {
-                var nodes = [ XMLUtils.JOIN_STR, this.infoModel.toXML(), this.getConceptsXML(), this.getScenariosXML() ];
+                var nodes = [ XMLUtils.JOIN_STR, this.infoModel.toXML(), this.groupModel.toXML(), this.getConceptsXML(), this.getScenariosXML() ];
                 var xml = XMLUtils.header + XMLUtils.JOIN_STR + XMLUtils.elementNL( 'mentalmodeler', nodes.join('') );
                 this.set( 'xml', xml );
                 //console.log('getXML, xml:',xml);

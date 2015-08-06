@@ -19,6 +19,7 @@ define([
                 x: '',
                 y: '',
                 units: '',
+                group: '',
 
                 // for scenario use
                 selected: '',

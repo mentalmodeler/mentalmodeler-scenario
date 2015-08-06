@@ -28,42 +28,54 @@ define([
         skipEmptyTextNodesForObj: true, // true|false - Skip empty text tags for nodes with children. Default is true.
         stripWhitespaces: true //true|false - Strip whitespaces (trimming text nodes). Default is true.
         //datetimeAccessFormPaths: [], // [] - Datetime access paths. Use this option to configure paths to XML elements for "datetime form". You can configure beforehand paths to all your array elements based on XSD or your knowledge. Every path could be a simple string (like 'parent.child1.child2'), a regex (like /.*\.child2/), or a custom function. Default is empty
-    }
+    };
     xmlUtils.x2js = new X2JS( config );
 
-    xmlUtils.elementsFromJSON = function ( json, exclude, cdata ) {
+    xmlUtils.elementsFromJSON = function ( json, exclude, cdata, options ) {
         if ( typeof exclude === 'undefined' ) {
             exclude = [];
         }
+        options = options || {};
+        var attr = options.attr;
         var xml = [ xmlUtils.JOIN_STR ];
         for ( var key in json ) {
             if ( exclude.indexOf(key) === -1 ) {
-                xml.push( this.elementNL(key, json[key], cdata) );
+                var nodeName = options.nodeName === undefined ? key : options.nodeName;
+                var attrs;
+                if ( attr !== undefined ) {
+                    attrs = [ {name:attr, value:key} ];
+                }
+                var node = this.elementNL(nodeName, json[key], cdata, attrs);
+                xml.push( node );
             }
         }
-
-        return xml.join('');
+        return  xml.join('');
     };
 
-    xmlUtils.element = function ( name, content, cdata ) {
+    xmlUtils.element = function ( name, content, cdata, attrs  ) {
+        attrs = attrs || [];
         var xml;
+        var sAttrs = ' ';
+        _.each( attrs, function( attr ) {
+            sAttrs += attr.name + '="' + attr.value + '"'
+        });
         if ( typeof content === 'undefined' ){
-            xml='<' + name + '/>';
+            xml='<' + name + sAttrs + '/>';
         }
         else {
             if ( typeof cdata !== 'undefined' && cdata === true ) {
-                xml='<'+ name + '><![CDATA[' + content + ']]></' + name + '>';
+                xml='<'+ name + sAttrs +  '><![CDATA[' + content + ']]></' + name + '>';
             }
             else {
-                xml='<'+ name + '>' + content + '</' + name + '>';
+                xml='<'+ name + sAttrs + '>' + content + '</' + name + '>';
             }
 
         }
         return xml;
     };
 
-    xmlUtils.elementNL = function ( name, content, cdata ) {
-        return this.element( name, content, cdata ) + '\n';
+    xmlUtils.elementNL = function ( name, content, cdata, attrs ) {
+        return this.element( name, content, cdata, attrs ) + '\n';
     };
 
     xmlUtils.parseMmpFile = function( xmlString, excludeArray ) {
@@ -80,6 +92,11 @@ define([
                 case 'info':
                     if ( excludeArray.indexOf( 'info' ) === -1 ) {
                         o.info = this.getJSONFromNode( node );
+                    }
+                    break;
+                 case 'groupNames':
+                    if ( excludeArray.indexOf( 'group' ) === -1 ) {
+                        o.groupNames = this.getJSONFromNode( node );
                     }
                     break;
                 case 'concepts':
@@ -138,13 +155,20 @@ define([
 
     xmlUtils.getJSONFromNode = function( xmlNode ) {
         var props = xmlNode.childNodes;
+        // console.log('xmlUtils.getJSONFromNode, xmlNode:',xmlNode);
         var o = {};
         for ( var j=0; j<props.length; j++ ) {
             var prop = props[j];
             if ( prop.nodeType === 1) {
-                //if ( prop.localName === 'relationships') {
                 if ( prop.localName === 'influence' ) {
-                    prop.innerHTML= xmlUtils.updateInfluenceValue( prop.innerHTML );
+                    prop.textContent= xmlUtils.updateInfluenceValue( prop.textContent );
+                    //prop.innerHTML= xmlUtils.updateInfluenceValue( prop.innerHTML );
+                }
+                if ( prop.localName === 'groupName' ) {
+                    var idx = prop.getAttribute('index');
+                    o[ idx ] = prop.textContent;
+                    // console.log('     prop:',prop,', o[ ',idx,' ]:',o[ idx ]);
+                    continue;
                 }
                 if ( this.nestedLists.indexOf( prop.localName ) > -1 ) {
                     o[ prop.localName ] = this.getJSONFromArray( this.getChildNodes( prop ) );
@@ -152,6 +176,7 @@ define([
                 else {
                     o[ prop.localName ] = prop.textContent;
                 }
+                // console.log('     o[ ',prop.localName,' ]:',o[ prop.localName ]);
             }
         }
         return o;

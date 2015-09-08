@@ -65,24 +65,24 @@ define([
                 //this.log('addConcepts, this.conceptCollection:',this.conceptCollection,', this.conceptsSourceCollection:',this.conceptsSourceCollection);
                 var that = this;
                 that.conceptCollection.reset();
-                
+
                 var appModel = window.mentalmodeler.appModel;
                 if ( appModel.curModel !== null ) {
                     var conceptsSourceCollection = appModel.curModel.conceptCollection;
                     //this.conceptsSourceCollection.each( function( conceptModel ) {
                     //console.log('      appModel.curModel:',appModel.curModel);//conceptsSourceCollection:',conceptsSourceCollection );
                     this.sourceConceptCollection.each( function( conceptModel ) {
-                        var conceptRefProps =  { id: conceptModel.get('id'), name: conceptModel.get('name') };
                         var id = conceptModel.get('id');
+                        var conceptRefProps =  { id: id, name: conceptModel.get('name'), preferredState: conceptModel.get('preferredState')};
                         var prevModel = prevCollection.findWhere( {id: id} );
                         if ( typeof prevModel !== 'undefined' ) {
                             conceptRefProps.selected = prevModel.get('selected');
                             conceptRefProps.influence = prevModel.get('influence');
                             that.log('     modifying scenario concept, conceptRefProps:',conceptRefProps);
                         } else {
-                            that.log('     adding scenario concept, conceptRefProps:',conceptRefProps);    
+                            that.log('     adding scenario concept, conceptRefProps:',conceptRefProps);
                         }
-                        
+
                         that.conceptCollection.add( { conceptRefProps: conceptRefProps } );
                     });
                 }

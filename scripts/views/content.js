@@ -10,12 +10,13 @@ define([
     'views/grid',
     'views/info',
     'views/scenario',
+    'views/preferred',
     'text!templates/content.html'
-], function ($, _, Backbone, Foundation, AbstractView, ModelingView, GridView, InfoView, ScenarioView, Template) {
+], function ($, _, Backbone, Foundation, AbstractView, ModelingView, GridView, InfoView, ScenarioView, PreferredView, Template) {
     'use strict';
 
     var ContentView = AbstractView.extend({
-        
+
         tagName: 'div',
         className: 'right-main app-panel',
         template: _.template( $(Template).html() ),
@@ -23,57 +24,64 @@ define([
         gridView: null,
         infoView: null,
         scenarioView: null,
+        preferredView: null,
         contentPanelHeight: 0,
         doLog: false,
         logPrefix: '_-_-_ ContentView > ',
 
         initialize: function() {
             ContentView.__super__.initialize.apply( this, arguments );
-            
+
             this.modelingView = new ModelingView();
             this.gridView = new GridView();
             this.infoView = new InfoView();
             this.scenarioView = new ScenarioView();
+            this.preferredView = new PreferredView();
 
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
             this.listenTo( Backbone, 'section:pre-change', this.onSectionPreChange );
+            //this.listenTo( Backbone, 'window:resize', this.onResize );
         },
 
         render: function() {
             var that = this;
             this.$el.html( this.template( {} ) );
-            
+
             // populate tab panel content
             this.$el.find('div.tabs-content #panel-modeling').html( this.modelingView.render().el );
             this.$el.find('div.tabs-content #panel-grid').html( this.gridView.render().el );
             this.$el.find('div.tabs-content #panel-info').html( this.infoView.render().el );
             this.$el.find('div.tabs-content #panel-scenario').html( this.scenarioView.render().el );
-            
+            this.$el.find('div.tabs-content #panel-preferred').html( this.preferredView.render().el );
+
             // override default tab click functionality
             this.$el.find('.tabs').on('click', function (e) {
                 var $target = $(e.target);
                 if ( $target.is('i') ) {
                     $target = $target.closest('a');
                 }
+                console.log('$target:',$target )
                 var section = $target[0].href.split('-')[1];
                 window.mentalmodeler.appModel.setSection( section );
-                that.updateContentPanel( section );    
-                
+                that.updateContentPanel( section );
+
                 // prevent click from propogating
-                e.preventDefault();                
+                e.preventDefault();
                 return false;
             });
+            this.resizeTabs()
+            //this.onResize();
             return this;
         },
 
         updateSection:function (section) {
             window.mentalmodeler.appModel.setSection( section );
-            this.updateContentPanel( section );        
+            this.updateContentPanel( section );
         },
 
         onSelectionChange: function( model, target, section ) {
             this.log('onSelectionChange, model:',model,', target:',target,', section:', section);
-            
+
             // simulate a tab click
             if (typeof section !== 'undefined' ) {
                 if ( section === 'modeling' ) {
@@ -116,10 +124,21 @@ define([
             Backbone.trigger( 'section:change', section, prevSection );
         },
 
+        resizeTabs: function() {
+            var height = 0;
+            _.each( this.$el.find('dd a'), function ( elem ) {
+                var $elem = $(elem);
+                height = $elem.outerHeight() > height ? $elem.outerHeight() : height;
+            });
+            // size tabs to largest. also size 'file' tab on left main panel
+            this.$el.find('dd').outerHeight( height );
+            $('.left-main .header').outerHeight( height );
+        },
+
         updateContentPanel: function( activeId ) {
             var that = this;
             var useActive = ( typeof activeId === 'undefined' );
-            this.$el.find('div.content').each( function() {                
+            this.$el.find('div.content').each( function() {
                 var $this = $(this);
                 var id = $this.attr('id');
                 var h = that.contentPanelHeight;
@@ -133,14 +152,22 @@ define([
         },
 
         setHeight: function( availableHeight ) {
+            this.resizeTabs();
             var tabHeight = this.$el.find('.tabs').outerHeight();
             var padding = parseInt( this.$el.find('div.tabs-content').css( 'padding-top' ), 10 ) + parseInt( this.$el.find('div.tabs-content').css( 'padding-bottom' ), 10 );
-            this.contentPanelHeight = availableHeight - tabHeight - padding
+            var cpHeight = this.contentPanelHeight = availableHeight - tabHeight - padding
             this.$el.find('div.tab-content').height( availableHeight );
-            
+
             //console.log('setHeight, availableHeight:',availableHeight,', tabHeight:',tabHeight,', padding:',padding );
             this.updateContentPanel();
-            this.scenarioView.setHeight( this.contentPanelHeight );
+            var views = [ this.modelingView, this.gridView, this.infoView, this.scenarioView, this.preferredView ];
+            _.each( views, function( view ) {
+                if ( _.isFunction(view.setHeight) ) {
+                    view.setHeight( cpHeight );
+                }
+            });
+            //this.scenarioView.setHeight( this.contentPanelHeight );
+
         },
 
         getActivePanel:function () {

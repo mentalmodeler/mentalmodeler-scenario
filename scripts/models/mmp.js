@@ -33,7 +33,7 @@ define([
 
             initialize: function( options ) {
 
-                console.log('mmp options:',options);
+                //console.log('mmp options:',options);
                 MmpModel.__super__.initialize.apply( this, arguments );
 
                 this.infoModel = new InfoModel();

@@ -9,12 +9,14 @@
 			  		<td class="col-1"></td>
 			  		<td class="col-2">Component</td>
 			  		<td class="col-3">+/-</td>
+			  		<td class="col-3">Preferred State</td>
+			  		<td class="col-3">Actual State</td>
 			  	</tr>
 			  </thead>
 			  <tbody>
 			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; hasNoValue =  concept.influence === ""; %>
-			  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >			    	
-			    	<td class="col-1">			    		
+			  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >
+			    	<td class="col-1">
 			    			<input type="checkbox" name="selected" <%= concept.selected ? "checked" : ""%> >
 			    	</td>
 			    	<td class="col-2"><%= concept.name %></td>
@@ -29,6 +31,8 @@
 						  <option value="H-" <%= concept.influence === "H-" ? "selected" : "" %> >---</option>
 						</select>
 			    	</td>
+			    	<td class="col-4"><%= (!concept.preferredState || concept.preferredState === 0) ? '' : concept.preferredState > 0 ? 'Increase' : 'Decrease' %></td>
+			    	<td class="col-5"> </td>
 			    </tr>
 			    <% } %>
 			  </tbody>

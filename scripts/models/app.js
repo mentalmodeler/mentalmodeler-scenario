@@ -55,6 +55,9 @@ define([
             start: function() {
                 this.getView().resizeScrollPanels();
                 this.addModel();
+                if ( window.mmConfig && window.mmConfig.loadFile ) {
+                    this.loadXMLFileFromServer( window.mmConfig.loadFile );
+                }
             },
 
             /*
@@ -237,6 +240,19 @@ define([
                       this.log('remove called for other type');
                     }
                 }
+            },
+
+            loadXMLFileFromServer: function( filePath ) {
+                var a = filePath.split( '/' );
+                var s = a[ a.length - 1 ].split( '.' );
+                var name = s[ 0 ];
+                var xhr = new XMLHttpRequest();
+                xhr.open( 'GET', filePath, true );
+                xhr.responseType = 'text';
+                xhr.onload = function( e ) {
+                    this.addModel( xhr.response, name );
+                }.bind(this);
+                xhr.send();
             },
 
             /*

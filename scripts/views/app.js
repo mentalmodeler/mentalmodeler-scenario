@@ -68,11 +68,12 @@ define([
             var availableHeight = viewportHeight - headerHeight - footerHeight - padding;
             // console.log( 'viewportHeight:',viewportHeight,', padding:',padding,', headerHeight:',headerHeight,', footerHeight:',footerHeight,', availableHeight:',availableHeight);
             $workspace.height( availableHeight );
-            this.listView.setAvailableHeight( availableHeight );
+            // set content vioew height first, because that sizes the tabs
             this.contentView.setHeight( availableHeight );
+            this.listView.setAvailableHeight( availableHeight );
             Backbone.trigger('window:resize', { availableHeight: availableHeight } );
         }
-  
+
     });
 
     return AppView;

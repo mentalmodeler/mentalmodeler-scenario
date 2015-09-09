@@ -253,8 +253,10 @@ console.log('---- parseMmpFile, o:',o);
                 }
                 else {
                     o[ prop.localName ] = prop.textContent;
+                    //console.log('     o[ ',prop.localName,' ]:',o[ prop.localName ]);
+
                 }
-                //console.log('     o[ ',prop.localName,' ]:',o[ prop.localName ]);
+
             }
         }
 

@@ -615,13 +615,30 @@ div.right-main {
           table{
             min-width: 100%;
             margin-bottom: 0;
+            $notIncludedOpacity: 0.65;
             thead, tbody {
               tr.hasValue {
                 input[type="checkbox"] {
                   display: none;
                 }
                 td.col-2 {
-                  opacity: 0.65;
+                  opacity: $notIncludedOpacity;
+                }
+              }
+              tr.notIncludedInScenario {
+                > td.mutable {
+                  cursor: default;
+                  .input, .slider, i {
+                    display: none;
+                  }
+                  &:hover, :active {
+                    background-color: initial;
+                    -webkit-box-shadow: none;
+                    box-shadow: none;
+                  }
+                }
+                > td {
+                  opacity: $notIncludedOpacity;
                 }
               }
               tr > td {
@@ -655,12 +672,75 @@ div.right-main {
                   max-width: 10%;
                   width: 10%;
                 }
-
-                select.hasValue {
-                  background-color: rgba(191, 15, 0, $selected-select-bg-alpha);
-                }
                 input[type="checkbox"] {
                   margin:0;
+                }
+                &.mutable {
+                  $caretPadding: 12px;
+                  text-align: center;
+                  min-width: 50px;
+                  position: relative;
+                  cursor: pointer;
+                  &:hover, :active {
+                    z-index: 1004;
+                    background-color: rgba(255,255,255,0.25);
+                    @include td-shadow();
+                  }
+                  &.hasValue {
+                    background-color: rgba(191, 15, 0, $selected-select-bg-alpha);
+                  }
+                  input {
+                    outline: none;
+                  }
+                  .slider {
+                    display: none;
+                    cursor: pointer;
+                    &.shown {
+                      display: block;
+                      position: absolute;
+                      z-index: 1114;
+                      bottom: -4px;
+                      left: 0px;
+                      width: 100%;
+                    }
+                  }
+                  input[type=range], ::-moz-range-track, ::-ms-track {
+                    -webkit-appearance: none;
+                    background-color: #3f91e5;
+                    width: 100%;
+                    outline: none;
+                  }
+                  ::-webkit-slider-thumb, ::-moz-range-thumb, ::-ms-thumb {
+                    -webkit-appearance: none;
+                    outline: none;
+                  }
+                  .input {
+                    display: inline-block;
+                    box-sizing: border-box;
+                    border: none;
+                    background-color: transparent;
+                    box-shadow: none;
+                    width: calc( 100% - #{$caretPadding}*2 );
+                    @include box-sizing(border-box);
+                    margin:0;
+                    text-align: center;
+                    padding: 0;
+                    &:active, &:focus {
+                      z-index: 0;
+                      background-color: rgba(191, 15, 0, $selected-select-bg-alpha);
+                      -webkit-box-shadow: none;
+                      box-shadow: none;
+                    }
+                  }
+                  i {
+                     padding-left: 5px;
+                     &:active,, &:focus {
+                      z-index: 0;
+                      background-color: initial;
+                      -webkit-box-shadow: none;
+                      box-shadow: none;
+                    }
+                  }
                 }
               }
             }
@@ -894,22 +974,8 @@ div.right-main {
               -webkit-box-shadow: none;
               box-shadow: none;
             }
-            //padding: 10px;
-            //margin-left: $caretPadding;
           }
         }
-        /*
-        tr > td > select {
-          min-width: 50px;
-          font-size: 1.5em;
-          //margin-left: 5px;
-          //width: calc(100% - 5px);
-          @include box-sizing(border-box);
-          option {
-            text-align: right;
-          }
-        }
-        */
       }
 
     }

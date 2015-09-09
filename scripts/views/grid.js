@@ -19,7 +19,6 @@ define([
         doLog: true,
 
         events: {
-            //'change select': 'onInfluenceChange',
             'mousedown .mutable': 'showSlider',
             'input .slider': 'onSliderUpdate',
             'input .input': 'onTextInput',
@@ -128,25 +127,13 @@ define([
             }
         },
 
-        onInfluenceChange: function( e ) {
-            var $select = $( e.target );
-            var value = $select.find('option:selected').val();
-            value !== '' ? $select.addClass('hasValue') : $select.removeClass('hasValue');
-            var id = $select.closest('td').attr('data-id');
-            var influencerId = $select.closest('tr').attr('data-id');
-            this.updateValue( id, influencerId, value);
-        },
-
         render: function() {
             var concepts = [];
             var curModel = window.mentalmodeler.appModel.curModel;
             if ( curModel ) {
                 concepts = curModel.getConceptsForGrid();
             }
-
             this.$el.html( this.template( {concepts:concepts} ) );
-            //this.$el.find('table.responsive').responsiveTable();
-            //$(document).foundation();
             return this;
         },
 

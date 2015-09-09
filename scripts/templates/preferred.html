@@ -9,13 +9,13 @@
 			  	</tr>
 			  </thead>
 			  <tbody>
-			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; hasNoValue = !concept.preferredState || concept.preferredState === "0"; %>
+			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0; %>
 			  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >
 			    	<td class="col-1"><%= concept.name %></td>
 			    	<td class="col-2 mutable">
 			    		<select <%= hasNoValue ? "" : "class='hasValue'" %> >
 						 	<option value="1" <%= concept.preferredState  > 0 ? "selected" : "" %> >Increase</option>
-							<option value="0" <%= !concept.preferredState || !concept.preferredState === 0 ? "selected" : "" %> ></option>
+							<option value="0" <%= hasNoValue ? "selected" : "" %> ></option>
 						  	<option value="-1" <%= concept.preferredState  < 0 ? "selected" : "" %> >Decrease</option>
 						</select>
 			    	</td>

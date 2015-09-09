@@ -24,7 +24,7 @@ define([
             'click #newFile': 'newFile',
             'click #deleteFile': 'remove'
         },
-        
+
         initialize: function() {
             HeaderView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
@@ -37,18 +37,18 @@ define([
                 e.preventDefault();
                 return false;
             });
-            
+
             window.Downloadify.create('saveFile', {
                 filename: this.getFilename,
                 data: this.getXML,
-                onComplete: function(){ 
-                  //alert('Your File Has Been Saved!'); 
+                onComplete: function(){
+                  //alert('Your File Has Been Saved!');
                 },
-                onCancel: function(){ 
+                onCancel: function(){
                   //alert('You have cancelled the saving of this file.');
                 },
-                onError: function(){ 
-                  //alert('You must put something in the File Contents or there will be nothing to save!'); 
+                onError: function(){
+                  //alert('You must put something in the File Contents or there will be nothing to save!');
                 },
                 transparent: true,
                 swf: 'swf/downloadify.swf',
@@ -68,7 +68,7 @@ define([
             if ( appModel.curModel ) {
                 filename = appModel.curModel.get('filename');
             }
-            return filename;
+            return filename.replace(/\s/g, '') + '.mmp';
         },
 
         getXML: function() {
@@ -95,22 +95,22 @@ define([
                     }
                 }
                 else if ( appModel.mmps.length > 1 ) {
-                    removeEnabled = true;    
+                    removeEnabled = true;
                 }
             }
             if ( removeEnabled ) {
                 this.$el.find( '#deleteFile' ).removeClass( 'disabled' );
             }
             else {
-                this.$el.find( '#deleteFile' ).addClass( 'disabled' );   
+                this.$el.find( '#deleteFile' ).addClass( 'disabled' );
             }
-            
+
         },
 
         /*
          *  new file
-         */       
-        
+         */
+
         newFile: function() {
             window.mentalmodeler.appModel.addModel();
         },

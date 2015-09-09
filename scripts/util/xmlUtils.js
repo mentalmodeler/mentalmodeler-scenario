@@ -128,7 +128,12 @@ define([
     };
 
     xmlUtils.parseMmpFileX2js = function( xmlString, excludeArray ) {
-        var o = xmlUtils.x2js.xml_str2json( xmlString ).mentalModeler;
+        var o = xmlUtils.x2js.xml_str2json( xmlString );
+        if ( o.mentalModeler ) {
+            o = o.mentalModeler;
+        } else if ( o.mentalmodeler ) {
+            o = o.mentalmodeler;
+        }
         // x2js parses <concepts><concept/><concept/></concepts> into a nest object or array
         // we need to unnest this to match the json structure the app is expecting,
         // so for each entry in the nodes to unnest hash below, unnest them
@@ -183,7 +188,7 @@ define([
                     break;
             }
         }
-//console.log('---- parseMmpFile, o:',o);
+console.log('---- parseMmpFile, o:',o);
         xmlUtils.parseMmpFileX2js( xmlString );
         return o;
     };
@@ -228,7 +233,7 @@ define([
 
     xmlUtils.getJSONFromNode = function( xmlNode ) {
         var props = xmlNode.childNodes;
-        // console.log('xmlUtils.getJSONFromNode, xmlNode:',xmlNode);
+        //console.log('xmlUtils.getJSONFromNode, xmlNode:',xmlNode);
         var o = {};
         for ( var j=0; j<props.length; j++ ) {
             var prop = props[j];
@@ -249,9 +254,10 @@ define([
                 else {
                     o[ prop.localName ] = prop.textContent;
                 }
-                // console.log('     o[ ',prop.localName,' ]:',o[ prop.localName ]);
+                //console.log('     o[ ',prop.localName,' ]:',o[ prop.localName ]);
             }
         }
+
         return o;
     };
 

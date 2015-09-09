@@ -20,6 +20,7 @@ define([
                 y: '',
                 units: '',
                 group: '',
+                preferredState: 0,
 
                 // for scenario use
                 selected: '',
@@ -50,7 +51,7 @@ define([
                         json.relationships = this.relationshipCollection.toJSON();
                 }
 
-                this.toXML();
+                //this.toXML();
                 return json;
             },
 

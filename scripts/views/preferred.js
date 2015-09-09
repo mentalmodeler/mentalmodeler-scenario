@@ -38,7 +38,9 @@ define([
             var $tr = $select.closest('tr');
             var id = $tr.attr('data-id');
             var value = $select.find('option:selected').val();
-            if ( value !== '' ) {
+            value = !_.isEmpty(value) ? parseFloat(value) : 0;
+            //console.log('onPreferredChange > value:',value,', typeof value:',typeof value);
+            if ( value !== 0 ) {
                 $select.addClass('hasValue');
                 $tr.addClass('hasValue');
             }

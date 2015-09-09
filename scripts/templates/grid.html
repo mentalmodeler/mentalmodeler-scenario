@@ -17,17 +17,6 @@
 	    			<% if ( addElem ) { %>
 		    			<input class="input" type="text" maxlength="5" value="<%= label %>"><i class="fa fa-caret-down"></i>
 		    			<input type="range" class="slider" min="-1" max="1" step=".01" value="<%= label %>" >
-		    			<!--
-		    			<select <%= hasNoValue ? "" : "class='hasValue'" %> >
-							  <option value="H+" <%= label === "H+" ? "selected" : "" %> >+++</option>
-							  <option value="M+" <%= label === "M+" ? "selected" : "" %> >++</option>
-							  <option value="L+" <%= label === "L+" ? "selected" : "" %> >+</option>
-							  <option value="" <%= hasNoValue ? "selected" : "" %> ></option>
-							  <option value="L-" <%= label === "L-" ? "selected" : "" %> >-</option>
-							  <option value="M-" <%= label === "M-" ? "selected" : "" %> >--</option>
-							  <option value="H-" <%= label === "H-" ? "selected" : "" %> >---</option>
-						</select>
-						-->
 					<% } %>
 	    		</td>
 	    	<% } %>

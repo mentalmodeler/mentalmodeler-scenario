@@ -10,8 +10,9 @@ define([
     'models/scenario',
     'models/mmp',
     'models/scenarioGraph',
-    'text!templates/scenario.html'
-], function ($, _, Backbone, Foundation, AbstractView, ScenarioGraphView, ScenarioModel, MmpModel, ScenarioGraphModel, Template) {
+    'text!templates/scenario.html',
+    'util/inputUtils'
+], function ($, _, Backbone, Foundation, AbstractView, ScenarioGraphView, ScenarioModel, MmpModel, ScenarioGraphModel, Template, InputUtils) {
     'use strict';
 
     var ScenarioView = AbstractView.extend({
@@ -23,12 +24,17 @@ define([
         availableHeight: 0,
         doLog: false,
         logPrefix: '-*-*- ScenarioView > ',
+        $currentSlider: null,
 
        events: {
             'input textarea#scenarioName' : 'onNameChange',
             'change input[type="checkbox"]' : 'onSelectedChange',
-            'change select': 'onInfluenceChange',
-            'click button#refreshScenario': 'refreshScenario'
+            'click button#refreshScenario': 'refreshScenario',
+            'mousedown tr:not(.notIncludedInScenario) > .mutable': 'showSlider',
+            'input .slider': 'onSliderUpdate',
+            'input .input': 'onTextInput',
+            'blur .input': 'onTextInput',
+            'change .slider': 'onSliderUpdate'
         },
 
         initialize: function() {
@@ -37,22 +43,98 @@ define([
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
             this.listenTo( Backbone, 'section:change', this.onSectionChange );
             this.sgView = new ScenarioGraphView();
+
+            this.debouncedRefreshScenario = _.debounce( this.refreshScenario, 500 );
         },
 
+        // --------------------- slider / input events --------------------------
+
+        showSlider: function( e ) {
+            if ( this.$currentSlider !== null ) {
+                this.$currentSlider.removeClass('shown');
+            }
+            this.$currentSlider = $(e.target).closest('td').find('.slider').addClass('shown');
+            $(document).on( 'click.gridSlider',function( e ) {
+                var $slider = $(e.target).closest('td').find('.slider');//.addClass('shown');
+                if ( !$slider.is(this.$currentSlider) ) {
+                    if ( this.$currentSlider ) {
+                        this.$currentSlider.removeClass('shown');
+                    }
+                    this.$currentSlider = null;
+                    $(document).off( 'click.gridSlider' );
+                }
+            }.bind(this) );
+        },
+
+        onTextInput:function( e ) {
+            var $input = $(e.currentTarget);
+            var $td = $input.closest('td');
+            var id = $input.closest( 'tr' ).attr( 'data-id' );
+            var validationOptions = {
+                default: 0,
+                min: -1,
+                max: 1,
+                canBeEmpty: true
+            };
+            var value = InputUtils.filterInput ($input, 'float', e.type, validationOptions);
+            var v = Math.round(value * 100) / 100;
+            if ( e.type !== 'input' ) {
+                if ( v !== value ) {
+                    $input.val( v );
+                }
+                if ( v === 0 ) {
+                    $input.val( '' );
+                }
+            }
+            this.updateValue( id, v, $td );
+            $td.find( '.slider' ).val( v );
+        },
+
+        onSliderUpdate: function( e ) {
+            //console.log('onSliderUpdate, e.type:',e.type);
+            var $slider = $( e.target );
+            var value = $slider.val();
+            var $td = $slider.closest( 'td' );
+            var $input = $td.find('.input').val( value );
+            var id = $slider.closest('tr').attr('data-id');
+            if ( e.type === 'change' ) {
+                //console.log('type is change, updateValue');
+                this.updateValue( id, value, $td);
+            }
+        },
+
+        updateValue: function( id, value, $td ) {
+            var $tr = $td.closest('tr');
+            var value = parseFloat(value);
+            value === 0 ? $td.removeClass('hasValue') : $td.addClass('hasValue');
+            value === 0 ? $tr.removeClass('hasValue') : $tr.addClass('hasValue');
+            //console.log('updateValue, id:',id,', value:',value);
+            var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
+            if ( scenarioConcept ) {
+                scenarioConcept.set( 'influence', value );
+                this.debouncedRefreshScenario();
+                //this.refreshScenario();
+            }
+        },
+        // ----------------------------------------------------------------------
+
         refreshScenario: function() {
+            //console.log('------refreshScenario');
             var curModel = window.mentalmodeler.appModel.curModel;
             this.log('refreshScenario, curModel:',curModel);
             if ( curModel && curModel.conceptCollection.length > 0 ) {
                 this.log('curModel.conceptCollection:',curModel.conceptCollection );
                 var scenarioData = curModel.getDataForScenarioCalculation();
-                this.sgView.setModel( new ScenarioGraphModel( scenarioData ) );    
+                this.sgView.setModel( new ScenarioGraphModel( scenarioData ) );
             }
         },
 
         onSelectedChange: function(e) {
             var $cb = $( e.target );
-            var id = $cb.closest('tr').attr('data-id');
+            var $tr = $cb.closest('tr');
+            var id = $tr.attr('data-id');
             var value = e.target.checked;
+            value ? $tr.removeClass('notIncludedInScenario') : $tr.addClass('notIncludedInScenario');
             var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
             //console.log('onSelectedChange,  $cb:', $cb,', id :',id,', value:',value,', typeof value:',typeof value,', scenarioConcept:',scenarioConcept);
             if ( scenarioConcept ) {
@@ -61,30 +143,7 @@ define([
             }
         },
 
-        onInfluenceChange: function(e) {
-            var $select = $( e.target );
-            var $tr = $select.closest('tr');
-            var id = $tr.attr('data-id');
-            var value = $select.find('option:selected').val();
-            this.log('value:',value);
-            if ( value !== '' ) {
-                $select.addClass('hasValue');
-                $tr.addClass('hasValue');
-            }
-            else {
-                $select.removeClass('hasValue');
-                $tr.removeClass('hasValue');
-            }
-
-            var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
-            //console.log('onInfluenceChange,  $select:', $select,', id :',id,', value:',value,', scenarioConcept:',scenarioConcept);
-            if ( scenarioConcept ) {
-                scenarioConcept.set( 'influence', value );
-                this.refreshScenario();
-            }
-        },
-
-        onNameChange:function(e) {            
+        onNameChange:function(e) {
             window.mentalmodeler.appModel.curSelection.set( 'name', this.$el.find('textarea#scenarioName').val() );
             Backbone.trigger( 'scenario:name-change' );
         },

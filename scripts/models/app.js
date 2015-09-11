@@ -166,31 +166,9 @@ define([
              */
             getInfluenceValue:function ( type ) {
                 var value = 0;
-                switch ( type ) {
-                    case 'H+':
-                    case '+++':
-                        value =  this.values[ 'H+' ];
-                        break;
-                    case 'M+':
-                    case '++':
-                        value =  this.values[ 'M+' ];
-                        break;
-                    case 'L+':
-                    case '+':
-                        value =  this.values[ 'L+' ];
-                        break;
-                    case 'H-':
-                    case '---':
-                        value =  this.values[ 'H-' ];
-                        break;
-                    case 'M-':
-                    case '--':
-                        value =  this.values[ 'M-' ];
-                        break;
-                    case 'L-':
-                    case '-':
-                        value =  this.values[ 'L-' ];
-                        break;
+                var val = parseFloat( type );
+                if ( !_.isNaN(val) ) {
+                    value = val;
                 }
                 return value;
             },

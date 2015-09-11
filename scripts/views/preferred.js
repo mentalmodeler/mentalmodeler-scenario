@@ -17,7 +17,7 @@ define([
         className: 'preferred row',
         template: _.template( $(Template).html() ),
         availableHeight: 0,
-        doLog: true,
+        doLog: false,
         logPrefix: '-*-*- PreferrredView > ',
 
        events: {

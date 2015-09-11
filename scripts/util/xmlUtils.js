@@ -188,7 +188,7 @@ define([
                     break;
             }
         }
-console.log('---- parseMmpFile, o:',o);
+//console.log('---- parseMmpFile, o:',o);
         xmlUtils.parseMmpFileX2js( xmlString );
         return o;
     };

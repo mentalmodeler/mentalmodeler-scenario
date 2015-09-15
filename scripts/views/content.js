@@ -60,7 +60,6 @@ define([
                 if ( $target.is('i') ) {
                     $target = $target.closest('a');
                 }
-                console.log('$target:',$target )
                 var section = $target[0].href.split('-')[1];
                 window.mentalmodeler.appModel.setSection( section );
                 that.updateContentPanel( section );
@@ -97,7 +96,7 @@ define([
 
         onSectionPreChange: function( section, prevSection ) {
             this.log('onSectionPreChange, section:', section, ', prevSection:',prevSection );
-            
+
             // update the current selected tab display
             this.$el.find('.tabs > dd').each( function (index, elem) {
                 var $this = $(this);
@@ -106,14 +105,14 @@ define([
                 section === id ? $this.addClass('active') : $this.removeClass('active');
             });
 
-            this.$el.find('div.content').each( function() {                
+            this.$el.find('div.content').each( function() {
                 var $this = $(this);
                 var id = $this.attr('id').split('-')[1];
                 section === id ? $this.addClass('active') : $this.removeClass('active');
 
                 // special treatment for modeling section because of embedded .swf
                 if ( id === "modeling" ) {
-                    $this.css( 'visibility', id === section ? 'visible' : 'hidden' );    
+                    $this.css( 'visibility', id === section ? 'visible' : 'hidden' );
                 }
                 else {
                    (id === section) ? $this.css('display', 'block') : $this.css('display', 'none');

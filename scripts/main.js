@@ -27,7 +27,15 @@ require.config({
         },
         x2js: {
             exports: 'x2js'
-        }
+        },
+        tableExport: {
+            deps: ['jquery'],
+            exports: 'tableExport'
+        },
+        jqueryBase64: {
+            deps: ['jquery'],
+            exports: 'jqueryBase64'
+        },
     },
     paths: {
         jquery: '../vendor/jquery/jquery.min',
@@ -40,7 +48,9 @@ require.config({
         downloadify: '../vendor/downloadify/js/downloadify.min',
         swfobject: '../vendor/downloadify/js/swfobject',
         detect: '../vendor/detect/detect.min',
-        x2js: '../vendor/x2js/xml2json'
+        x2js: '../vendor/x2js/xml2json',
+        tableExport: '../vendor/tableExport/tableExport',
+        jqueryBase64: '../vendor/tableExport/jquery.base64'
     }
 });
 

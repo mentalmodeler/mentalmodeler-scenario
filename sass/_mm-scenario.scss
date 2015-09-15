@@ -757,114 +757,91 @@ div.right-main {
     /*************************************************************************************
      *  Preferred Panel
      *************************************************************************************/
+    $prefPadding: 10px;
+    $prefTablePadding: 10px;
     div.content#panel-preferred {
       overflow: hidden;
-    }
-    > div.content#panel-preferred > div.preferred {
-      $preferred-panel-left-width: 260px; //200
-      $preferred-panel-right-width-adj: 21px;
-      max-width: none;
-      > div {
-        @include box-sizing(border-box);
-        display:inline-block;
-        vertical-align: top;
-
-        &.panel-right {
-          width: calc(100% - #{$preferred-panel-left-width} -  #{$preferred-panel-right-width-adj});
-          background-color:$gray-light;
-          height: 100%;
-          overflow: auto;
-          text-align: center;
-          .metrics {
-            @include vertical-align();
-            font-weight: 300;
-            font-size: 30px;
-            color: #ccc
-          }
-        }
-
-        &.panel-left {
-          width: $preferred-panel-left-width;
-          margin: 0 16px 0 0;
-          padding-left: 0;
-          label {
-            margin-bottom: 0.35rem;
-          }
-          #preferredTable {
-            overflow: auto;
-            padding-right: 2px;
-            &.hasOverflow {
-              border-top: solid 1px #cecece;
-              border-bottom: solid 1px #cecece;
-            }
-          }
-          table {
-            min-width: 100%;
-            margin-bottom: 0;
-            thead, tbody {
-              tr.hasValue {
-                input[type="checkbox"] {
-                  display: none;
-                }
-                td.col-2 {
-                  opacity: 0.65;
-                }
-              }
-              tr > td {
-                $padding: 5px;
-                //word-break: break-all;
-                padding: $padding;
-                text-align: center;
-                position: relative;
-                &.mutable:hover {
-                    background-color: rgba(255,255,255,0.25);
-                    @include td-shadow();
-                    z-index: 2004;
-                }
-                &.col-1 {
-                  min-width: 65%;
-                  max-width: 65%;
-                  width: 65%;
-                }
-                &.col-2 {
-                  min-width: 35%;
-                  max-width: 35%;
-                  width: 35%;
-                  padding: 0;
-                }
-                &.col-3 {
-                  min-width: 30%;
-                  max-width: 30%;
-                  width: 30%;
-                  padding: $padding 3px;
-                }
-
-                select {
-                  font-weight: bold;
-                  cursor: pointer;
-                  border:none;
-                  outline:none;
-                  background-color: transparent;
-                  background-position-x: 90%;
-                  &.hasValue {
-                    background-color: rgba(166, 111, 3, $selected-select-bg-alpha);
-                  }
-                }
-                input[type="checkbox"] {
-                  margin:0;
-                }
-              }
-            }
-            thead > tr > td {
-              text-align: center;
-            }
-            tbody > tr > td {
-              text-align: left;
-            }
-          }
+      select {
+        //font-weight: bold;
+        cursor: pointer;
+        border:none;
+        outline:none;
+        background-color: transparent;
+        background-position-x: 90%;
+        &.hasValue {
+          background-color: rgba(166, 111, 3, $selected-select-bg-alpha);
         }
       }
     }
+    #pref-left-panel {
+      box-sizing: border-box;
+      padding: 0 $prefPadding 0 0;
+      width: 20%;
+    }
+    #pref-right-panel {
+      width: 80%;
+      box-sizing: border-box;
+      padding: 0;
+      table {
+        text-align: left;
+        width: 100%;
+        tbody td {
+          padding-top: 5px;
+          padding-bottom: 5px;
+        }
+        td {
+          padding: $prefPadding;
+          text-align: center;
+          position: relative;
+        }
+        .mutable:hover {
+            background-color: rgba(255,255,255,0.25);
+            @include td-shadow();
+            z-index: 2004;
+        }
+        .col-1 {
+          $c1: 20%;
+          min-width: 40px;
+          max-width: $c1;
+          width: $c1;
+          padding: 0;
+        }
+        .col-2 {
+          $c2: 30%;
+          min-width: $c2;
+          max-width: $c2;
+          width: $c2;
+        }
+        .col-3 {
+          $c3: 13%;
+          min-width: $c3;
+          max-width: $c3;
+          width: $c3;
+          //padding: $padding 3px;
+        }
+        .col-4 {
+          $c4: 12%;
+          min-width: $c4;
+          max-width: $c4;
+          width: $c4;
+          //padding: 0;
+        }
+        .col-5 {
+          $c5: 13%;
+          min-width: $c5;
+          max-width: $c5;
+          width: $c5;
+        }
+        .col-5 {
+          $c6: 12%;
+          min-width: $c6;
+          max-width: $c6;
+          width: $c6;
+          //padding: $padding 3px;
+        }
+      }
+    }
+
     /**************************************************************************************
      *  info Panel
      **************************************************************************************/
@@ -900,14 +877,17 @@ div.right-main {
      *************************************************************************************/
     > div.content#panel-grid {
       table {
-        tbody {
-
+        thead td {
+          text-align: center;
+        }
+        tbody td {
+          text-align: right;
         }
         tr > td {
           $caretPadding: 12px;
-          text-align: center;
           min-width: 70px;
           &.mutable {
+            text-align: center;
             position: relative;
             cursor: pointer;
             &:hover, :active {

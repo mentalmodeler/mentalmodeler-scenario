@@ -7,7 +7,9 @@ define([
     'foundation',
     'views/abstract',
     'text!templates/grid.html',
-    'util/inputUtils'
+    'util/inputUtils',
+    'tableExport',
+    'jqueryBase64'
 ], function ($, _, Backbone, Foundation, AbstractView, Template, InputUtils ) {
     'use strict';
 

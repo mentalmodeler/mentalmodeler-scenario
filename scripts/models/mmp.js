@@ -9,9 +9,10 @@ define([
     'models/group',
     'models/concept',
     'models/scenario',
-    'util/xmlUtils'
+    'util/xmlUtils',
+    'util/mathUtils'
 
-], function ( $, _, Backbone, AbstractModel, InfoModel, GroupModel, ConceptModel, ScenarioModel, XMLUtils ) {
+], function ( $, _, Backbone, AbstractModel, InfoModel, GroupModel, ConceptModel, ScenarioModel, XMLUtils, MathUtils ) {
     'use strict';
 
     var MmpModel = AbstractModel.extend({
@@ -195,6 +196,7 @@ define([
                 // 9. Highest Centrality Variables     Components with the highest values: sum indegree + outdegree    In this simple model, (1) manipulative fishing (2) stocks of valuable fish (3) roach fish (4) excessive vegetation and (5) water level all have a centrality of 3 and (6) stocking and (7) algal blooms are "less important" by the centrality measure with a value of 1.
                 // 10. Most significant driving variables  Driver components with the largest outegree values  Since algal blooms are the only driving variable, it is the mist signficant driving variable. However, these can be ranked for larger models by ranking them by outdegree values
                 // 11. Most significant receiving variables    Receiver componnets with the largest indegree values    There are not reciever variables in this model. However, these can be ranked for larger models by ranking them by indegree values
+                var precision = 10;
                 var numComponents = this.conceptCollection.length;
                 var numConnections = this.getNumberOfConnections();
                 var numDrivers = 0;
@@ -229,12 +231,22 @@ define([
                 var o = {
                     numComs: numComponents,
                     numCons: numConnections,
-                    density: numConnections / this.getPossibleNumberOfConnections(),
-                    consPerComs: numConnections / numComponents,
+                    density: MathUtils.round( numConnections / this.getPossibleNumberOfConnections(), precision),
+                    consPerComs: MathUtils.round( numConnections / numComponents, precision),
                     numDrivers: numDrivers,
                     numReceivers: numReceivers,
                     numOrdinary: numOrdinary,
-                    complexityScore: numReceivers / numDrivers,
+                    complexityScore: MathUtils.round( numReceivers / numDrivers, precision),
+                    singleMetrics: [
+                        {value:'numComs', title:'Total Components'},
+                        {value:'numCons',title:'Total Connections'},
+                        {value:'density', title:'Density'},
+                        {value:'consPerComs', title:'Connections per Component'},
+                        {value:'numDrivers', title:'Number of Driver Components'},
+                        {value:'numReceivers', title:'Number of Receiver Components'},
+                        {value:'numOrdinary', title:'Number of Ordinary Components'},
+                        {value:'complexityScore', title:'Complexity Score'}
+                    ],
                     concepts: concepts
                 };
                 return o;

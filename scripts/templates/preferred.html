@@ -1,34 +1,49 @@
 <script type="text/template" class="template">
 	<div id="pref-left-panel" class="pull-left">
+		<div class="metricsWrapper">
+			<% var singleMetrics = metrics.singleMetrics || []; for (var i=0; i<singleMetrics.length; i++ ) { var metric = singleMetrics[i]; %>
+			<table class="metric">
+				<thead>
+					<tr>
+						<td class="col-metric"><%= metric.title %></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="col-metric"><%= metrics[metric.value] %></td>
+					</tr>
+				</tbody>
+			</table>
+			<% } %>
+		</div>
 	</div>
 	<div id="pref-right-panel" class="pull-right">
 		<table>
 		  <thead>
 		  	<tr>
-		  		<td class="col-1">Preferred State</td>
-		  		<td class="col-2">Component</td>
-		  		<td class="col-3">Indegree</td>
-		  		<td class="col-4">Outdegree</td>
-		  		<td class="col-5">Centrality</td>
-		  		<td class="col-6">Type</td>
+		  		<td class="col-name">Component</td>
+		  		<td class="col-pref-state">Preferred State</td>
+		  		<td class="col-indegree">Indegree</td>
+		  		<td class="col-outdegree">Outdegree</td>
+		  		<td class="col-centrality">Centrality</td>
+		  		<td class="col-type">Type</td>
 		  	</tr>
 		  </thead>
 		  <tbody>
-
-		  	<% console.log('metrics:',metrics); var concepts = metrics.concepts || []; for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0;%>
+		  	<% var concepts = metrics.concepts || []; for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0;%>
 		  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >
-		    	<td class="col-1 mutable">
+		    	<td class="col-name"><%= concept.name %></td>
+		    	<td class="col-pref-state mutable">
 		    		<select <%= hasNoValue ? "" : "class='hasValue'" %> >
 					 	<option value="1" <%= concept.preferredState  > 0 ? "selected" : "" %> >Increase</option>
 						<option value="0" <%= hasNoValue ? "selected" : "" %> ></option>
 					  	<option value="-1" <%= concept.preferredState  < 0 ? "selected" : "" %> >Decrease</option>
 					</select>
 		    	</td>
-		    	<td class="col-2"><%= concept.name %></td>
-		    	<td class="col-3"><%= concept.indegree %></td>
-		    	<td class="col-4"><%= concept.outdegree %></td>
-		    	<td class="col-5"><%= concept.centrality %></td>
-		    	<td class="col-6"><%= concept.type %></td>
+		    	<td class="col-indegree"><%= concept.indegree %></td>
+		    	<td class="col-outdegree"><%= concept.outdegree %></td>
+		    	<td class="col-centrality"><%= concept.centrality %></td>
+		    	<td class="col-type"><%= concept.type %></td>
 		    </tr>
 		    <% } %>
 		  </tbody>

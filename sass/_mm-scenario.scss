@@ -772,26 +772,33 @@ div.right-main {
           background-color: rgba(166, 111, 3, $selected-select-bg-alpha);
         }
       }
-    }
-    #pref-left-panel {
-      box-sizing: border-box;
-      padding: 0 $prefPadding 0 0;
-      width: 20%;
-    }
-    #pref-right-panel {
-      width: 80%;
-      box-sizing: border-box;
-      padding: 0;
+      .preferred.row {
+        margin: 0;
+        max-width: 100%
+      }
       table {
+        margin-bottom: 0;
         text-align: left;
         width: 100%;
-        tbody td {
-          padding-top: 5px;
-          padding-bottom: 5px;
+        &.metric {
+          thead td {
+            padding-bottom:  $prefPadding/2;
+          }
+          tbody td {
+            padding-top:  $prefPadding/2;
+          }
+          &:not(:last-child) {
+            margin-bottom: 10px;
+          }
+        }
+        tbody {
+          .col-pref-state {
+            padding: 0;
+          }
         }
         td {
           padding: $prefPadding;
-          text-align: center;
+          text-align: left;
           position: relative;
         }
         .mutable:hover {
@@ -799,40 +806,40 @@ div.right-main {
             @include td-shadow();
             z-index: 2004;
         }
-        .col-1 {
-          $c1: 20%;
-          min-width: 40px;
+        .col-name {
+          $c1: 30%;
+          min-width: $c1;
           max-width: $c1;
           width: $c1;
-          padding: 0;
+          //padding: 0;
         }
-        .col-2 {
-          $c2: 30%;
-          min-width: $c2;
+        .col-pref-state {
+          $c2: 20%;
+          min-width: 40px;
           max-width: $c2;
           width: $c2;
         }
-        .col-3 {
+        .col-indegree {
           $c3: 13%;
           min-width: $c3;
           max-width: $c3;
           width: $c3;
           //padding: $padding 3px;
         }
-        .col-4 {
+        .col-outdegree {
           $c4: 12%;
           min-width: $c4;
           max-width: $c4;
           width: $c4;
           //padding: 0;
         }
-        .col-5 {
+        .col-centrality {
           $c5: 13%;
           min-width: $c5;
           max-width: $c5;
           width: $c5;
         }
-        .col-5 {
+        .col-type {
           $c6: 12%;
           min-width: $c6;
           max-width: $c6;
@@ -840,6 +847,25 @@ div.right-main {
           //padding: $padding 3px;
         }
       }
+    }
+    .hasOverflow {
+      border-top: solid 1px #cecece;
+      border-bottom: solid 1px #cecece;
+    }
+    #pref-left-panel {
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 0 15px  0 0;
+      .metricsWrapper {
+        overflow: auto;
+      }
+      width: 20%;
+    }
+    #pref-right-panel {
+      overflow: auto;
+      width: 80%;
+      box-sizing: border-box;
+      padding: 0;
     }
 
     /**************************************************************************************

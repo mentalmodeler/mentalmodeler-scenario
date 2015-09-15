@@ -41,6 +41,41 @@ define([
                 }
             },
 
+            getOutdegree: function() {
+                var outdegree = 0;
+                this.relationshipCollection.each( function( relationship ) {
+                    var s = relationship.get('influence');
+                    var v = parseFloat( relationship.get('influence') );
+                    outdegree += !isNaN( v ) ? Math.abs( v ): 0;
+                });
+                return outdegree;
+            },
+
+            getIndegree: function() {
+                var indegree = this.getInfluences( true );
+                return indegree;
+            },
+
+            getCentrality: function() {
+                return this.getIndegree() + this.getOutdegree();
+            },
+
+            getType: function() {
+                var indegree = this.getIndegree();
+                var outdegree = this.getOutdegree();
+                var type = 'none';
+                if ( indegree !== 0 ) {
+                    if ( outdegree !== 0 ) {
+                        type = 'ordinary';
+                    } else {
+                        type = 'receiver';
+                    }
+                } else if ( outdegree !== 0 ) {
+                    type = 'driver';
+                }
+                return type;
+            },
+
             toJSON:function ( forView ) {
                 var json = ConceptModel.__super__.toJSON.apply( this, arguments );
                 switch ( forView ) {
@@ -66,22 +101,25 @@ define([
                 return XML.elementNL( 'concept', nodes.join('') )
             },
 
-            getInfluences: function() {
+            getInfluences: function( asOutdegree ) {
                 var appModel = window.mentalmodeler.appModel;
                 var influences = [];
+                var outdegree = 0;
                 var id = this.get('id');
                 //console.log('ConceptModel >> getInfluences');
                 this.collection.each( function( concept) {
                     var relationship = concept.relationshipCollection.findWhere( {id:id} );
                     //console.log( '     relationship:',relationship);
                     if ( typeof relationship !== 'undefined' && relationship && relationship.get('influence') != 'undefined' ) {
-                        influences.push( appModel.getInfluenceValue( relationship.get('influence') ) )
+                        var influence = appModel.getInfluenceValue( relationship.get('influence') );
+                        influences.push( influence );
+                        outdegree += Math.abs( influence );
                     }
                     else {
                         influences.push( appModel.getInfluenceValue('') );
                     }
                 });
-                return influences;
+                return asOutdegree ? outdegree : influences;
             },
 
             getRelationshipsByIdHash:function() {

@@ -178,7 +178,80 @@ define([
                 return XMLUtils.elementNL( 'scenarios', scenarios.join( '') );
             },
 
+            getStructuralMetrics: function() {
+                // 1. Number of Concepts   Sum total number of unique concepts in matrix   7
+                // 2. Number of Connections    Sum total number of connections in matrix   11
+                // 3. Density  The sum of the connections in the matrix divided by the total number of connections possible    0.2244897959
+                // 4. Number of Connections/Components     Sum total number of connections divided by sum total number of componnets   1.571428571
 
+                // *the following metrics require calculating and using the (a) INDEGEE and (b) OUTDEGREE
+                // Indegree    Absolute value of the summed degree of influence for each column    every component will have one indegree value
+                // Outdegree   Absolute value of the summed degree of influence for each row   every component will have one outdegree value
+
+                // 5. Number of Driver Components  Number of components that meet the criteria: indegree = 0 and outdegree = positive value    1
+                // 6. Number of Receiver Components    Number of components that meet the criteria: indegree = positive value and outdegree = 0    0
+                // 7. Number of Ordinary   Number of components with a non-zero indegree and non-zero outdegree    6
+                // 8. Complexity Score Number of Reciever Variables divided by Number of Driver Variables  0
+                // 9. Highest Centrality Variables     Components with the highest values: sum indegree + outdegree    In this simple model, (1) manipulative fishing (2) stocks of valuable fish (3) roach fish (4) excessive vegetation and (5) water level all have a centrality of 3 and (6) stocking and (7) algal blooms are "less important" by the centrality measure with a value of 1.
+                // 10. Most significant driving variables  Driver components with the largest outegree values  Since algal blooms are the only driving variable, it is the mist signficant driving variable. However, these can be ranked for larger models by ranking them by outdegree values
+                // 11. Most significant receiving variables    Receiver componnets with the largest indegree values    There are not reciever variables in this model. However, these can be ranked for larger models by ranking them by indegree values
+                var numComponents = this.conceptCollection.length;
+                var numConnections = this.getNumberOfConnections();
+                var numDrivers = 0;
+                var numReceivers = 0;
+                var numOrdinary = 0;
+                var concepts = [];
+                this.conceptCollection.each( function(concept) {
+                    var type = concept.getType();
+                    var indegree = concept.getIndegree();
+                    var outdegree = concept.getOutdegree();
+                    switch ( type ) {
+                    case 'ordinary':
+                        numOrdinary++;
+                        break;
+                    case 'driver':
+                        numDrivers++;
+                        break;
+                    case 'receiver':
+                        numReceivers++
+                        break;
+                    }
+                    concepts.push({
+                        name:           concept.get('name'),
+                        type:           type,
+                        indegree:       indegree,
+                        outdegree:      outdegree,
+                        centrality:     indegree + outdegree,
+                        id:             concept.get('id'),
+                        preferredState: concept.get('preferredState')
+                    });
+                });
+                var o = {
+                    numComs: numComponents,
+                    numCons: numConnections,
+                    density: numConnections / this.getPossibleNumberOfConnections(),
+                    consPerComs: numConnections / numComponents,
+                    numDrivers: numDrivers,
+                    numReceivers: numReceivers,
+                    numOrdinary: numOrdinary,
+                    complexityScore: numReceivers / numDrivers,
+                    concepts: concepts
+                };
+                return o;
+            },
+
+            getNumberOfConnections:function() {
+                var num = 0;
+                this.conceptCollection.each( function(concept) {
+                    num += concept.relationshipCollection ? concept.relationshipCollection.length: 0;
+                });
+                return num;
+            },
+
+            getPossibleNumberOfConnections:function() {
+                var l = this.conceptCollection.length;
+                return this.conceptCollection ? l * (l - 1) : 0;
+            },
             /**
              * returns object with model info
              */

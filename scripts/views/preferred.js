@@ -57,25 +57,27 @@ define([
 
 
         render: function() {
-            var data = { concepts: [] };
             var appModel = window.mentalmodeler.appModel;
+            var data = { concepts: [], metrics: [] };
+
             if ( appModel.curModel !== null && appModel.curSection === 'preferred' ) {
                 data.concepts = appModel.curModel.conceptCollection.toJSON();
+console.log('appModel.curModel:',appModel.curModel);
+                data.metrics = appModel.curModel.getStructuralMetrics();
+                //console.log('appModel.curModel.getStructuralMetrics():',appModel.curModel.getStructuralMetrics());
             }
 
-            this.$el.html( this.template( data ) );
+           this.$el.html( this.template( data ) );
 
-            // size table
+            // size tables
             var $preferredTable = this.$el.find('#preferredTable');
-            var $table = this.$el.find('table');
             $preferredTable.outerHeight( this.availableHeight );
-            // if table scrolls, add border to top and bottom
-            if ( $table.height() > $preferredTable.height() ) {
-                $preferredTable.addClass( 'hasOverflow' );
-            } else {
-                $preferredTable.removeClass( 'hasOverflow' );
-            }
-            this.$el.find('.panel-right').outerHeight( this.availableHeight );;
+            ( $preferredTable.find('table').height() > $preferredTable.height() ) ? $preferredTable.addClass( 'hasOverflow' ) : $preferredTable.removeClass( 'hasOverflow' );
+
+            // size tables
+            var $metrics = this.$el.find('.metrics');
+            $metrics.outerHeight( this.availableHeight );
+            ( $metrics.find('table').height() > $metrics.height() ) ? $metrics.addClass( 'hasOverflow' ) : $metrics.removeClass( 'hasOverflow' );
 
             return this;
         },

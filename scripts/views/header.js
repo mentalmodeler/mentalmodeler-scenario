@@ -7,22 +7,25 @@ define([
     'foundation',
     'views/abstract',
     'text!templates/header.html',
+    'text!templates/exportTable.html',
     'models/scenario',
     'downloadify',
     'swfobject'
-], function ($, _, Backbone, Foundation, AbstractView, Template, ScenarioModel, Downloadify, SwfObject ) {
+], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, Downloadify, SwfObject ) {
     'use strict';
 
     var HeaderView = AbstractView.extend({
         el: '#header',
         template: _.template( $(Template).html() ),
+        tableTemplate: _.template( $(ExportTable).html() ),
         doLog: false,
         logPrefix: '==#== HeaderView > ',
 
         events: {
             'change input#load-file' : 'loadFiles',
             'click #newFile': 'newFile',
-            'click #deleteFile': 'remove'
+            'click #deleteFile': 'remove',
+            'click #exportCsv': 'exportCSV'
         },
 
         initialize: function() {
@@ -107,6 +110,32 @@ define([
 
         },
 
+        /*
+         *  export csv
+         */
+
+        exportCSV: function() {
+            var concepts = [];
+            var curModel = window.mentalmodeler.appModel.curModel;
+            if ( curModel ) {
+                concepts = curModel.getConceptsForGrid();
+            }
+            var $table = $( this.tableTemplate( {concepts:concepts} ) );
+            this.$el.append( $table );
+            console.log('$table:',$table);
+            $table.tableExport({
+                type:'csv',
+                escape:'false',
+                consoleLog:'true'
+                // separator: ','
+                // ignoreColumn: [2,3],
+                // tableName:'yourTableName'
+                // pdfFontSize:14
+                // pdfLeftMargin:20
+                // htmlContent:'false'
+            });
+            $table.remove();
+        },
         /*
          *  new file
          */

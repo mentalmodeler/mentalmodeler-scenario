@@ -1,33 +1,37 @@
 <script type="text/template" class="template">
-	<div class="panel-left">
-		<div id="preferredTable">
-			<table>
-			  <thead>
-			  	<tr>
-			  		<td class="col-1">Component</td>
-			  		<td class="col-2">Preferred State</td>
-			  	</tr>
-			  </thead>
-			  <tbody>
-			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0; %>
-			  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >
-			    	<td class="col-1"><%= concept.name %></td>
-			    	<td class="col-2 mutable">
-			    		<select <%= hasNoValue ? "" : "class='hasValue'" %> >
-						 	<option value="1" <%= concept.preferredState  > 0 ? "selected" : "" %> >Increase</option>
-							<option value="0" <%= hasNoValue ? "selected" : "" %> ></option>
-						  	<option value="-1" <%= concept.preferredState  < 0 ? "selected" : "" %> >Decrease</option>
-						</select>
-			    	</td>
-			    </tr>
-			    <% } %>
-			  </tbody>
-			</table>
-		</div>
+	<div id="pref-left-panel" class="pull-left">
 	</div>
-	<div class="panel-right">
-		<div class='metrics'>
-			Structural Metrics coming soon...
-		</div>
+	<div id="pref-right-panel" class="pull-right">
+		<table>
+		  <thead>
+		  	<tr>
+		  		<td class="col-1">Preferred State</td>
+		  		<td class="col-2">Component</td>
+		  		<td class="col-3">Indegree</td>
+		  		<td class="col-4">Outdegree</td>
+		  		<td class="col-5">Centrality</td>
+		  		<td class="col-6">Type</td>
+		  	</tr>
+		  </thead>
+		  <tbody>
+
+		  	<% console.log('metrics:',metrics); var concepts = metrics.concepts || []; for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0;%>
+		  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >
+		    	<td class="col-1 mutable">
+		    		<select <%= hasNoValue ? "" : "class='hasValue'" %> >
+					 	<option value="1" <%= concept.preferredState  > 0 ? "selected" : "" %> >Increase</option>
+						<option value="0" <%= hasNoValue ? "selected" : "" %> ></option>
+					  	<option value="-1" <%= concept.preferredState  < 0 ? "selected" : "" %> >Decrease</option>
+					</select>
+		    	</td>
+		    	<td class="col-2"><%= concept.name %></td>
+		    	<td class="col-3"><%= concept.indegree %></td>
+		    	<td class="col-4"><%= concept.outdegree %></td>
+		    	<td class="col-5"><%= concept.centrality %></td>
+		    	<td class="col-6"><%= concept.type %></td>
+		    </tr>
+		    <% } %>
+		  </tbody>
+		</table>
 	</div>
 </script>

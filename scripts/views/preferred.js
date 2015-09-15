@@ -70,15 +70,19 @@ console.log('appModel.curModel:',appModel.curModel);
            this.$el.html( this.template( data ) );
 
             // size tables
-            var $preferredTable = this.$el.find('#preferredTable');
-            $preferredTable.outerHeight( this.availableHeight );
-            ( $preferredTable.find('table').height() > $preferredTable.height() ) ? $preferredTable.addClass( 'hasOverflow' ) : $preferredTable.removeClass( 'hasOverflow' );
+            var $pref = this.$el.find( '#pref-right-panel' );
+            $pref.outerHeight( this.availableHeight );
+            ( $pref.find('table').height() > $pref.height() ) ? $pref.addClass( 'hasOverflow' ) : $pref.removeClass( 'hasOverflow' );
 
-            // size tables
-            var $metrics = this.$el.find('.metrics');
-            $metrics.outerHeight( this.availableHeight );
-            ( $metrics.find('table').height() > $metrics.height() ) ? $metrics.addClass( 'hasOverflow' ) : $metrics.removeClass( 'hasOverflow' );
-
+            $pref = this.$el.find( '#pref-left-panel' );
+            $pref.outerHeight( this.availableHeight );
+            var $wrap = $pref.find( '.metricsWrapper' );
+            $wrap.outerHeight( this.availableHeight );
+            var contentHeight = 0;
+            _.each( $wrap.find('table'), function (table) {
+                contentHeight += $(table).outerHeight(true);
+            });
+            ( contentHeight > $wrap.height() ) ? $wrap.addClass( 'hasOverflow' ) : $wrap.removeClass( 'hasOverflow' );
             return this;
         },
 

@@ -82,11 +82,16 @@ define([
                     case 'grid':
                         json.relationships = this.getRelationshipsByIdHash();
                         break;
+                    case 'metrics':
+                        json.indegree = this.getIndegree();
+                        json.outdegree = this.getOutdegree();
+                        json.centrality = this.getCentrality();
+                        json.type = this.getType();
                     default:
                         json.relationships = this.relationshipCollection.toJSON();
                 }
-
                 //this.toXML();
+                //console.log('ConceptModel > toJSON, json:',json);
                 return json;
             },
 

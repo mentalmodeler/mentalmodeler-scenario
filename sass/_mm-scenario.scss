@@ -768,6 +768,7 @@ div.right-main {
         outline:none;
         background-color: transparent;
         background-position-x: 90%;
+        height: initial;
         &.hasValue {
           background-color: rgba(166, 111, 3, $selected-select-bg-alpha);
         }
@@ -780,15 +781,34 @@ div.right-main {
         margin-bottom: 0;
         text-align: left;
         width: 100%;
+        thead td i {
+          float: right;
+        }
         &.metric {
           thead td {
-            padding-bottom:  $prefPadding/2;
+            //word-break: break-all;
+            padding:  $prefPadding/2;
+            line-height:14px;
           }
           tbody td {
-            padding-top:  $prefPadding/2;
+            word-break: break-all;
+            padding:  $prefPadding/2;
+            background-color: #f8f8f8;
           }
           &:not(:last-child) {
             margin-bottom: 10px;
+          }
+        }
+        &.components {
+          thead td {
+            word-break: break-all;
+            &.sortable:hover {
+              z-index: 1004;
+              background-color: rgba(255, 255, 255, 0.25);
+              cursor: pointer;
+              -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+              box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+            }
           }
         }
         tbody {
@@ -807,7 +827,7 @@ div.right-main {
             z-index: 2004;
         }
         .col-name {
-          $c1: 30%;
+          $c1: 25%;
           min-width: $c1;
           max-width: $c1;
           width: $c1;
@@ -820,14 +840,14 @@ div.right-main {
           width: $c2;
         }
         .col-indegree {
-          $c3: 13%;
+          $c3: 16%;
           min-width: $c3;
           max-width: $c3;
           width: $c3;
           //padding: $padding 3px;
         }
         .col-outdegree {
-          $c4: 12%;
+          $c4: 16%;
           min-width: $c4;
           max-width: $c4;
           width: $c4;
@@ -840,7 +860,7 @@ div.right-main {
           width: $c5;
         }
         .col-type {
-          $c6: 12%;
+          $c6: 10%;
           min-width: $c6;
           max-width: $c6;
           width: $c6;

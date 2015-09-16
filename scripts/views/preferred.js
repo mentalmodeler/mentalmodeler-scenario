@@ -19,9 +19,15 @@ define([
         availableHeight: 0,
         doLog: false,
         logPrefix: '-*-*- PreferrredView > ',
+        sortOn: '',
+        sortType: '',
+        filterTypes: ['driver', 'receiver', 'ordinary'],
+        metrics: {},
+        metricsConceptsSorted: [],
 
        events: {
             'change select': 'onPreferredChange',
+            'click .sortable': 'onSortableChange',
         },
 
         initialize: function() {
@@ -31,7 +37,6 @@ define([
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
             this.listenTo( Backbone, 'section:change', this.onSectionChange );
         },
-
 
         onPreferredChange: function(e) {
             var $select = $( e.target );
@@ -48,28 +53,78 @@ define([
                 $select.removeClass('hasValue');
                 $tr.removeClass('hasValue');
             }
-
-            var concept = window.mentalmodeler.appModel.curModel.conceptCollection.findWhere( {id:id} );
+            var appModel = window.mentalmodeler.appModel;
+            var concept = appModel.curModel.conceptCollection.findWhere( {id:id} );
             if ( concept ) {
                 concept.set('preferredState', value);
+                // update metrics data
+                if ( appModel.curModel !== null ) {
+                   this.metrics = appModel.curModel.getStructuralMetrics();
+                }
             }
         },
 
+        onSortableChange:function( e ) {
+            var $elem = $(e.target);
+            var sort = $elem.data('sort');
+            if ( sort === this.sortOn ) {
+                this.sortType = (this.sortType === 'ascending') ? 'descending' : 'ascending';
+            } else {
+                this.sortType = 'descending';
+                this.sortOn = sort;
+            }
+            this.sortTableData(true);
+        },
+
+        filterGroups: function( concepts ) {
+            var filteredConcepts = [];
+            if ( this.filterTypes.length === 3 ) {
+                filteredConcepts = concepts;
+            } else {
+                var groups = _.groupBy( concepts, 'type');
+                console.log('groups:',groups);
+                _.each( this.filterTypes, function( type ) {
+                    console.log('type:',type);
+                    if ( groups[type] ) {
+                        filteredConcepts = filteredConcepts.concat( groups[type] );
+                    }
+                });
+            }
+            return filteredConcepts;
+        },
+
+        sortTableData: function( render ) {
+            var filteredConcepts = this.filterGroups( this.metrics.concepts || [] );
+            if ( _.isString(this.sortOn) && !_.isEmpty(this.sortOn) ) {
+                filteredConcepts = _.sortBy( filteredConcepts, this.sortOn );
+                if ( this.sortType === 'descending' ) {
+                    filteredConcepts.reverse();
+                }
+            }
+
+            this.metricsConceptsSorted = filteredConcepts;
+            if ( render === true ) {
+                this.$el.html( this.template( {metrics: this.metrics, concepts:this.metricsConceptsSorted, sort:{on:this.sortOn, type:this.sortType}} ) );
+                this.sizeTables();
+            }
+        },
 
         render: function() {
             var appModel = window.mentalmodeler.appModel;
-            var data = { concepts: [], metrics: [] };
 
             if ( appModel.curModel !== null && appModel.curSection === 'preferred' ) {
-                data.concepts = appModel.curModel.conceptCollection.toJSON();
-console.log('appModel.curModel:',appModel.curModel);
-                data.metrics = appModel.curModel.getStructuralMetrics();
-                //console.log('appModel.curModel.getStructuralMetrics():',appModel.curModel.getStructuralMetrics());
+                this.metrics = appModel.curModel.getStructuralMetrics();
             }
-
-           this.$el.html( this.template( data ) );
+            this.sortTableData();
+            this.$el.html( this.template( {metrics: this.metrics, concepts:this.metricsConceptsSorted, sort:{on:this.sortOn, type:this.sortType} } ) );
 
             // size tables
+            this.sizeTables()
+
+            return this;
+        },
+
+        sizeTables: function() {
             var $pref = this.$el.find( '#pref-right-panel' );
             $pref.outerHeight( this.availableHeight );
             ( $pref.find('table').height() > $pref.height() ) ? $pref.addClass( 'hasOverflow' ) : $pref.removeClass( 'hasOverflow' );
@@ -83,7 +138,6 @@ console.log('appModel.curModel:',appModel.curModel);
                 contentHeight += $(table).outerHeight(true);
             });
             ( contentHeight > $wrap.height() ) ? $wrap.addClass( 'hasOverflow' ) : $wrap.removeClass( 'hasOverflow' );
-            return this;
         },
 
         checkToRender: function( calledFrom ) {

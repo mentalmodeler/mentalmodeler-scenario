@@ -199,35 +199,11 @@ define([
                 var precision = 10;
                 var numComponents = this.conceptCollection.length;
                 var numConnections = this.getNumberOfConnections();
-                var numDrivers = 0;
-                var numReceivers = 0;
-                var numOrdinary = 0;
-                var concepts = [];
-                this.conceptCollection.each( function(concept) {
-                    var type = concept.getType();
-                    var indegree = concept.getIndegree();
-                    var outdegree = concept.getOutdegree();
-                    switch ( type ) {
-                    case 'ordinary':
-                        numOrdinary++;
-                        break;
-                    case 'driver':
-                        numDrivers++;
-                        break;
-                    case 'receiver':
-                        numReceivers++
-                        break;
-                    }
-                    concepts.push({
-                        name:           concept.get('name'),
-                        type:           type,
-                        indegree:       indegree,
-                        outdegree:      outdegree,
-                        centrality:     indegree + outdegree,
-                        id:             concept.get('id'),
-                        preferredState: concept.get('preferredState')
-                    });
-                });
+                var concepts = this.conceptCollection.toJSON('metrics');
+                var typeGroups = _.groupBy( concepts, 'type');
+                var numDrivers = _.isArray(typeGroups.driver) ? typeGroups.driver.length : 0;
+                var numReceivers = _.isArray(typeGroups.receiver) ? typeGroups.receiver.length : 0;
+                var numOrdinary = _.isArray(typeGroups.ordinary) ? typeGroups.ordinary.length : 0;;
                 var o = {
                     numComs: numComponents,
                     numCons: numConnections,

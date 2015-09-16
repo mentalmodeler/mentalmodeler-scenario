@@ -18,19 +18,20 @@
 		</div>
 	</div>
 	<div id="pref-right-panel" class="pull-right">
-		<table>
+		<table class="components">
 		  <thead>
 		  	<tr>
-		  		<td class="col-name">Component</td>
-		  		<td class="col-pref-state">Preferred State</td>
-		  		<td class="col-indegree">Indegree</td>
-		  		<td class="col-outdegree">Outdegree</td>
-		  		<td class="col-centrality">Centrality</td>
+		  		<% var defaultIcon = 'fa-caret-down'; var selectedIcon = !sort.type ? 'fa-caret-down' : sort.type === 'ascending' ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; %>
+		  		<td class="col-name sortable" data-sort="name">Component<i class="fa <%= sort.on==='name' ? selectedIcon : defaultIcon %>"></i></td>
+		  		<td class="col-pref-state sortable" data-sort="preferredState" >Preferred State<i class="fa <%= sort.on==='preferredState' ? selectedIcon : defaultIcon %>"></i></td>
+		  		<td class="col-indegree sortable" data-sort="indegree" >Indegree<i class="fa <%= sort.on==='indegree' ? selectedIcon : defaultIcon %>"></i></td>
+		  		<td class="col-outdegree sortable" data-sort="outdegree" >Outdegree<i class="fa <%= sort.on==='outdegree' ? selectedIcon : defaultIcon %>"></i></td>
+		  		<td class="col-centrality sortable" data-sort="centrality" >Centrality<i class="fa <%= sort.on==='centrality' ? selectedIcon : defaultIcon %>"></i></td>
 		  		<td class="col-type">Type</td>
 		  	</tr>
 		  </thead>
 		  <tbody>
-		  	<% var concepts = metrics.concepts || []; for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0;%>
+		  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0;%>
 		  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >
 		    	<td class="col-name"><%= concept.name %></td>
 		    	<td class="col-pref-state mutable">

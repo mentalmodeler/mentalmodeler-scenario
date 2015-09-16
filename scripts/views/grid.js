@@ -90,7 +90,7 @@ define([
             var influencerId = $slider.closest('tr').attr('data-id');
             value === 0 ? $td.removeClass('hasValue') : $td.addClass('hasValue');
             if ( e.type === 'change' ) {
-                console.log('type is change, updateValue')
+                //console.log('type is change, updateValue')
                 this.updateValue( id, influencerId, value);
             }
         },

@@ -7,15 +7,17 @@ define([
     'foundation',
     'views/abstract',
     'models/mmp',
-    'text!templates/preferred.html'
-], function ($, _, Backbone, Foundation, AbstractView, MmpModel, Template) {
+    'text!templates/preferred.html',
+    'text!templates/type-filter.html'
+], function ($, _, Backbone, Foundation, AbstractView, MmpModel, ViewTemplate, TypeFilterTemplate) {
     'use strict';
 
     var PreferredView = AbstractView.extend({
 
         tagName: 'div',
         className: 'preferred row',
-        template: _.template( $(Template).html() ),
+        template: _.template( $(ViewTemplate).html() ),
+        filterTemplate: _.template( $(TypeFilterTemplate).html() ),
         availableHeight: 0,
         doLog: false,
         logPrefix: '-*-*- PreferrredView > ',
@@ -24,10 +26,16 @@ define([
         filterTypes: ['driver', 'receiver', 'ordinary'],
         metrics: {},
         metricsConceptsSorted: [],
+        filter: {
+            shown: false,
+            values: [ 'ordinary', 'driver', 'receiver' ]
+        },
 
        events: {
             'change select': 'onPreferredChange',
             'click .sortable': 'onSortableChange',
+            'click .filterable': 'showTypeFilter',
+            'change .type-filter input' : 'onTypeFilterChange'
         },
 
         initialize: function() {
@@ -36,6 +44,38 @@ define([
             PreferredView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
             this.listenTo( Backbone, 'section:change', this.onSectionChange );
+        },
+
+        onTypeFilterChange: function( e ) {
+            var values = [];
+            _.each( this.$el.find('input:checked'), function( elem ){
+                values.push( $(elem).attr('value') );
+            });
+            this.filter.values = values;
+            this.sortTableData(true);
+        },
+
+        showTypeFilter: function( f ) {
+            if ( !this.$typeFilter ) {
+                this.$typeFilter = $( this.filterTemplate() ).appendTo( this.$el );
+            } else if ( !$.contains(this.$el[0], this.$typeFilter[0] )) {
+                this.$typeFilter.appendTo( this.$el );
+                //this.delegateEvents();
+            }
+            //this.$typeFilter = this.$('.type-filter').css('display', 'block');
+            this.filter.shown = true;
+            this.updateFilter();
+            $(document).on('mousedown.type-filter', function( e ) {
+                if ( !$(e.target).is('.type-filter') && !$(e.target).is('.type-filter *') ) {
+                    this.filter.shown = false;
+                    if ( this.$typeFilter ) {
+                        this.$typeFilter.css('display', 'none');
+                        this.$typeFilter.remove();
+                    }
+                    this.$typeFilter = null;
+                    $(document).off('mousedown.type-filter');
+                }
+            }.bind(this));
         },
 
         onPreferredChange: function(e) {
@@ -78,13 +118,11 @@ define([
 
         filterGroups: function( concepts ) {
             var filteredConcepts = [];
-            if ( this.filterTypes.length === 3 ) {
+            if ( this.filter.values.length === 3 ) {
                 filteredConcepts = concepts;
             } else {
                 var groups = _.groupBy( concepts, 'type');
-                console.log('groups:',groups);
-                _.each( this.filterTypes, function( type ) {
-                    console.log('type:',type);
+                _.each( this.filter.values, function( type ) {
                     if ( groups[type] ) {
                         filteredConcepts = filteredConcepts.concat( groups[type] );
                     }
@@ -106,18 +144,30 @@ define([
             if ( render === true ) {
                 this.$el.html( this.template( {metrics: this.metrics, concepts:this.metricsConceptsSorted, sort:{on:this.sortOn, type:this.sortType}} ) );
                 this.sizeTables();
+                if ( this.filter.shown ) {
+                    this.showTypeFilter();
+                }
             }
+        },
+
+        updateFilter: function() {
+            _.each( this.$('.type-filter input'), function( input ) {
+                var $input = $(input);
+                var val = $input.val()
+                input.checked = this.filter.values.indexOf(val) > -1;
+            }.bind(this) );
         },
 
         render: function() {
             var appModel = window.mentalmodeler.appModel;
-
             if ( appModel.curModel !== null && appModel.curSection === 'preferred' ) {
                 this.metrics = appModel.curModel.getStructuralMetrics();
             }
             this.sortTableData();
             this.$el.html( this.template( {metrics: this.metrics, concepts:this.metricsConceptsSorted, sort:{on:this.sortOn, type:this.sortType} } ) );
-
+            if ( this.filter.shown ) {
+                this.showTypeFilter();
+            }
             // size tables
             this.sizeTables()
 

@@ -49,6 +49,14 @@ $tab-padding: 0.6em 0em 0.8em 0em;
   box-shadow: 0 $v $blur rgba(0,0,0,$alpha);
 }
 
+@mixin filter-shadow() {
+  $alpha: 0.25;
+  $blur: 2px;
+  $v: 1px;
+  -webkit-box-shadow: 0 $v $blur 0 rgba(0,0,0,$alpha);
+  box-shadow: 0 $v $blur rgba(0,0,0,$alpha);
+}
+
 @mixin button-style() {
   $alpha: 0.5;
   $blur: 1px;
@@ -773,6 +781,42 @@ div.right-main {
           background-color: rgba(166, 111, 3, $selected-select-bg-alpha);
         }
       }
+      .type-filter {
+        p {
+          font-size: 16px;
+          margin-bottom: 15px;
+        }
+        display: block;
+        z-index: 2014;
+        padding: 17px 23px 12px;
+        font-weight: 300;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        position: absolute;
+        $offset: 20px;
+        right: $offset;
+        top: $offset;
+        z-index: 2104;
+        @include user-select(none);
+        @include border-radius(4px);
+        @include filter-shadow();
+        ul {
+          margin-left: 0;
+          margin-bottom: 0;
+        }
+        li {
+          list-style: none;
+        }
+        $m-b: 10px;
+        input {
+          margin-bottom: $m-b;
+        }
+        label {
+          margin-bottom: $m-b;
+          font-weight: 300;
+        }
+
+      }
       .preferred.row {
         margin: 0;
         max-width: 100%
@@ -788,21 +832,25 @@ div.right-main {
           thead td {
             //word-break: break-all;
             padding:  $prefPadding/2;
-            line-height:14px;
+            background-color: rgba(166, 111, 3, 0.07);
+            border-color: rgba(166, 111, 3, 0.2);
+            font-size: 12px;
+            font-weight: bold;
           }
           tbody td {
+            font-size: 14px;
             word-break: break-all;
             padding:  $prefPadding/2;
-            background-color: #f8f8f8;
+            background-color: #fff
           }
           &:not(:last-child) {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
           }
         }
         &.components {
           thead td {
             word-break: break-all;
-            &.sortable:hover {
+            &.sortable:hover, &.filterable:hover {
               z-index: 1004;
               background-color: rgba(255, 255, 255, 0.25);
               cursor: pointer;
@@ -886,6 +934,7 @@ div.right-main {
       width: 80%;
       box-sizing: border-box;
       padding: 0;
+      position: relative;
     }
 
     /**************************************************************************************

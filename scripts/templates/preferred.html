@@ -23,17 +23,20 @@
 		  	<tr>
 		  		<% var defaultIcon = 'fa-caret-down'; var selectedIcon = !sort.type ? 'fa-caret-down' : sort.type === 'ascending' ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; %>
 		  		<td class="col-name sortable" data-sort="name">Component<i class="fa <%= sort.on==='name' ? selectedIcon : defaultIcon %>"></i></td>
-		  		<td class="col-pref-state sortable" data-sort="preferredState" >Preferred State<i class="fa <%= sort.on==='preferredState' ? selectedIcon : defaultIcon %>"></i></td>
 		  		<td class="col-indegree sortable" data-sort="indegree" >Indegree<i class="fa <%= sort.on==='indegree' ? selectedIcon : defaultIcon %>"></i></td>
 		  		<td class="col-outdegree sortable" data-sort="outdegree" >Outdegree<i class="fa <%= sort.on==='outdegree' ? selectedIcon : defaultIcon %>"></i></td>
 		  		<td class="col-centrality sortable" data-sort="centrality" >Centrality<i class="fa <%= sort.on==='centrality' ? selectedIcon : defaultIcon %>"></i></td>
-		  		<td class="col-type">Type</td>
+		  		<td class="col-pref-state sortable" data-sort="preferredState" >Preferred State<i class="fa <%= sort.on==='preferredState' ? selectedIcon : defaultIcon %>"></i></td>
+		  		<td class="col-type filterable">Type<i class="fa fa-filter"></i></td>
 		  	</tr>
 		  </thead>
 		  <tbody>
 		  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var preferred = parseFloat( concept.preferredState || '0' ); var hasNoValue = preferred === 0;%>
 		  	<tr data-id="<%= concept.id %>" <%= hasNoValue ? "" : "class='hasValue'" %> >
 		    	<td class="col-name"><%= concept.name %></td>
+		    	<td class="col-indegree"><%= concept.indegree %></td>
+		    	<td class="col-outdegree"><%= concept.outdegree %></td>
+		    	<td class="col-centrality"><%= concept.centrality %></td>
 		    	<td class="col-pref-state mutable">
 		    		<select <%= hasNoValue ? "" : "class='hasValue'" %> >
 					 	<option value="1" <%= concept.preferredState  > 0 ? "selected" : "" %> >Increase</option>
@@ -41,13 +44,24 @@
 					  	<option value="-1" <%= concept.preferredState  < 0 ? "selected" : "" %> >Decrease</option>
 					</select>
 		    	</td>
-		    	<td class="col-indegree"><%= concept.indegree %></td>
-		    	<td class="col-outdegree"><%= concept.outdegree %></td>
-		    	<td class="col-centrality"><%= concept.centrality %></td>
 		    	<td class="col-type"><%= concept.type %></td>
 		    </tr>
 		    <% } %>
 		  </tbody>
 		</table>
 	</div>
+	<!-- <div class="type-filter">
+		<p>View type:</p>
+		<ul>
+			<li>
+				<label><input type="checkbox" value="ordinary" checked="true" />&nbsp;Ordinary</label>
+			</li>
+			<li>
+				<label><input type="checkbox" value="driver" checked="true" />&nbsp;Driver</label>
+			</li>
+			<li>
+				<label><input type="checkbox" value="receiver" checked="true" />&nbsp;Receiver</label>
+			</li>
+		</ul>
+	</div> -->
 </script>

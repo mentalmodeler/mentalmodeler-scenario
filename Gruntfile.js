@@ -7,7 +7,6 @@ module.exports = function(grunt) {
 					config:'config.rb',
 					cssDir: 'dist/css',
 					outputStyle: 'compressed' //expanded, nested, compact, orcompressed
-
 				}
 			}
 		},
@@ -37,7 +36,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.registerTask('default', []);
-	grunt.registerTask('compass', ['watch']);
+	grunt.registerTask('scss', ['watch']);
 	grunt.registerTask('dist', ['requirejs', 'compass']);
 }
 

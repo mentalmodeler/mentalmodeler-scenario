@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mentalmodeler >
+<info >
+<name ><![CDATA[Model]]></name>
+<author ><![CDATA[]]></author>
+<description ><![CDATA[]]></description>
+<version ><![CDATA[1.1]]></version>
+<date ><![CDATA[Wed Sep 23 2015 11:18:07 GMT-0500 (CDT)]]></date>
+</info>
+<groupNames >
+</groupNames>
+<concepts >
+<concept >
+<id ><![CDATA[1]]></id>
+<name ><![CDATA[Excessive vegetation]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[655.5]]></x>
+<y ><![CDATA[41]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[2]]></id>
+<name ><![CDATA[Prey fish]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[720.5]]></x>
+<y ><![CDATA[206]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[3]]></id>
+<name ><![CDATA[Stocks of valuable fish]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-0.5]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[1]]></id>
+<name ><![CDATA[Excessive vegetation]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-0.25]]></influence>
+</relationship>
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[3]]></id>
+<name ><![CDATA[Stocks of valuable fish]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[342.5]]></x>
+<y ><![CDATA[285]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[2]]></id>
+<name ><![CDATA[Prey fish]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-0.5]]></influence>
+</relationship>
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[4]]></id>
+<name ><![CDATA[Fishing Pressure]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[458.5]]></x>
+<y ><![CDATA[139]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[3]]></id>
+<name ><![CDATA[Stocks of valuable fish]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-1]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[2]]></id>
+<name ><![CDATA[Prey fish]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-0.5]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[9]]></id>
+<name ><![CDATA[Strict Management]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[0.25]]></influence>
+</relationship>
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[5]]></id>
+<name ><![CDATA[Restocking]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[113.5]]></x>
+<y ><![CDATA[20]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[3]]></id>
+<name ><![CDATA[Stocks of valuable fish]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[0.5]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[7]]></id>
+<name ><![CDATA[Amount of Fishemren]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[0.25]]></influence>
+</relationship>
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[6]]></id>
+<name ><![CDATA[Water level]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[433.5]]></x>
+<y ><![CDATA[27]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[1]]></id>
+<name ><![CDATA[Excessive vegetation]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-1]]></influence>
+</relationship>
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[7]]></id>
+<name ><![CDATA[Amount of Fishemren]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[65.5]]></x>
+<y ><![CDATA[123]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[5]]></id>
+<name ><![CDATA[Restocking]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[0.5]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[4]]></id>
+<name ><![CDATA[Fishing Pressure]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[1]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[9]]></id>
+<name ><![CDATA[Strict Management]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[0.25]]></influence>
+</relationship>
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[8]]></id>
+<name ><![CDATA[Price of Gas]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[123.5]]></x>
+<y ><![CDATA[293]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[7]]></id>
+<name ><![CDATA[Amount of Fishemren]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-0.5]]></influence>
+</relationship>
+</relationships>
+</concept>
+<concept >
+<id ><![CDATA[9]]></id>
+<name ><![CDATA[Strict Management]]></name>
+<notes ><![CDATA[]]></notes>
+<units ><![CDATA[]]></units>
+<group ><![CDATA[0]]></group>
+<x ><![CDATA[641.5]]></x>
+<y ><![CDATA[310]]></y>
+<preferredState ><![CDATA[0]]></preferredState>
+<relationships >
+<relationship >
+<id ><![CDATA[5]]></id>
+<name ><![CDATA[Restocking]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[0.25]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[4]]></id>
+<name ><![CDATA[Fishing Pressure]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-0.5]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[3]]></id>
+<name ><![CDATA[Stocks of valuable fish]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[0.5]]></influence>
+</relationship>
+<relationship >
+<id ><![CDATA[7]]></id>
+<name ><![CDATA[Amount of Fishemren]]></name>
+<notes ><![CDATA[]]></notes>
+<confidence ><![CDATA[0]]></confidence>
+<influence ><![CDATA[-0.25]]></influence>
+</relationship>
+</relationships>
+</concept>
+</concepts>
+<scenarios >
+<scenario >
+<name ><![CDATA[Scenario]]></name>
+<concepts >
+</concepts>
+</scenario>
+</scenarios>
+</mentalmodeler>

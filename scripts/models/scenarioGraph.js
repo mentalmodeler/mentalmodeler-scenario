@@ -6,8 +6,8 @@ define([
     'backbone',
     'd3',
     'models/abstract',
-    'sylvester' //lib for matrix/vector math
-], function ( $, _, Backbone, d3, AbstractModel ) {
+    'math' //lib for matrix/vector math
+], function ( $, _, Backbone, d3, AbstractModel, math ) {
 
     var ScenarioGraphModel = AbstractModel.extend({
 
@@ -15,7 +15,6 @@ define([
             logPrefix: '+=+=+ ScenarioGraphModel > ',
             
             initialize: function ( data ) {
-                Sylvester.precision = 0.0000000000000001;
                 ScenarioGraphModel.__super__.initialize.apply( this, arguments );
                 this.data = data;
             },
@@ -27,13 +26,13 @@ define([
                 var conceptNames = this.getConceptNames( concepts );
                 var steadyState = this.converge( influences );
                 var scenarioState = this.converge( influences, clamps );
-                var relativeDifferences = scenarioState.subtract( steadyState ).elements;
+                var relativeDifferences = math.subtract( scenarioState, steadyState );
 
                 var filterFunc = function(value, i) { 
                     return clamps[ i ] == 0 && concepts[ i ].get( 'selected' ); 
                 };
 
-                var filteredDifferences = _.filter( relativeDifferences, filterFunc );
+                var filteredDifferences = _.filter( relativeDifferences._data, filterFunc );
                 var filteredConceptNames = _.filter( conceptNames, filterFunc );
 
                 return _.map(filteredDifferences, function(d) {
@@ -51,27 +50,40 @@ define([
 
             converge: function( data, clamps ) {
                 var steps = 0;
-                var adjMatrix = Matrix.create( data );
-                var prevStateVec = Vector.Zero( data.length );
-                var curStateVec = Vector.Zero( data.length ).map( function( x ) { return x + 1; } );
+                var adjMatrix = math.matrix( data );
+                var prevStateVec = math.zeros( data.length );
+                var curStateVec = math.ones( data.length );
 
-                while( !curStateVec.eql( prevStateVec ) ) {
+                while( !this.equalVectors( prevStateVec, curStateVec ) ) {
                     steps++;
                     prevStateVec = curStateVec;
-                    curStateVec = adjMatrix.multiply( curStateVec );
-                    curStateVec.each(function( x, i ) {
-                        if( clamps && clamps[ i - 1 ] != 0 ) {
-                            curStateVec.elements[ i - 1 ] = clamps[ i - 1 ];
+                    curStateVec = math.multiply( curStateVec, adjMatrix );
+                    curStateVec.forEach(function( x, i, vec ) {
+                        if( clamps && clamps[ i[0] ] !== 0 ) {
+                            curStateVec.subset( math.index( i ), clamps[ i[0] ] );
                         }
                         else {
-                            curStateVec.elements[ i - 1 ] = Math.pow( Math.E, x ) / ( Math.pow( Math.E, x ) + 1 );
+                            curStateVec.subset( math.index( i ), 1 / ( 1 + Math.pow( Math.E, -x ) ) );
                         }
                     });
                 }
-
                 return curStateVec;          
-            }
+            },
 
+            equalVectors: function( vecA, vecB ) {
+                if( vecA.size()[1] !== vecB.size()[1] ) {
+                    return false;
+                }
+
+                var result = true;
+                vecA.forEach(function(val, ind, vec) {
+                    var valA = math.round( val, 5 );
+                    var valB = math.round( vecB.subset( math.index( ind ) ), 5 );
+                    result = result && ( valA === valB );
+                });
+
+                return result;
+            }
         });
 
     return ScenarioGraphModel;

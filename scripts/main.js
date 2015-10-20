@@ -44,7 +44,7 @@ require.config({
         foundation: '../vendor/foundation/foundation.min',
         text: '../vendor/requirejs-text/text',
         d3: '../vendor/d3/d3.v3.min',
-        sylvester: '../vendor/sylvester/sylvester',
+        math: '../vendor/mathjs/math.min',
         downloadify: '../vendor/downloadify/js/downloadify.min',
         swfobject: '../vendor/downloadify/js/swfobject',
         detect: '../vendor/detect/detect.min',
@@ -64,6 +64,6 @@ require([
     Backbone.history.start();
 });
 
-function flashInitialized() {
+window.flashInitialized = function() {
     window.mentalmodeler.appModel.start();
 }

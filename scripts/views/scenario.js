@@ -28,6 +28,7 @@ define([
 
        events: {
             'input textarea#scenarioName' : 'onNameChange',
+            'change select#scenarioSquash': 'onSquashChange',
             'change input[type="checkbox"]' : 'onSelectedChange',
             'click button#refreshScenario': 'refreshScenario',
             'mousedown tr:not(.notIncludedInScenario) > .mutable': 'showSlider',
@@ -146,6 +147,14 @@ define([
         onNameChange:function(e) {
             window.mentalmodeler.appModel.curSelection.set( 'name', this.$el.find('textarea#scenarioName').val() );
             Backbone.trigger( 'scenario:name-change' );
+        },
+
+        onSquashChange: function(e) {
+            var sgModel = this.sgView.model;
+            var squashFunc = $(e.target).val().toLowerCase();
+
+            sgModel.set( 'squashType', squashFunc );
+            this.refreshScenario();
         },
 
         render: function() {

@@ -604,7 +604,7 @@ div.right-main {
               background-color: darken( $red, 5% );
             }
           }
-          textarea {
+          textarea, select {
             @include border-radius(6px);
             padding: 3px 5px;
             outline: none;

@@ -279,7 +279,7 @@ define([
                 }
 
                 this.conceptCollection.each( function( concept ) {
-                    influences.push( concept.getInfluences() );
+                    influences.push( concept.getInfluencesForScenarioGraph() );
 
                     if ( scenarioConceptCollection !== null ) {
                         var scenarioConcept = scenarioConceptCollection.findWhere( { id: concept.get('id') });

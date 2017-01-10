@@ -2,10 +2,10 @@
 	<div class="panel-left">
 		<textarea id="scenarioName" placeholder="Scenario Name"><%= name === 'New Scenario' ? "" : name %></textarea>
                 <select id="scenarioSquash">
-                    <option>Bivalent</option>
-                    <option>Trivalent</option>
-                    <option>Sigmoid</option>
-                    <option>Hyperbolic Tangent</option>
+                    <option value="bivalent" <%= squashFunc === 'bivalent' ? "selected" : "" %>>Bivalent</option>
+                    <option value="trivalent" <%= squashFunc === 'trivalent' ? "selected" : "" %>>Trivalent</option>
+                    <option value="sigmoid" <%= squashFunc === 'sigmoid' ? "selected" : "" %>>Sigmoid</option>
+                    <option value="hyperbolic tangent" <%= squashFunc === 'hyperbolic tangent' ? "selected" : "" %>>Hyperbolic Tangent</option>
                 </select>
 		<button id="refreshScenario"><i class="fa fa-refresh"></i>Refresh Scenario</button>
 		<div id="scenarioTable">

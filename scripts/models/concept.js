@@ -127,6 +127,20 @@ define([
                 return asOutdegree ? outdegree : influences;
             },
 
+            getInfluencesForScenarioGraph: function() {
+                var appModel = window.mentalmodeler.appModel;
+
+                return this.collection.map(function(concept) { 
+                    var relationship = this.relationshipCollection.findWhere({id: concept.get('id')}); 
+                    if(relationship && relationship.get('influence') != 'undefined') { 
+                        return appModel.getInfluenceValue(relationship.get('influence'));
+                    }
+                    else {
+                        return 0;
+                    }
+                }.bind(this));
+            },
+
             getRelationshipsByIdHash:function() {
                 var relationships = this.relationshipCollection.toJSON();
                 var o = {};

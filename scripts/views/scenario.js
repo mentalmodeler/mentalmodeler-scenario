@@ -25,6 +25,7 @@ define([
         doLog: false,
         logPrefix: '-*-*- ScenarioView > ',
         $currentSlider: null,
+        squashFunc: "bivalent",
 
        events: {
             'input textarea#scenarioName' : 'onNameChange',
@@ -126,7 +127,7 @@ define([
             if ( curModel && curModel.conceptCollection.length > 0 ) {
                 this.log('curModel.conceptCollection:',curModel.conceptCollection );
                 var scenarioData = curModel.getDataForScenarioCalculation();
-                this.sgView.setModel( new ScenarioGraphModel( scenarioData ) );
+                this.sgView.setModel( new ScenarioGraphModel( scenarioData, this.squashFunc ) );
             }
         },
 
@@ -150,16 +151,13 @@ define([
         },
 
         onSquashChange: function(e) {
-            var sgModel = this.sgView.model;
-            var squashFunc = $(e.target).val().toLowerCase();
-
-            sgModel.set( 'squashType', squashFunc );
+            this.squashFunc = $(e.target).val();
             this.refreshScenario();
         },
 
         render: function() {
             this.log( 'render, this.availableHeight:',this.availableHeight );
-            var data = { concepts: [], name: '' };
+            var data = { concepts: [], name: '', squashFunc: this.squashFunc };
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();

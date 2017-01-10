@@ -13,11 +13,11 @@ define([
 
             doLog: false,
             logPrefix: '+=+=+ ScenarioGraphModel > ',
-            squashType: "bivalent",
             
-            initialize: function ( data ) {
+            initialize: function ( data, squashFunc ) {
                 ScenarioGraphModel.__super__.initialize.apply( this, arguments );
                 this.data = data;
+                this.squashFunc = this.pickSquashFunc( squashFunc );
             },
 
             getData: function() {
@@ -93,13 +93,13 @@ define([
             },
 
             converge: function( initialVector, weights, clamps ) {
+                var squashingFunction = this.squashFunc;
                 var iterations = 0;
-                var squashFunction = this.pickSquashFunc( this.squashType );
                 var weightMatrix = math.matrix( weights );
                 var curStateVec = initialVector;
                 var prevStateVec;
 
-                while( !this.equalVectors( prevStateVec, curStateVec ) ) {
+                while( !this.equalVectors( prevStateVec, curStateVec ) && iterations < 100 ) {
                     prevStateVec = curStateVec;
                     curStateVec = math.multiply( curStateVec, weightMatrix );
                     curStateVec.forEach(function( x, i, vec ) {
@@ -107,7 +107,7 @@ define([
                             curStateVec.subset( math.index( i ), clamps[ i[0] ] );
                         }
                         else {
-                            curStateVec.subset( math.index( i ), squashFunction( x ) );
+                            curStateVec.subset( math.index( i ), squashingFunction( x ) );
                         }
                     });
 

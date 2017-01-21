@@ -71,7 +71,8 @@ define([
             if ( appModel.curModel ) {
                 filename = appModel.curModel.get('filename');
             }
-            return filename.replace(/\s/g, '') + '.mmp';
+
+            return filename.replace(/\s/g, '') + (filename.indexOf('.mmp') !== -1 ? '' : '.mmp');
         },
 
         getXML: function() {

@@ -25,7 +25,7 @@ define([
         doLog: false,
         logPrefix: '-*-*- ScenarioView > ',
         $currentSlider: null,
-        squashFunc: "bivalent",
+        squashFunc: "sigmoid",
 
        events: {
             'input textarea#scenarioName' : 'onNameChange',

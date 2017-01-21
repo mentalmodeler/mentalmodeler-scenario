@@ -74,7 +74,7 @@ define([
                 return 1 / ( 1 + Math.exp( -x ) );
             },
             
-            pickSquashFunc( funcName ) {
+            pickSquashFunc: function( funcName ) {
                 switch( funcName ) {
                     case "trivalent":
                         return this.trivalent;

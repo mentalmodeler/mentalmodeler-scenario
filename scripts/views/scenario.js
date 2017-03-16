@@ -146,8 +146,11 @@ define([
         },
 
         onNameChange:function(e) {
-            window.mentalmodeler.appModel.curSelection.set( 'name', this.$el.find('textarea#scenarioName').val() );
-            Backbone.trigger( 'scenario:name-change' );
+            var curSelection = window.mentalmodeler.appModel.curSelection;
+            if( curSelection ) {
+                window.mentalmodeler.appModel.curSelection.set( 'name', this.$el.find('textarea#scenarioName').val() );
+                Backbone.trigger( 'scenario:name-change' );
+            }
         },
 
         onSquashChange: function(e) {

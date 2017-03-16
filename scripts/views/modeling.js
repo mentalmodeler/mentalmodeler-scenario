@@ -28,7 +28,8 @@ define([
 
         render: function() {
             var ua = Detect.parse( navigator.userAgent );
-            switch ( ua.browser.family.toLowerCase() ) {
+            var browserFamily = ua.browser.family ? ua.browser.family.toLowerCase() : "";
+            switch ( browserFamily ) {
             case 'firefox':
                 this.$el.append("<embed id='flash-content' src='swf/mentalmodeler.swf' height='100%' width='100%' allowscriptaccess='always' allowfullscreeninteractive='true' type='application/x-shockwave-flash' />");
                 break;

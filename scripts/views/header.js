@@ -25,7 +25,8 @@ define([
             'change input#load-file' : 'loadFiles',
             'click #newFile': 'newFile',
             'click #deleteFile': 'remove',
-            'click #exportCsv': 'exportCSV'
+            'click #exportCsv': 'exportCSV',
+            'click #exportXls': 'exportXLS'
         },
 
         initialize: function() {
@@ -111,11 +112,7 @@ define([
 
         },
 
-        /*
-         *  export csv
-         */
-
-        exportCSV: function() {
+        exportData: function( type ) {
             var concepts = [];
             var curModel = window.mentalmodeler.appModel.curModel;
             if ( curModel ) {
@@ -125,9 +122,9 @@ define([
             this.$el.append( $table );
             console.log('$table:',$table);
             $table.tableExport({
-                type:'csv',
-                escape:'false',
-                consoleLog:'true'
+                type: type,
+                escape: 'false',
+                consoleLog: 'true'
                 // separator: ','
                 // ignoreColumn: [2,3],
                 // tableName:'yourTableName'
@@ -137,6 +134,23 @@ define([
             });
             $table.remove();
         },
+
+        /*
+        * export xls
+        */
+
+        exportXLS: function() {
+            this.exportData('excel');
+        },
+
+        /*
+         *  export csv
+         */
+
+        exportCSV: function() {
+            this.exportData('csv');
+        },
+
         /*
          *  new file
          */

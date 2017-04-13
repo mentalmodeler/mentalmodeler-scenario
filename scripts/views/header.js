@@ -9,9 +9,8 @@ define([
     'text!templates/header.html',
     'text!templates/exportTable.html',
     'models/scenario',
-    'downloadify',
     'swfobject'
-], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, Downloadify, SwfObject ) {
+], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, SwfObject ) {
     'use strict';
 
     var HeaderView = AbstractView.extend({
@@ -24,6 +23,7 @@ define([
         events: {
             'change input#load-file' : 'loadFiles',
             'click #newFile': 'newFile',
+            'click #saveFile': 'saveFile',
             'click #deleteFile': 'remove',
             'click #exportCsv': 'exportCSV',
             'click #exportXls': 'exportXLS'
@@ -42,27 +42,6 @@ define([
                 return false;
             });
 
-            window.Downloadify.create('saveFile', {
-                filename: this.getFilename,
-                data: this.getXML,
-                onComplete: function(){
-                  //alert('Your File Has Been Saved!');
-                },
-                onCancel: function(){
-                  //alert('You have cancelled the saving of this file.');
-                },
-                onError: function(){
-                  //alert('You must put something in the File Contents or there will be nothing to save!');
-                },
-                transparent: true,
-                swf: 'swf/downloadify.swf',
-                downloadImage: 'img/save_button.png',
-                width: 75,
-                height: 45,
-                append: false
-            });
-
-            this.log('render > window.Downloadify:',window.Downloadify,', Downloadify:',Downloadify,', this.el:',this.el,', this.$el:',this.$el);
             return this;
         },
 
@@ -112,6 +91,10 @@ define([
 
         },
 
+        /*
+        *  export data based on output format
+        */
+
         exportData: function( type ) {
             var concepts = [];
             var curModel = window.mentalmodeler.appModel.curModel;
@@ -136,7 +119,7 @@ define([
         },
 
         /*
-        * export xls
+        *  export xls
         */
 
         exportXLS: function() {
@@ -157,6 +140,40 @@ define([
 
         newFile: function() {
             window.mentalmodeler.appModel.addModel();
+        },
+
+        /*
+        *  save file
+        */
+
+        saveFile: function() {
+            var host = "http://45.55.174.38";
+            var fileName = this.getFilename();
+
+            $.ajax({
+                type: "POST",
+                url: host + "/mm/save",
+                crossDomain: true,
+                data: this.getXML(),
+                contentType: "text/xml",
+                dataType: "text",
+                success: function(resp) { window.location.href = host + "/mm/download?id=" + resp + "&name=" + fileName; },
+                error: function(xhr, exception) { 
+                    if(xhr.status === 0) {
+                        console.log("No connection. Server is down or you have network issues.");
+                    } else if(xhr.status === 404) {
+                        console.log("Requested URI not found. [404]");
+                    } else if(xhr.status === 500) {
+                        console.log("Internal server error. [500]");
+                    } else if(exception === "timeout") {
+                        console.log("Request timed out. Please try again.");
+                    } else if(exception === "abort") {
+                        console.log("Request aborted. Please try again.");
+                    } else {
+                        console.log("Uncaught error.\n" + xhr.responseText);
+                    }
+                }
+            });
         },
 
         /*

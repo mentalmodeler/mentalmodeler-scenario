@@ -15,6 +15,8 @@ define([
         tagName: 'div',
         id: 'flash-model',
         flash: null,
+        doLog: true,
+        logPrefix: '++++++++ ModelingView > ',
 
         events: {
         },
@@ -29,40 +31,60 @@ define([
         render: function() {
             var ua = Detect.parse( navigator.userAgent );
             var browserFamily = ua.browser.family ? ua.browser.family.toLowerCase() : "";
-            switch ( browserFamily ) {
-            case 'firefox':
-                this.$el.append("<embed id='flash-content' src='swf/mentalmodeler.swf' height='100%' width='100%' allowscriptaccess='always' allowfullscreeninteractive='true' type='application/x-shockwave-flash' />");
-                break;
-            default:
-                this.$el.append("<object id='flash-content' type='application/x-shockwave-flash' height='100%' width='100%'><param name='movie' value='swf/mentalmodeler.swf'/><param name='allowScriptAccess' value='always' /><param name='allowFullScreenInteractive' value='true' /></object>");
+            var appModel = window.mentalmodeler.appModel;
+            this.log('appModel:', appModel);
+            if (window.MentalModelerUseFlash) {
+                switch (browserFamily) {
+                    case 'firefox':
+                        this.$el.append("<embed id='flash-content' src='swf/mentalmodeler.swf' height='100%' width='100%' allowscriptaccess='always' allowfullscreeninteractive='true' type='application/x-shockwave-flash' />");
+                        break;
+                    default:
+                        this.$el.append("<object id='flash-content' type='application/x-shockwave-flash' height='100%' width='100%'><param name='movie' value='swf/mentalmodeler.swf'/><param name='allowScriptAccess' value='always' /><param name='allowFullScreenInteractive' value='true' /></object>");
+                }
+                this.flash = this.$el.find('#flash-content')[0];
+            } else {
+                const div = document.querySelector('#flash-model');
+                this.log('div:', this.$el[0]);
+                window.MentalModelerConceptMap.render(this.$el[0]);
+                // this.$el.append("<div>MAP</div>");
             }
-
-            this.flash = this.$el.find('#flash-content')[0];
             return this;
         },
 
+        hasModelDiv: function() {
+            return document && document.querySelector('#flash-model')     
+        },
+
         getModelXML:function() {
-            var xml = this.flash.doSave();
-            return xml;
+            if (window.MentalModelerUseFlash && this.flash) {
+                var xml = this.flash.doSave();
+                return xml;
+            }
         },
 
         reloadSwf:function( xml ) {
-            this.flash.doLoad( xml );
+            if (window.MentalModelerUseFlash && this.flash) {
+                this.flash.doLoad( xml );
+            }
         },
 
         onSelectionChange: function( model, target, section ) {
-            //console.log('ModelingView > onSelectionChange, model:',model,', target:',target,', section:',section);
             var appModel = window.mentalmodeler.appModel;
+            this.log('onSelectionChange, appModel.curModel:', appModel.curModel);
             if ( appModel.curSection === 'modeling' && appModel.curModel ) {
-                this.reloadSwf( appModel.curModel.getModelingXML() );
+                if (window.MentalModelerUseFlash) {
+                    this.reloadSwf( appModel.curModel.getModelingXML() );
+                }
             }
         },
 
         onSectionChange: function( section ) {
-            //console.log('ModelingView > onSelectionChange');
             var appModel = window.mentalmodeler.appModel;
+            this.log('onSelectionChange, appModel.curModel:', appModel.curModel);
             if ( section === 'modeling' && appModel.curModel ) {
-                this.reloadSwf( appModel.curModel.getModelingXML() );
+                if (window.MentalModelerUseFlash) {
+                    this.reloadSwf( appModel.curModel.getModelingXML() );
+                }
             }
 
         }

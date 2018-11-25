@@ -36,6 +36,9 @@ require.config({
             deps: ['jquery'],
             exports: 'jqueryBase64'
         },
+        conceptMap: {
+            exports: 'conceptmap'
+        },
     },
     paths: {
         jquery: '../vendor/jquery/jquery.min',
@@ -49,7 +52,8 @@ require.config({
         detect: '../vendor/detect/detect.min',
         x2js: '../vendor/x2js/xml2json',
         tableExport: '../vendor/tableExport/tableExport',
-        jqueryBase64: '../vendor/tableExport/jquery.base64'
+        jqueryBase64: '../vendor/tableExport/jquery.base64',
+        conceptmap: '../libs/conceptmap/js/main'
     }
 });
 
@@ -57,12 +61,21 @@ require([
     'jquery',
     'backbone',
     'underscore',
-    'routes/app'
+    'routes/app',
+    'conceptmap'
 ], function ( $, Backbone, _, App ) {
+    var params = new URLSearchParams(document.location.search.substring(1));
+    window.MentalModelerUseFlash = !!params.has('flash');
     window.mentalmodeler = new App();
     Backbone.history.start();
+
+    if (!window.MentalModelerUseFlash) {
+        window.mentalmodeler.appModel.start();    
+    }
 });
 
 window.flashInitialized = function() {
-    window.mentalmodeler.appModel.start();
+    if (window.MentalModelerUseFlash) {
+        window.mentalmodeler.appModel.start();
+    }
 }

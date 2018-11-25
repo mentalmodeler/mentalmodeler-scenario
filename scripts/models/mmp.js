@@ -161,6 +161,24 @@ define([
             },
 
             /**
+             * returns concepts as json             
+             */
+            getModelingJSON: function() {
+                return  {
+                    concepts: this.conceptCollection.toJSON()
+                };
+            },
+
+            toJSON: function() {
+                return JSON.stringify({
+                    concepts: this.conceptCollection.toJSON(),
+                    info: this.infoModel.toJSON(),
+                    groupNames: this.groupModel.toJSON(),
+                    scenarios: this.scenarioCollection.toJSON()
+                });
+            },
+
+            /**
              * returns concepts xml section as a string
              */
             getConceptsXML:function() {

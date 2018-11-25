@@ -37,7 +37,7 @@ define([
                 'M-' : -0.62, // -0.75,
                 'L-' : -0.25 // -0.5
             },
-            doLog: false,
+            doLog: true,
             logPrefix: '======== AppModel > ',
 
             initialize: function () {
@@ -53,8 +53,10 @@ define([
              * once flash has initialized, start app
              */
             start: function() {
+                this.log('start');
                 this.getView().resizeScrollPanels();
                 this.addModel();
+                    
                 if ( window.mmConfig && window.mmConfig.loadFile ) {
                     this.loadXMLFileFromServer( window.mmConfig.loadFile );
                 }
@@ -64,6 +66,7 @@ define([
              * adds a new mmp model, passing the xml string
              */
             addModel: function( xml, fileName ) {
+                this.log('addModel');
                 var options = { justAdded: true };
                 if (typeof xml !== 'undefined' && xml !== '') {
                     options.xml = xml;
@@ -72,7 +75,7 @@ define([
                 var mmp = new MmpModel( options );
                 var mmpView = new MmpView( {model:mmp} );
                 this.mmps.add( mmp );
-
+                
                 // this event will trigger a new model to be added to the list and it will automatically be selected
                 Backbone.trigger( 'mmp:add', mmp );
             },
@@ -81,6 +84,7 @@ define([
              * adds a new mmp model, passing the xml string
              */
             addScenario: function( xml ) {
+                this.log('addScenario');
                 var options = { justAdded: true };
                 if (typeof xml !== 'undefined' && xml !== '') {
                     options.xml = xml;
@@ -157,7 +161,9 @@ define([
 
                 // leaving from modeling section, so save data to model
                 if ( (typeof force !== 'undefined' && force ) || this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
-                    this.curModel.updateFromModelSection( this.modelingView.getModelXML() );
+                    if (window.MentalModelerUseFlash) {
+                        this.curModel.updateFromModelSection( this.modelingView.getModelXML() );
+                    }
                 }
             },
 
@@ -221,6 +227,7 @@ define([
             },
 
             loadXMLFileFromServer: function( filePath ) {
+                this.log('loadXMLFileFromServer');
                 var a = filePath.split( '/' );
                 var s = a[ a.length - 1 ].split( '.' );
                 var name = s[ 0 ];
@@ -228,6 +235,7 @@ define([
                 xhr.open( 'GET', filePath, true );
                 xhr.responseType = 'text';
                 xhr.onload = function( e ) {
+                    console.log('\txhr.response:', xhr.response);
                     this.addModel( xhr.response, name );
                 }.bind(this);
                 xhr.send();

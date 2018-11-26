@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 					include: ['main'],
 					name: '../vendor/almond/almond',
 					out: 'dist/scripts/mentalmodeler.min.js',
-					//optimize: 'none',
+					// optimize: 'none',
 					wrap: true
 				}
 			}

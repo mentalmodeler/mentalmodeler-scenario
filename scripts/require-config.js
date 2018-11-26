@@ -32,7 +32,10 @@ require.config({
         jqueryBase64: {
             deps: ['jquery'],
             exports: 'jqueryBase64'
-        },
+        }
+        // conceptmap: {
+        //     exports: 'conceptmap'
+        // }
     },
     paths: {
         jquery: '../vendor/jquery/jquery.min',
@@ -47,5 +50,6 @@ require.config({
         x2js: '../vendor/x2js/xml2json.min',
         tableExport: '../vendor/tableExport/tableExport',
         jqueryBase64: '../vendor/tableExport/jquery.base64'
+        // conceptmap: '../libs/conceptmap/js/main'
     }
 });

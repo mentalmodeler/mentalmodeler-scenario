@@ -165,7 +165,8 @@ define([
              */
             getModelingJSON: function() {
                 return  {
-                    concepts: this.conceptCollection.toJSON()
+                    concepts: this.conceptCollection.toJSON(),
+                    groupNames: this.groupModel.toJSON()
                 };
             },
 

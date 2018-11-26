@@ -32,7 +32,6 @@ define([
             var ua = Detect.parse( navigator.userAgent );
             var browserFamily = ua.browser.family ? ua.browser.family.toLowerCase() : "";
             var appModel = window.mentalmodeler.appModel;
-            this.log('appModel:', appModel);
             if (window.MentalModelerUseFlash) {
                 switch (browserFamily) {
                     case 'firefox':
@@ -43,16 +42,9 @@ define([
                 }
                 this.flash = this.$el.find('#flash-content')[0];
             } else {
-                const div = document.querySelector('#flash-model');
-                this.log('div:', this.$el[0]);
                 window.MentalModelerConceptMap.render(this.$el[0]);
-                // this.$el.append("<div>MAP</div>");
             }
             return this;
-        },
-
-        hasModelDiv: function() {
-            return document && document.querySelector('#flash-model')     
         },
 
         getModelXML:function() {
@@ -74,6 +66,8 @@ define([
             if ( appModel.curSection === 'modeling' && appModel.curModel ) {
                 if (window.MentalModelerUseFlash) {
                     this.reloadSwf( appModel.curModel.getModelingXML() );
+                } else if (window.MentalModelerConceptMap) {
+                    window.MentalModelerConceptMap.load( appModel.curModel.getModelingJSON() )
                 }
             }
         },
@@ -84,6 +78,8 @@ define([
             if ( section === 'modeling' && appModel.curModel ) {
                 if (window.MentalModelerUseFlash) {
                     this.reloadSwf( appModel.curModel.getModelingXML() );
+                } else if (window.MentalModelerConceptMap) {
+                    window.MentalModelerConceptMap.load( appModel.curModel.getModelingJSON() )
                 }
             }
 

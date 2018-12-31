@@ -51,7 +51,7 @@ define([
 
             updateCollection: function() {
                 // pass the previous collection to addConcepts so that selected/influence values for models
-                // can be passed on to new version of smae model
+                // can be passed on to new version of saae model
                 var prevCollection = this.conceptCollection.clone();
                 //this.log('+++++++ ScenarioModel > updateCollection, this.conceptCollection:',this.conceptCollection,', prevCollection',prevCollection );
                 this.addConcepts( prevCollection );
@@ -69,6 +69,7 @@ define([
                 var appModel = window.mentalmodeler.appModel;
                 if ( appModel.curModel !== null ) {
                     var conceptsSourceCollection = appModel.curModel.conceptCollection;
+                    // console.log('conceptsSourceCollection:', conceptsSourceCollection);
                     //this.conceptsSourceCollection.each( function( conceptModel ) {
                     //console.log('      appModel.curModel:',appModel.curModel);//conceptsSourceCollection:',conceptsSourceCollection );
                     this.sourceConceptCollection.each( function( conceptModel ) {

@@ -20,7 +20,9 @@ define([
                 xml: '<?xml version="1.0" encoding="UTF-8"?><mentalModeler><info><id></id><name></name><version></version><date></date><author></author></info><concepts></concepts><scenarios></scenarios></mentalModeler>',
                 xmlDoc: null,
                 justAdded: false,
-                filename:'project.mmp'
+                type: '',
+                filename:'project.mmp',
+                json: '{"info": {"id": "", "name": "", "version": "", "date": "", "author": ""}, "groupNames": { "0": "", "1": "", "2": "", "3": "", "4": "", "5": "" }, "concepts": [], "scenarios": []}'
             },
 
             infoModel: null,
@@ -33,8 +35,6 @@ define([
             logPrefix: '======== MmpModel > ',
 
             initialize: function( options ) {
-
-                //console.log('mmp options:',options);
                 MmpModel.__super__.initialize.apply( this, arguments );
 
                 this.infoModel = new InfoModel();
@@ -42,17 +42,21 @@ define([
                 this.conceptCollection = new Backbone.Collection( [], {model: ConceptModel} );
                 this.scenarioCollection = new Backbone.Collection( [], {model: ScenarioModel} );
 
-                this.parseXML( this.get('xml') );
-
-                this.setData( XMLUtils.parseMmpFile( this.get('xml') ) );
+                var type = this.get('type');
+                var data = this.get('data');
+                
+                var json = this.get('json');
+                if (type === 'xml') {
+                    json = XMLUtils.parseMmpFile( this.get('xml') )
+                } else if (type === 'json') {
+                    json = JSON.parse(json);
+                }                
+                
+                this.setData( json );
                 Backbone.trigger( 'mmp:change' );
 
                 // for scenarios added after model and view is first created
                 this.listenTo( this.scenarioCollection, 'add', this.onScenarioAdded );
-            },
-
-            parseXML: function(xml) {
-                //console.log( 'this.x2js:,',this.x2js,', parseXML, xml:',xml );
             },
 
             close: function() {
@@ -83,7 +87,9 @@ define([
              * update the model data from modelling section changes. this excludes updating
              * the info model or explicitly updating the scenarios
              */
-            updateFromModelSection: function( modelXML ) {
+            // updateFromModelSection: function( modelXML ) {
+            
+            updateXMLFromModelSection: function( modelXML ) {
                 // updates the concepts collection
                 var concepts = XMLUtils.parseMmpFile( modelXML, ['info', 'scenario'] ).concepts;
                 this.conceptCollection.reset( concepts );
@@ -91,6 +97,12 @@ define([
                 // updates the concepts node in the xml and sets the xml
                 var xml = XMLUtils.replaceConceptsNode( modelXML, this.get('xml') );
                 this.set('xml', xml);
+            },
+
+            updateJSFromModelSection: function( modelJS ) {
+                var concepts = modelJS.concepts;
+                this.conceptCollection.reset( concepts );
+                // console.log('\tmmp > updateJSFromModelSection\n\t\tmodelJS:', modelJS, '\n\t\tthis.conceptCollection:', this.conceptCollection, '\n');
             },
 
             /*
@@ -106,7 +118,6 @@ define([
             },
 
             onScenarioAdded: function() {
-                //console.log('onScenarioAdded, this.scenarioCollection:',this.scenarioCollection );
                 this.getView().onScenariosChange();
             },
 
@@ -156,7 +167,6 @@ define([
                 var nodes = [ XMLUtils.JOIN_STR, this.infoModel.toXML(), this.groupModel.toXML(), this.getConceptsXML(), this.getScenariosXML() ];
                 var xml = XMLUtils.header + XMLUtils.JOIN_STR + XMLUtils.elementNL( 'mentalmodeler', nodes.join('') );
                 this.set( 'xml', xml );
-                //console.log('getXML, xml:',xml);
                 return xml;
             },
 

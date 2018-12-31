@@ -37,8 +37,8 @@ define([
                 'M-' : -0.62, // -0.75,
                 'L-' : -0.25 // -0.5
             },
-            doLog: true,
-            logPrefix: '======== AppModel > ',
+            doLog: false,
+            logPrefix: '\n======== AppModel > ',
 
             initialize: function () {
                 AppModel.__super__.initialize.apply( this, arguments );
@@ -55,23 +55,35 @@ define([
             start: function() {
                 this.log('start');
                 this.getView().resizeScrollPanels();
-                this.addModel();
                     
                 if ( window.mmConfig && window.mmConfig.loadFile ) {
-                    this.loadXMLFileFromServer( window.mmConfig.loadFile );
+                    this.loadFileFromServer( window.mmConfig.loadFile );
+                } else {
+                    this.addModel();
                 }
             },
 
             /*
              * adds a new mmp model, passing the xml string
              */
-            addModel: function( xml, fileName ) {
-                this.log('addModel');
-                var options = { justAdded: true };
-                if (typeof xml !== 'undefined' && xml !== '') {
-                    options.xml = xml;
+            addModel: function( data, fileName ) {
+                var type = this.determineFileType(data);
+                var options = {justAdded: true, filename: fileName};
+
+                switch (type) {
+                    case 'xml':
+                        options.xml = data;
+                        options.data = data;
+                        options.type = 'xml';
+                        break;
+                    case 'json':
+                        options.json = data;
+                        options.data = data;
+                        options.type = 'json';
+                        break;
+                    default:
+                        break;
                 }
-                options.filename = fileName;
                 var mmp = new MmpModel( options );
                 var mmpView = new MmpView( {model:mmp} );
                 this.mmps.add( mmp );
@@ -79,6 +91,37 @@ define([
                 // this event will trigger a new model to be added to the list and it will automatically be selected
                 Backbone.trigger( 'mmp:add', mmp );
             },
+
+            determineFileType(data) {
+                if (typeof data === 'string' && data.length > 0) {
+                    if (data.startsWith('<')) {
+                        return 'xml'
+                    }
+                    try {
+                        JSON.parse(data);
+                        return 'json'
+                    } catch (e) {
+                        console.log('ERROR > determineFileType\ne:', e)
+                        return ''
+                    }
+                }
+                return '';
+            },
+
+            // addModel: function( xml, fileName ) {
+            //     console.log('addModel');
+            //     var options = { justAdded: true };
+            //     if (typeof xml !== 'undefined' && xml !== '') {
+            //         options.xml = xml;
+            //     }
+            //     options.filename = fileName;
+            //     var mmp = new MmpModel( options );
+            //     var mmpView = new MmpView( {model:mmp} );
+            //     this.mmps.add( mmp );
+                
+            //     // this event will trigger a new model to be added to the list and it will automatically be selected
+            //     Backbone.trigger( 'mmp:add', mmp );
+            // },
 
             /*
              * adds a new mmp model, passing the xml string
@@ -103,36 +146,45 @@ define([
                 var prevSelection = this.curSelection;
                 var prevSelectionType = this.curSelectionType;
                 var selectionType = model instanceof MmpModel ? 'mmp' : 'scenario';
-                this.log('selectionChange, selectionType:',selectionType );
-
                 this.saveModelData();
-
+                var idx;
+                this.log('selectionChange');
                 if ( typeof target !== 'undefined' ) {
                     // this is coming from a a user click on a model map or scenario
                     if ( $target.hasClass('scenario') ) {
-                        var idx = $target.index();
+                        idx = $target.index();
                         model.scenarioIndex = idx;
                         this.curSelection = model.scenarioCollection.at(idx);
                         this.curSelectionType = "scenario";
+                        // console.log('>>>>> scenario link\nthis.curSelection:', this.curSelection);
                     }
                     else if ( $target.hasClass('map') ) {
                         this.curSelection = model;
                         this.curSelectionType = "mmp";
+                        // console.log('>>>>> mmp link');
                     }
-
                 }
                 else {
                     // no target
                     if ( typeof scenario !== 'undefined' && scenario instanceof ScenarioModel ) {
-                        this.log('        passed scenario:',scenario);
+                        this.log('\tpassed scenario:',scenario);
                         this.curSelection = scenario;
                         this.curSelectionType = "scenario";
                         model.scenarioIndex = scenario.collection.indexOf( scenario );
                     }
                 }
 
-                this.log('selectionChange, model:',model,', target:',target,', model.scenarioIndex:',model.scenarioIndex ,',  (this.curSelection:',this.curSelection,', prevSelection:',prevSelection,')' );
-
+                // console.log('selectionChange'
+                //     , '\n\tselectionType:', selectionType
+                //     , '\n\tidx:', idx
+                //     , '\n\tprevSelectionType:', prevSelectionType
+                //     // , '\n\tmodel.scenarioIndex:', model.scenarioIndex
+                //     // , '\n\tmodel:', model
+                //     , '\n\tthis.curSelection:', this.curSelection
+                //     , '\n\tscenario:', scenario
+                //     // , '\n\ttarget:', target
+                // );
+                
                 if ( model !== this.curModel ) {
                     this.curModel = model;
                 }
@@ -141,31 +193,59 @@ define([
             },
 
             setSection: function( section ) {
-                var sectionChanged = this.curSection !== section;
                 var prevSection = this.curSection;
-                this.log('setSection, section:',section,', prevSection:',prevSection,', sectionChanged:',sectionChanged);
+                var sectionChanged = section !== prevSection;
+                this.log('setSection\n\tsection:',section,'\n\tprevSection:',prevSection,'\n\tsectionChanged:',sectionChanged);
 
                 if ( sectionChanged ) {
-                    this.saveModelData();
+                    if (!(section === 'scenario' && this.curSelectionType !== 'scenario')) {
+                        this.saveModelData();
+                    }
                     this.curSection = section;
-                    if ( section === 'scenario' && this.curSelectionType !== 'scenario') {
+                    if ( section === 'scenario' && this.curSelectionType !== 'scenario' ) {
                         // auto select a scenario
                         this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(this.curModel.scenarioIndex) );
                     }
+                    
+                    // var needToAutoSelectScenario = section === 'scenario' && this.curSelectionType !== 'scenario';
+                    // if (!needToAutoSelectScenario) {
+                    //     this.saveModelData();
+                    // }
+                    // this.curSection = section;
+                    // if ( needToAutoSelectScenario ) {
+                    //     // auto select a scenario
+                    //     this.selectionChange( this.curModel, undefined, undefined, this.curModel.scenarioCollection.at(this.curModel.scenarioIndex) );
+                    // }
+                    
                     Backbone.trigger( 'section:pre-change', section, prevSection );
                 }
             },
 
             saveModelData:function( force ) {
-                this.log('AppModel > saveModelData, this.curSection:',this.curSection,' force:',force);
-
+                this.log('saveModelData, this.curSection:',this.curSection,' force:',force);
                 // leaving from modeling section, so save data to model
-                if ( (typeof force !== 'undefined' && force ) || this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
+                if ( (typeof force !== 'undefined' && force) || this.curSection === 'modeling' && this.modelingView !== null && this.curModel ) {
                     if (window.MentalModelerUseFlash) {
-                        this.curModel.updateFromModelSection( this.modelingView.getModelXML() );
+                        this.curModel.updateXMLFromModelSection( this.modelingView.getModelXML() );
+                    } else {
+                        // this.curModel.updateJSFromModelSection( this.modelingView.getModelXML() );
+                        this.curModel.updateJSFromModelSection( this.modelingView.getModelJS().js );
                     }
                 }
             },
+
+            // saveModelData:function( force ) {
+            //     this.log('saveModelData, this.curSection:',this.curSection,' force:',force);
+            //     // leaving from modeling section, so save data to model
+            //     if ( (typeof force !== 'undefined' && force) || this.curSection === 'modeling' && this.modelingView !== null && this.curModel )) {
+            //         if (window.MentalModelerUseFlash) {
+            //             this.curModel.updateXMLFromModelSection( this.modelingView.getModelXML() );
+            //         } else {
+            //             // this.curModel.updateJSFromModelSection( this.modelingView.getModelXML() );
+            //             this.curModel.updateJSFromModelSection( this.modelingView.getModelJS().js );
+            //         }
+            //     }
+            // },
 
             /*
              *  retrieve values
@@ -226,8 +306,7 @@ define([
                 }
             },
 
-            loadXMLFileFromServer: function( filePath ) {
-                this.log('loadXMLFileFromServer');
+            loadFileFromServer: function( filePath ) {
                 var a = filePath.split( '/' );
                 var s = a[ a.length - 1 ].split( '.' );
                 var name = s[ 0 ];
@@ -235,7 +314,7 @@ define([
                 xhr.open( 'GET', filePath, true );
                 xhr.responseType = 'text';
                 xhr.onload = function( e ) {
-                    console.log('\txhr.response:', xhr.response);
+                    // console.log('\txhr.response:', xhr.response);
                     this.addModel( xhr.response, name );
                 }.bind(this);
                 xhr.send();
@@ -248,7 +327,6 @@ define([
                 this.log('loadFiles');
                 var mmpFiles = [];
                 var files = e.target.files; // FileList object
-                //this.log('loadFiles, e.target.files:',e.target.files)
                 // files is a FileList of File objects. List some properties.
                 for (var i = 0, f; f = files[i]; i++) {
                     var name = escape(f.name);

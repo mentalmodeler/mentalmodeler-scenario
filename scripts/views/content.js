@@ -61,9 +61,8 @@ define([
                     $target = $target.closest('a');
                 }
                 var section = $target[0].href.split('-')[1];
-                window.mentalmodeler.appModel.setSection( section );
-                that.updateContentPanel( section );
-
+                that.updateSection( section )
+                
                 // prevent click from propogating
                 e.preventDefault();
                 return false;

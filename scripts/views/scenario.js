@@ -165,6 +165,7 @@ define([
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
                 data.name = window.mentalmodeler.appModel.curSelection.get('name');
+                // console.log('\n______Scenario >  render' , '\n\tdata:', data);
             }
             this.$el.html( this.template( data ) );
             this.sgView.setElement( this.$el.find('div.panel-right') );

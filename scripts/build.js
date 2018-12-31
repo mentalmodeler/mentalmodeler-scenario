@@ -1,6 +1,6 @@
 ({
     baseUrl: './',
-    //optimize: 'none', //uncomment this option if built source needs to be debugged
+    // optimize: 'none', //uncomment this option if built source needs to be debugged
     paths: {
     	almond: '../vendor/almond/almond'
     },

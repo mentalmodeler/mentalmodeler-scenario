@@ -15,8 +15,8 @@ define([
         tagName: 'div',
         id: 'flash-model',
         flash: null,
-        doLog: true,
-        logPrefix: '++++++++ ModelingView > ',
+        doLog: false,
+        logPrefix: '\n++++++++ ModelingView > ',
 
         events: {
         },
@@ -54,6 +54,15 @@ define([
             }
         },
 
+        getModelJS:function() {
+            if (window.MentalModelerConceptMap && window.MentalModelerConceptMap.save) {
+                // data = {js, json}
+                var data = window.MentalModelerConceptMap.save();
+                // console.log('\tgetModelJS\ndata:', data, '\n');
+                return data;
+            }
+        },
+
         reloadSwf:function( xml ) {
             if (window.MentalModelerUseFlash && this.flash) {
                 this.flash.doLoad( xml );
@@ -62,11 +71,12 @@ define([
 
         onSelectionChange: function( model, target, section ) {
             var appModel = window.mentalmodeler.appModel;
-            this.log('onSelectionChange, appModel.curModel:', appModel.curModel);
             if ( appModel.curSection === 'modeling' && appModel.curModel ) {
                 if (window.MentalModelerUseFlash) {
+                    this.log('onSelectionChange, reloadSwf:', appModel.curModel.getModelingXML());
                     this.reloadSwf( appModel.curModel.getModelingXML() );
                 } else if (window.MentalModelerConceptMap) {
+                    this.log('onSelectionChange, load:', appModel.curModel.getModelingJSON());
                     window.MentalModelerConceptMap.load( appModel.curModel.getModelingJSON() )
                 }
             }
@@ -74,11 +84,12 @@ define([
 
         onSectionChange: function( section ) {
             var appModel = window.mentalmodeler.appModel;
-            this.log('onSelectionChange, appModel.curModel:', appModel.curModel);
             if ( section === 'modeling' && appModel.curModel ) {
                 if (window.MentalModelerUseFlash) {
+                    this.log('onSectionChange, reloadSwf:', appModel.curModel.getModelingXML());
                     this.reloadSwf( appModel.curModel.getModelingXML() );
                 } else if (window.MentalModelerConceptMap) {
+                    this.log('onSectionChange, load:', appModel.curModel.getModelingJSON());
                     window.MentalModelerConceptMap.load( appModel.curModel.getModelingJSON() )
                 }
             }

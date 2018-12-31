@@ -16,7 +16,7 @@ define([
         className: 'mmp',
         template: _.template( $(Template).html() ),
         doLog: false,
-        logPrefix: '----- MmpView > ',
+        logPrefix: '\n----- MmpView > ',
 
         events: {
             'click .map' : 'selectMap',
@@ -156,8 +156,19 @@ define([
         },
 
         onSelect: function( target, section ) {
-            this.log('onSelect, this.model:',this.model)
-            window.mentalmodeler.appModel.selectionChange( this.model, target, section );          
+            var curSection = window.mentalmodeler.appModel.curSection;
+            this.log('onSelect'
+                , '\n\tsection:', section
+                , '\n\tcurSection:', curSection
+                // , '\n\twindow.mentalmodeler.appModel:', window.mentalmodeler.appModel
+                // , ',\n\tthis.model:',this.model
+            );
+            window.mentalmodeler.appModel.selectionChange( this.model, target, section );
+            // if ( section === 'scenario' && window.mentalmodeler.appModel.curSelectionType !== 'scenario' ) {
+            //     window.mentalmodeler.appModel.setSection( section );
+            // } else {
+            //     window.mentalmodeler.appModel.selectionChange( this.model, target, section );          
+            // }
         }
     });
 

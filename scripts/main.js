@@ -52,7 +52,7 @@ require.config({
         detect: '../vendor/detect/detect.min',
         x2js: '../vendor/x2js/xml2json',
         tableExport: '../vendor/tableExport/tableExport',
-        jqueryBase64: '../vendor/tableExport/jquery.base64',
+        jqueryBase64: '../vendor/tableExport/jquery.base64'
         // conceptmap: '../libs/conceptmap/js/main'
     }
 });
@@ -62,15 +62,14 @@ require([
     'backbone',
     'underscore',
     'routes/app'
-    // 'conceptmap'
 ], function ( $, Backbone, _, App ) {
     var params = new URLSearchParams(document.location.search.substring(1));
     window.MentalModelerUseFlash = !!params.has('flash');
+    // console.log('\nMain\n\twindow.MentalModelerConceptMap:', window.MentalModelerConceptMap, '\n\twindow.MentalModelerUseFlash:', window.MentalModelerUseFlash);
     window.mentalmodeler = new App();
     Backbone.history.start();
-    console.log('-------- window.MentalModelerConceptMap:', window.MentalModelerConceptMap);
     if (!window.MentalModelerUseFlash && window.MentalModelerConceptMap) {
-        // window.mentalmodeler.appModel.start();    
+        window.mentalmodeler.appModel.start();    
     }
 });
 

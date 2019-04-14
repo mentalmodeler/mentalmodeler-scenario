@@ -25,6 +25,7 @@ define([
             'click #newFile': 'newFile',
             'click #saveFile': 'saveFile',
             'click #deleteFile': 'remove',
+            'click #print': 'print',
             'click #exportCsv': 'exportCSV',
             'click #exportXls': 'exportXLS'
         },
@@ -140,6 +141,51 @@ define([
 
         newFile: function() {
             window.mentalmodeler.appModel.addModel();
+        },
+
+        /*
+         * print concept map, metrics, and scenarios
+         */
+
+        print: function() {
+            // var conceptPromise = this._rasterizeElement(document.querySelector("#panel-modeling"));
+            $("a[href='#panel-preferred']").click();
+            var metricsPromise = this._rasterizeElement(document.querySelector("#panel-preferred"));
+            $("a[href='#panel-scenario']").click();
+            var scenarioPromise = this._rasterizeElement(document.querySelector("#panel-scenario"));
+
+            $(window).one("afterprint", () => {
+                $("*").removeClass("printable");
+                $("#printArea").empty();
+                $("#printArea").hide();
+            });
+
+            Promise.all([metricsPromise, scenarioPromise]).then((canvases) => {
+                canvases.forEach((canvas) => {
+                    $("#printArea").append(canvas);
+                });
+
+                $("#printArea").show();
+                window.print();
+            });
+        },
+
+        _rasterizeElement: function(element) {
+            $(element).addClass("printable");
+            $(element).find("div").addClass("printable");
+
+            $(element).find('svg').each((i, node) => {
+                var rect = node.getBoundingClientRect();
+                node.setAttribute('width', rect.width);
+                node.setAttribute('height', rect.height);
+                $(node).find("*").each((j, descNode) => {
+                    $(descNode).css('fill', $(descNode).css('fill'));
+                    $(descNode).css('stroke', $(descNode).css('stroke'));
+                    $(descNode).css('font', $(descNode).css('font'));
+                });
+            });
+
+            return html2canvas(element, {allowTaint: true});
         },
 
         /*

@@ -2223,3 +2223,8 @@ div.right-main {
         border-left-width: 2px;
         border-right-width: 2px;
         outline: none; }
+
+@media print {
+  /* line 2, ../sass/_print.scss */
+  div:not(.tabs-content) {
+    display: none; } }

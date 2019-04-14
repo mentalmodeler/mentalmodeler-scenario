@@ -1,0 +1,38 @@
+@media print {
+    #app {
+        display: none;
+    }
+
+    @page {
+        size: landscape;
+        margin: 1.5cm 1.0cm;
+    }
+}
+
+#printArea {
+    display: none;
+}
+
+.printable {
+    height: unset !important;
+    overflow: visible !important;
+    margin-bottom: 15px !important;
+    width: 100% !important
+}
+
+.panel-left.printable,
+.panel-right.printable {
+    width: 90% !important;
+}
+
+.printable td {
+    min-width: 1% !important;
+    max-width: 1% !important;
+    width: 1% !important;
+}
+
+.printable td.col-2 {
+    min-width: 5% !important;
+    max-width: 5% !important;
+    width: 5% !important;
+}

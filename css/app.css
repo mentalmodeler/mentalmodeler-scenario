@@ -2226,5 +2226,76 @@ div.right-main {
 
 @media print {
   /* line 2, ../sass/_print.scss */
-  div:not(.tabs-content) {
-    display: none; } }
+  #app {
+    display: none; }
+
+  @page {
+    size: landscape;
+    margin: 1.5cm 1.0cm; } }
+/* line 12, ../sass/_print.scss */
+#printArea {
+  display: none; }
+
+/* line 16, ../sass/_print.scss */
+.printable {
+  height: unset !important;
+  overflow: visible !important;
+  margin-bottom: 15px !important;
+  width: 100% !important; }
+
+/* line 23, ../sass/_print.scss */
+.panel-left.printable,
+.panel-right.printable {
+  width: 90% !important; }
+
+/* line 28, ../sass/_print.scss */
+.printable td {
+  min-width: 1% !important;
+  max-width: 1% !important;
+  width: 1% !important; }
+
+/* line 34, ../sass/_print.scss */
+.printable td.col-2 {
+  min-width: 5% !important;
+  max-width: 5% !important;
+  width: 5% !important; }
+
+/* line 40, ../sass/_print.scss */
+.Print__screenshot-overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  /* line 52, ../sass/_print.scss */
+  .Print__screenshot-overlay .screenshot__spinner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    border: 5px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #fff;
+    transform-origin: center;
+    animation: rotate-screenshot-meesage 500ms ease infinite; }
+  /* line 64, ../sass/_print.scss */
+  .Print__screenshot-overlay .screenshot__message {
+    position: relative;
+    bottom: 60px;
+    color: #fff;
+    font-size: 24px; }
+  /* line 71, ../sass/_print.scss */
+  .Print__screenshot-overlay .screenshot__text {
+    margin-left: 60px;
+    line-height: 40px;
+    vertical-align: middle; }
+
+@keyframes rotate-screenshot-meesage {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }

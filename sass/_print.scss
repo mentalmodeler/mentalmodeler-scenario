@@ -36,3 +36,51 @@
     max-width: 5% !important;
     width: 5% !important;
 }
+
+.Print__screenshot-overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .screenshot__spinner {
+        position: absolute;
+        $size: 40px;
+        width: $size;
+        height: $size;
+        border-radius: $size;
+        border: 5px solid rgba(255, 255, 255, 0.2);
+        border-top-color: #fff;
+        transform-origin: center;
+        animation: rotate-screenshot-meesage 500ms ease infinite;
+    }
+
+    .screenshot__message {
+        position: relative;
+        bottom: 60px;
+        color: #fff;
+        font-size: 24px;
+    }
+
+    .screenshot__text {
+        margin-left: 60px;
+        line-height: 40px;
+        vertical-align: middle;
+    }
+}
+
+@keyframes rotate-screenshot-meesage {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,6 +1,7 @@
 {
   "name": "foundation_project",
   "dependencies": {
-    "foundation": "zurb/bower-foundation#~5.5.2"
+    "foundation": "zurb/bower-foundation#~5.5.2",
+    "file-saver": "^2.0.2"
   }
 }

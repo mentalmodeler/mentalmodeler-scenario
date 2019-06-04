@@ -9,7 +9,8 @@ define([
     'text!templates/header.html',
     'text!templates/exportTable.html',
     'models/scenario',
-    'swfobject'
+    'swfobject',
+    'filesaver'
 ], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, SwfObject ) {
     'use strict';
 
@@ -265,36 +266,10 @@ define([
         /*
         *  save file
         */
-
         saveFile: function() {
-            var host = "http://45.55.174.38";
-            var fileName = this.getFilename();
-
-            $.ajax({
-                type: "POST",
-                url: host + "/mm/save",
-                crossDomain: true,
-                data: this.getXML(),
-                contentType: "text/xml",
-                dataType: "text",
-                success: function(resp) { window.location.href = host + "/mm/download?id=" + resp + "&name=" + fileName; },
-                error: function(xhr, exception) { 
-                    if(xhr.status === 0) {
-                        console.log("No connection. Server is down or you have network issues.");
-                    } else if(xhr.status === 404) {
-                        console.log("Requested URI not found. [404]");
-                    } else if(xhr.status === 500) {
-                        console.log("Internal server error. [500]");
-                    } else if(exception === "timeout") {
-                        console.log("Request timed out. Please try again.");
-                    } else if(exception === "abort") {
-                        console.log("Request aborted. Please try again.");
-                    } else {
-                        console.log("Uncaught error.\n" + xhr.responseText);
-                    }
-                }
-            });
-        },
+            // FileSaver.js (filesaver module) populates a saveAs method on the window object
+            saveAs(new Blob([this.getXML()]), this.getFilename());
+       },
 
         /*
          *  Load files

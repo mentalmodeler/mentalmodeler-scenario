@@ -20,9 +20,11 @@ define([
         },
 
         app: function () {
-            this.appModel = new AppModel();
-            this.appView = new AppView( {model: this.appModel} );
-            this.appView.render();
+            if (!this.appModel) {
+                this.appModel = new AppModel();
+                this.appView = new AppView( {model: this.appModel} );
+                this.appView.render();
+            }
         }
     });
 

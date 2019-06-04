@@ -185,7 +185,7 @@ define([
         },
 
         _printModel: function() {
-            $("a[href='#panel-modeling").click();
+            $("a[href='#panel-modeling']").click();
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     let modelSSPromise = window.MentalModelerConceptMap.screenshot();

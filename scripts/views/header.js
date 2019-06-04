@@ -45,7 +45,6 @@ define([
         },
 
         render: function() {
-            var that = this;
             this.$el.html( this.template( {} ) );
             this.$el.find('a.disabled').click( function(e) {
                 e.preventDefault();
@@ -157,10 +156,11 @@ define([
          */
 
         print: function() {
-            let $active_tab = $("dd.active").children('a')[0];
             let header = this;
-            let showError = (e) => {
+            let $activeTab = $('dd.active a');
+            let printError = (e) => {
                 alert("Printing error.");
+                header._hidePrintArea();
                 console.log(e);
             };
 
@@ -170,18 +170,22 @@ define([
                 this._printMetrics().then(() => {
                     this._printScenarios().then(() => {
                         $("#printArea").show();
-                        header._hideBlocker();
                         window.print();
-                    }).catch(showError);
-                }).catch(showError);
-            }).catch(showError);
+                    }).catch(printError);
+                }).catch(printError);
+            }).catch(printError);
 
-            $(window).one("afterprint", () => {
-                $active_tab.click();
-                $("*").removeClass("printable");
-                $("#printArea").empty();
-                $("#printArea").hide();
-            });
+            $(window).one("afterprint", function() {
+                $activeTab.click();
+                this._hidePrintArea();
+            }.bind(this));
+        },
+
+        _hidePrintArea: function() {
+            $("*").removeClass("printable");
+            $("#printArea").empty();
+            $("#printArea").hide();
+            this._hideBlocker();
         },
 
         _printModel: function() {
@@ -214,22 +218,19 @@ define([
 
         _printScenarios: function() {
             return new Promise((resolve, reject) => {
-                let completedRenders = 0;
-                let totalRenders = $('.scenarios-list').children().length;
-
-                for(var i = 0; i < totalRenders; i++) {
-                    $($('.scenarios-list').children()[i]).click();
-                    let rasterizePromise = this._rasterizeElement(document.querySelector("#panel-scenario"));
-                    rasterizePromise.then((canvas) => {
-                        $("#printArea").append(canvas);
-                        completedRenders++;
-                        if(completedRenders >= totalRenders) {
-                            resolve();
-                        }
-                    }).catch((e) => {
-                        reject(e);
-                    });
-                }
+                const $scenarios = $('.mmp.selected .scenarios-list').children();
+                const header = this;
+                (async function() {
+                    for(var i = 0; i < $scenarios.length; i++) {
+                        $($scenarios[i]).click();
+                        await header._rasterizeElement(document.querySelector("#panel-scenario")).then((canvas) => {
+                            $("#printArea").append(canvas);
+                        }).catch((e) => {
+                            reject(e);
+                        });
+                    }
+                    resolve();
+                })();
             });
         },
 

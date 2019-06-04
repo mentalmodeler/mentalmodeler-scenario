@@ -9,7 +9,8 @@ define([
     'text!templates/header.html',
     'text!templates/exportTable.html',
     'models/scenario',
-    'swfobject'
+    'swfobject',
+    'filesaver'
 ], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, SwfObject ) {
     'use strict';
 
@@ -33,6 +34,14 @@ define([
         initialize: function() {
             HeaderView.__super__.initialize.apply( this, arguments );
             this.listenTo( Backbone, 'selection:change', this.onSelectionChange );
+
+            $(document).on('keydown', (e) => {
+                if(e.key.toLowerCase() === 'p' && e.ctrlKey) {
+                    this.print();
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+            });
         },
 
         render: function() {
@@ -148,25 +157,79 @@ define([
          */
 
         print: function() {
-            // var conceptPromise = this._rasterizeElement(document.querySelector("#panel-modeling"));
-            $("a[href='#panel-preferred']").click();
-            var metricsPromise = this._rasterizeElement(document.querySelector("#panel-preferred"));
-            $("a[href='#panel-scenario']").click();
-            var scenarioPromise = this._rasterizeElement(document.querySelector("#panel-scenario"));
+            let $active_tab = $("dd.active").children('a')[0];
+            let header = this;
+            let showError = (e) => {
+                alert("Printing error.");
+                console.log(e);
+            };
+
+            this._showBlocker();
+
+            this._printModel().then(() => {
+                this._printMetrics().then(() => {
+                    this._printScenarios().then(() => {
+                        $("#printArea").show();
+                        header._hideBlocker();
+                        window.print();
+                    }).catch(showError);
+                }).catch(showError);
+            }).catch(showError);
 
             $(window).one("afterprint", () => {
+                $active_tab.click();
                 $("*").removeClass("printable");
                 $("#printArea").empty();
                 $("#printArea").hide();
             });
+        },
 
-            Promise.all([metricsPromise, scenarioPromise]).then((canvases) => {
-                canvases.forEach((canvas) => {
+        _printModel: function() {
+            $("a[href='#panel-modeling").click();
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    let modelSSPromise = window.MentalModelerConceptMap.screenshot();
+                    modelSSPromise.then((canvas) => {
+                        $("#printArea").append(canvas);
+                        resolve();
+                    }).catch((e) => {
+                        reject(e);
+                    });
+                }, 500);
+            });
+        },
+
+        _printMetrics: function() {
+            $("a[href='#panel-preferred']").click();
+            return new Promise((resolve, reject) => {
+                let rasterizePromise = this._rasterizeElement(document.querySelector("#panel-preferred"));
+                rasterizePromise.then((canvas) => {
                     $("#printArea").append(canvas);
+                    resolve();
+                }).catch((e) => {
+                    reject(e);
                 });
+            });
+        },
 
-                $("#printArea").show();
-                window.print();
+        _printScenarios: function() {
+            return new Promise((resolve, reject) => {
+                let completedRenders = 0;
+                let totalRenders = $('.scenarios-list').children().length;
+
+                for(var i = 0; i < totalRenders; i++) {
+                    $($('.scenarios-list').children()[i]).click();
+                    let rasterizePromise = this._rasterizeElement(document.querySelector("#panel-scenario"));
+                    rasterizePromise.then((canvas) => {
+                        $("#printArea").append(canvas);
+                        completedRenders++;
+                        if(completedRenders >= totalRenders) {
+                            resolve();
+                        }
+                    }).catch((e) => {
+                        reject(e);
+                    });
+                }
             });
         },
 
@@ -175,7 +238,7 @@ define([
             $(element).find("div").addClass("printable");
 
             $(element).find('svg').each((i, node) => {
-                var rect = node.getBoundingClientRect();
+                let rect = node.getBoundingClientRect();
                 node.setAttribute('width', rect.width);
                 node.setAttribute('height', rect.height);
                 $(node).find("*").each((j, descNode) => {
@@ -185,42 +248,28 @@ define([
                 });
             });
 
-            return html2canvas(element, {allowTaint: true});
+            return html2canvas(element, {allowTaint: true, logging: false});
+        },
+
+        _showBlocker: function() {
+            const overlay = document.createElement('div');
+            overlay.innerHTML = `<div class="screenshot__message"><div class="screenshot__spinner"></div><span class="screenshot__text">Printing</span></div>`;
+            overlay.classList.add('Print__screenshot-overlay');
+            document.body.append(overlay);
+        },
+
+        _hideBlocker: function() {
+            const overlay = document.querySelector('.Print__screenshot-overlay');
+            document.body.removeChild(overlay);
         },
 
         /*
         *  save file
         */
-
         saveFile: function() {
-            var host = "http://45.55.174.38";
-            var fileName = this.getFilename();
-
-            $.ajax({
-                type: "POST",
-                url: host + "/mm/save",
-                crossDomain: true,
-                data: this.getXML(),
-                contentType: "text/xml",
-                dataType: "text",
-                success: function(resp) { window.location.href = host + "/mm/download?id=" + resp + "&name=" + fileName; },
-                error: function(xhr, exception) { 
-                    if(xhr.status === 0) {
-                        console.log("No connection. Server is down or you have network issues.");
-                    } else if(xhr.status === 404) {
-                        console.log("Requested URI not found. [404]");
-                    } else if(xhr.status === 500) {
-                        console.log("Internal server error. [500]");
-                    } else if(exception === "timeout") {
-                        console.log("Request timed out. Please try again.");
-                    } else if(exception === "abort") {
-                        console.log("Request aborted. Please try again.");
-                    } else {
-                        console.log("Uncaught error.\n" + xhr.responseText);
-                    }
-                }
-            });
-        },
+            // FileSaver.js (filesaver module) populates a saveAs method on the window object
+            saveAs(new Blob([this.getXML()]), this.getFilename());
+       },
 
         /*
          *  Load files

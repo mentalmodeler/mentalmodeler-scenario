@@ -14,6 +14,9 @@ require.config({
             ],
             exports: 'Backbone'
         },
+        filesaver: {
+            exports: 'filesaver'
+        },
         foundation: {
             deps: ['jquery'],
             exports: 'foundation'
@@ -44,6 +47,7 @@ require.config({
         jquery: '../vendor/jquery/jquery.min',
         backbone: '../vendor/backbone/backbone-min',
         underscore: '../vendor/underscore/underscore-min',
+        filesaver: '../vendor/filesaver/FileSaver',
         foundation: '../vendor/foundation/foundation.min',
         text: '../vendor/requirejs-text/text',
         d3: '../vendor/d3/d3.v3.min',

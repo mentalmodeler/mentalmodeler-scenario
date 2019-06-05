@@ -208,6 +208,7 @@ define([
             return new Promise((resolve, reject) => {
                 let rasterizePromise = this._rasterizeElement(document.querySelector("#panel-preferred"));
                 rasterizePromise.then((canvas) => {
+                    $(canvas).addClass('no-break');
                     $("#printArea").append(canvas);
                     resolve();
                 }).catch((e) => {
@@ -224,6 +225,7 @@ define([
                     for(var i = 0; i < $scenarios.length; i++) {
                         $($scenarios[i]).click();
                         await header._rasterizeElement(document.querySelector("#panel-scenario")).then((canvas) => {
+                            $(canvas).addClass('no-break');
                             $("#printArea").append(canvas);
                         }).catch((e) => {
                             reject(e);

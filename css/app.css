@@ -2681,11 +2681,11 @@ div.right-main {
 
   @page {
     size: landscape;
-    margin: 1.5cm 1.0cm; }
+    margin: 1.0cm; }
   /* line 15, ../sass/_print.scss */
-  canvas {
-    break-before: avoid;
-    break-after: avoid;
+  .no-break {
+    display: block;
+    break-before: always;
     break-inside: avoid; } }
 /* line 22, ../sass/_print.scss */
 #printArea {
@@ -2695,27 +2695,26 @@ div.right-main {
 .printable {
   height: unset !important;
   overflow: visible !important;
-  margin-bottom: 15px !important;
   width: 100% !important; }
 
-/* line 33, ../sass/_print.scss */
+/* line 32, ../sass/_print.scss */
 .panel-left.printable,
 .panel-right.printable {
   width: 90% !important; }
 
-/* line 38, ../sass/_print.scss */
+/* line 37, ../sass/_print.scss */
 .printable td {
   min-width: 1% !important;
   max-width: 1% !important;
   width: 1% !important; }
 
-/* line 44, ../sass/_print.scss */
+/* line 43, ../sass/_print.scss */
 .printable td.col-2 {
   min-width: 5% !important;
   max-width: 5% !important;
   width: 5% !important; }
 
-/* line 50, ../sass/_print.scss */
+/* line 49, ../sass/_print.scss */
 .Print__screenshot-overlay {
   width: 100vw;
   height: 100vh;
@@ -2727,7 +2726,7 @@ div.right-main {
   display: flex;
   align-items: center;
   justify-content: center; }
-  /* line 62, ../sass/_print.scss */
+  /* line 61, ../sass/_print.scss */
   .Print__screenshot-overlay .screenshot__spinner {
     position: absolute;
     width: 40px;
@@ -2737,13 +2736,13 @@ div.right-main {
     border-top-color: #fff;
     transform-origin: center;
     animation: rotate-screenshot-meesage 500ms ease infinite; }
-  /* line 74, ../sass/_print.scss */
+  /* line 73, ../sass/_print.scss */
   .Print__screenshot-overlay .screenshot__message {
     position: relative;
     bottom: 60px;
     color: #fff;
     font-size: 24px; }
-  /* line 81, ../sass/_print.scss */
+  /* line 80, ../sass/_print.scss */
   .Print__screenshot-overlay .screenshot__text {
     margin-left: 60px;
     line-height: 40px;

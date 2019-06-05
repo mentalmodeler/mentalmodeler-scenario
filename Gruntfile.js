@@ -23,7 +23,12 @@ module.exports = function(grunt) {
 					mainConfigFile: 'scripts/require-config.js',
 					include: ['main'],
 					name: '../vendor/almond/almond',
-					out: 'dist/scripts/mentalmodeler.min.js',
+					out: function(text, sourceMapText) {
+						var UglifyJS = require('uglify-es'),
+							uglified = UglifyJS.minify(text);
+			
+						grunt.file.write('dist/scripts/mentalmodeler.js', uglified.code);
+					},
 					optimize: 'none',
 					wrap: true
 				}

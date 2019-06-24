@@ -25,8 +25,8 @@ define([
                 var influences = this.data.influences;
                 var clamps = this.data.clamps;
                 var conceptNames = this.getConceptNames( concepts );
-                var steadyState = this.converge( math.ones( influences.length ), influences );
-                var scenarioState = this.converge( steadyState, influences, clamps );
+                var steadyState = this.converge( math.ones( influences.length ), influences.length, influences );
+                var scenarioState = this.converge( math.ones( influences.length ), influences.length, influences, clamps );
                 var relativeDifferences = math.subtract( scenarioState, steadyState );
 
                 var filterFunc = function(value, i) { 
@@ -92,29 +92,36 @@ define([
                 }
             },
 
-            converge: function( initialVector, weights, clamps ) {
-                var squashingFunction = this.squashFunc;
-                var iterations = 0;
-                var weightMatrix = math.matrix( weights );
-                var curStateVec = initialVector;
-                var prevStateVec;
+            converge: function( initialVector, vecSize, weights, clamps ) {
+                let squashingFunction = this.squashFunc;
+                let weightMatrix = math.matrix( weights );
+                let prevStateVec = initialVector;
+                let currStateVec;
+                let steps = 0;
+                let diff = 1;
 
-                while( !this.equalVectors( prevStateVec, curStateVec ) && iterations < 100 ) {
-                    prevStateVec = curStateVec;
-                    curStateVec = math.multiply( curStateVec, weightMatrix );
-                    curStateVec.forEach(function( x, i, vec ) {
+                while( diff > 0.00001 && steps < 1000 ) {
+                    let intermediateVec = math.zeros( vecSize );
+                    currStateVec = math.zeros( vecSize );
+                    intermediateVec = math.multiply( prevStateVec, weightMatrix );
+
+                    currStateVec.forEach(function( x, i, vec ) {
                         if( clamps && clamps[ i[0] ] !== 0 ) {
-                            curStateVec.subset( math.index( i ), clamps[ i[0] ] );
+                            currStateVec.subset( math.index( i ), clamps[ i[ 0 ] ] );
                         }
                         else {
-                            curStateVec.subset( math.index( i ), squashingFunction( x ) );
+                            currStateVec.subset( math.index( i ), squashingFunction( intermediateVec.subset(math.index( i ) ) ) );
                         }
                     });
 
-                    iterations++;
+                    diff = math.max( math.abs( math.subtract( currStateVec, prevStateVec ) ) );
+                    prevStateVec = currStateVec;
+                    steps++;
                 }
 
-                return curStateVec;          
+                console.log(`steps: ${steps} diff: ${diff}`);
+
+                return currStateVec;          
             },
 
             equalVectors: function( vecA, vecB ) {

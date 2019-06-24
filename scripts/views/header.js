@@ -112,7 +112,6 @@ define([
             }
             var $table = $( this.tableTemplate( {concepts:concepts} ) );
             this.$el.append( $table );
-            console.log('$table:',$table);
             $table.tableExport({
                 type: type,
                 escape: 'false',
@@ -219,20 +218,20 @@ define([
 
         _printScenarios: function() {
             return new Promise((resolve, reject) => {
-                const $scenarios = $('.mmp.selected .scenarios-list').children();
-                const header = this;
+                let $scenarios = $('.mmp.selected .scenarios-list').children();
                 (async function() {
                     for(var i = 0; i < $scenarios.length; i++) {
                         $($scenarios[i]).click();
-                        await header._rasterizeElement(document.querySelector("#panel-scenario")).then((canvas) => {
+                        try {
+                            let canvas = await this._rasterizeElement(document.querySelector("#panel-scenario"));
                             $(canvas).addClass('no-break');
                             $("#printArea").append(canvas);
-                        }).catch((e) => {
+                        } catch(e) {
                             reject(e);
-                        });
+                        }
                     }
                     resolve();
-                })();
+                }.bind(this))();
             });
         },
 

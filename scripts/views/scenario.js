@@ -159,7 +159,7 @@ define([
                 return concept.get('selected') && !concept.get('influence') && concept.get('preferredState') !== 0;
             });
 
-            return 100 * (correctlyPredictedConcepts.length / totalPredictedConcepts.length);
+            return Math.round((100 * (correctlyPredictedConcepts.length / totalPredictedConcepts.length)) * 100) / 100;
         },
 
         onSelectedChange: function(e) {

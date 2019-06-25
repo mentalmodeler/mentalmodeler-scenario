@@ -1,12 +1,12 @@
 <script type="text/template" class="template">
 	<div class="panel-left">
 		<textarea id="scenarioName" placeholder="Scenario Name"><%= name === 'New Scenario' ? "" : name %></textarea>
-                <select id="scenarioSquash">
-                    <option value="sigmoid" <%= squashFunc === 'sigmoid' ? "selected" : "" %>>Sigmoid</option>
-                    <option value="hyperbolic tangent" <%= squashFunc === 'hyperbolic tangent' ? "selected" : "" %>>Hyperbolic Tangent</option>
-                    <option value="bivalent" <%= squashFunc === 'bivalent' ? "selected" : "" %>>Bivalent</option>
-                    <option value="trivalent" <%= squashFunc === 'trivalent' ? "selected" : "" %>>Trivalent</option>
-                </select>
+		<select id="scenarioSquash">
+			<option value="sigmoid" <%= squashFunc === 'sigmoid' ? "selected" : "" %>>Sigmoid</option>
+			<option value="hyperbolic tangent" <%= squashFunc === 'hyperbolic tangent' ? "selected" : "" %>>Hyperbolic Tangent</option>
+			<!-- <option value="bivalent" <%= squashFunc === 'bivalent' ? "selected" : "" %>>Bivalent</option> -->
+			<!-- <option value="trivalent" <%= squashFunc === 'trivalent' ? "selected" : "" %>>Trivalent</option> -->
+		</select>
 		<button id="refreshScenario"><i class="fa fa-refresh"></i>Refresh Scenario</button>
 		<div id="scenarioTable">
 			<table>
@@ -20,7 +20,7 @@
 			  	</tr>
 			  </thead>
 			  <tbody>
-			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var influence = parseFloat(concept.influence); influence = isNaN(influence) ? 0 : influence;var hasNoValue = influence === 0; var influenceValue = influence === 0 ? '' : influence; var preferred = parseFloat(concept.preferredState || '0'); var rowClasses = ''; if (!hasNoValue){ rowClasses += 'hasValue' }; if (!concept.selected){ rowClasses += ' notIncludedInScenario' };%>
+			  	<% for (var i=0; i<concepts.length; i++) { var concept = concepts[i]; var influence = parseFloat(concept.influence); influence = isNaN(influence) ? 0 : influence;var hasNoValue = influence === 0; var influenceValue = influence === 0 ? '' : influence; var preferred = parseFloat(concept.preferredState || '0'); var actual = parseFloat(concept.actualState || '0');var rowClasses = ''; if (!hasNoValue){ rowClasses += 'hasValue' }; if (!concept.selected){ rowClasses += ' notIncludedInScenario' };%>
 			  	<tr data-id="<%= concept.id %>" class="<%= rowClasses %>">
 			    	<td class="col-1">
 			    			<input type="checkbox" name="selected" <%= concept.selected ? "checked" : ""%> >
@@ -31,7 +31,7 @@
 		    			<input type="range" class="slider" min="-1" max="1" step=".01" value="<%= influenceValue %>" >
 			    	</td>
 			    	<td class="col-4"><%= (preferred === 0) ? '' : preferred > 0 ? 'Increase' : 'Decrease' %></td>
-			    	<td class="col-5"> </td>
+					<td class="col-4"><%= (actual === 0) ? '' : actual > 0 ? 'Increase' : 'Decrease' %></td>
 			    </tr>
 			    <% } %>
 			  </tbody>

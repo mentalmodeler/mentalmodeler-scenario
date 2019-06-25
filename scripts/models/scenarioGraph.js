@@ -24,7 +24,8 @@ define([
                 var concepts = this.data.concepts;
                 var influences = this.data.influences;
                 var clamps = this.data.clamps;
-                var conceptNames = this.getConceptNames( concepts );
+                var conceptIds = this.getConceptData( concepts, 'id' );
+                var conceptNames = this.getConceptData( concepts, 'name' );
                 var steadyState = this.converge( math.ones( influences.length ), influences.length, influences );
                 var scenarioState = this.converge( math.ones( influences.length ), influences.length, influences, clamps );
                 var relativeDifferences = math.subtract( scenarioState, steadyState );
@@ -35,18 +36,19 @@ define([
 
                 var filteredDifferences = _.filter( relativeDifferences._data, filterFunc );
                 var filteredConceptNames = _.filter( conceptNames, filterFunc );
+                var filteredConceptIds = _.filter( conceptIds, filterFunc );
 
                 return _.map(filteredDifferences, function(d) {
-                    return [ filteredConceptNames.shift(), d3.round(d, 2) ];
+                    return [ filteredConceptNames.shift(), d3.round(d, 2), filteredConceptIds.shift() ];
                 });
             },
 
-            getConceptNames: function( concepts ) {
-                var conceptNames = [];
+            getConceptData: function( concepts, attr ) {
+                var conceptData = [];
                 for( var i = 0; i < concepts.length; i++ ) {
-                    conceptNames.push( concepts[ i ].get( 'name' ) );
+                    conceptData.push( concepts[ i ].get( attr ) );
                 }
-                return conceptNames;
+                return conceptData;
             },
 
             bivalent: function( x ) { 
@@ -97,10 +99,9 @@ define([
                 let weightMatrix = math.matrix( weights );
                 let prevStateVec = initialVector;
                 let currStateVec;
-                let steps = 0;
                 let diff = 1;
 
-                while( diff > 0.00001 && steps < 1000 ) {
+                while( diff > 0.00001 ) {
                     let intermediateVec = math.zeros( vecSize );
                     currStateVec = math.zeros( vecSize );
                     intermediateVec = math.multiply( prevStateVec, weightMatrix );
@@ -116,10 +117,7 @@ define([
 
                     diff = math.max( math.abs( math.subtract( currStateVec, prevStateVec ) ) );
                     prevStateVec = currStateVec;
-                    steps++;
                 }
-
-                console.log(`steps: ${steps} diff: ${diff}`);
 
                 return currStateVec;          
             },

@@ -127,7 +127,22 @@ define([
             if ( curModel && curModel.conceptCollection.length > 0 ) {
                 this.log('curModel.conceptCollection:',curModel.conceptCollection );
                 var scenarioData = curModel.getDataForScenarioCalculation();
-                this.sgView.setModel( new ScenarioGraphModel( scenarioData, this.squashFunc ) );
+                var sgModel = new ScenarioGraphModel( scenarioData, this.squashFunc );
+
+                this.setActualStates(sgModel.getData());
+                this.render();
+                this.sgView.setModel( sgModel );
+            }
+        },
+
+        setActualStates: function(sgData) {
+            for(var i = 0; i < sgData.length; i++) {
+                var id = sgData[i][2];
+                var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
+
+                if( scenarioConcept ) {
+                    scenarioConcept.set('actualState', sgData[i][1]);
+                }
             }
         },
 
@@ -172,10 +187,11 @@ define([
 
             // size table
             var $textarea = this.$el.find('textarea#scenarioName');
+            var $select = this.$el.find('select#scenarioSquash');
             var $scenarioTable = this.$el.find('#scenarioTable');
             var $table = this.$el.find('table');
 
-            $scenarioTable.outerHeight( this.availableHeight - $textarea.outerHeight(true) );
+            $scenarioTable.outerHeight( this.availableHeight - $textarea.outerHeight(true) - $select.outerHeight(true) );
             // if table scrolls, add border to top and bottom
             if ( $table.height() > $scenarioTable.height() ) {
                 $scenarioTable.addClass( 'hasOverflow' );

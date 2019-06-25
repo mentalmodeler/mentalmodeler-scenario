@@ -74,11 +74,12 @@ define([
                     //console.log('      appModel.curModel:',appModel.curModel);//conceptsSourceCollection:',conceptsSourceCollection );
                     this.sourceConceptCollection.each( function( conceptModel ) {
                         var id = conceptModel.get('id');
-                        var conceptRefProps =  { id: id, name: conceptModel.get('name'), preferredState: conceptModel.get('preferredState')};
+                        var conceptRefProps =  { id: id, name: conceptModel.get('name'), preferredState: conceptModel.get('preferredState') };
                         var prevModel = prevCollection.findWhere( {id: id} );
                         if ( typeof prevModel !== 'undefined' ) {
                             conceptRefProps.selected = prevModel.get('selected');
                             conceptRefProps.influence = prevModel.get('influence');
+                            conceptRefProps.actualState = prevModel.get('actualState');
                             that.log('     modifying scenario concept, conceptRefProps:',conceptRefProps);
                         } else {
                             that.log('     adding scenario concept, conceptRefProps:',conceptRefProps);

@@ -23,6 +23,7 @@ define([
                 preferredState: 0,
 
                 // for scenario use
+                actualState: 0,
                 selected: '',
                 influence: ''
             },

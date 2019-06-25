@@ -27,7 +27,7 @@ define([
           this.log( 'render' );
           if(this.model) {
             this.$el.find('svg').remove();
-          	var data = this.model.getData();
+            var data = this.model.getData();
             var height = this.$el.closest('#panel-scenario').height(); // this.$el.parent().height()
             this.$el.height( height );
             d3.select( this.el )

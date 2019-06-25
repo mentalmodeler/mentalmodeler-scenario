@@ -137,13 +137,29 @@ define([
 
         setActualStates: function(sgData) {
             for(var i = 0; i < sgData.length; i++) {
-                var id = sgData[i][2];
-                var scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
+                let id = sgData[i][2];
+                let scenarioConcept = window.mentalmodeler.appModel.curSelection.conceptCollection.findWhere( {id:id} );
 
                 if( scenarioConcept ) {
                     scenarioConcept.set('actualState', sgData[i][1]);
                 }
             }
+        },
+
+        getStatePrediction: function() {
+            let scenarioConcepts = window.mentalmodeler.appModel.curSelection.conceptCollection;
+
+            let correctlyPredictedConcepts = scenarioConcepts.filter((concept) => {
+                let actuState = concept.get('actualState');
+                let prefState = concept.get('preferredState');
+                return concept.get('selected') && !concept.get('influence') && prefState !== 0 && ((prefState > 0 && actuState > 0) || (prefState < 0 && actuState < 0));
+            });
+
+            let totalPredictedConcepts = scenarioConcepts.filter((concept) => {
+                return concept.get('selected') && !concept.get('influence') && concept.get('preferredState') !== 0;
+            });
+
+            return 100 * (correctlyPredictedConcepts.length / totalPredictedConcepts.length);
         },
 
         onSelectedChange: function(e) {
@@ -175,11 +191,12 @@ define([
 
         render: function() {
             this.log( 'render, this.availableHeight:',this.availableHeight );
-            var data = { concepts: [], name: '', squashFunc: this.squashFunc };
+            var data = { concepts: [], name: '', squashFunc: this.squashFunc, prediction: NaN };
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curSelection != null && appModel.curSelectionType === 'scenario' ) {
                 data.concepts = window.mentalmodeler.appModel.curSelection.getConceptsForScenario();
                 data.name = window.mentalmodeler.appModel.curSelection.get('name');
+                data.prediction = this.getStatePrediction();
                 // console.log('\n______Scenario >  render' , '\n\tdata:', data);
             }
             this.$el.html( this.template( data ) );
@@ -188,10 +205,11 @@ define([
             // size table
             var $textarea = this.$el.find('textarea#scenarioName');
             var $select = this.$el.find('select#scenarioSquash');
+            var $scenarioPrediction = this.$el.find('span#scenarioPrediction');
             var $scenarioTable = this.$el.find('#scenarioTable');
             var $table = this.$el.find('table');
 
-            $scenarioTable.outerHeight( this.availableHeight - $textarea.outerHeight(true) - $select.outerHeight(true) );
+            $scenarioTable.outerHeight( this.availableHeight - $textarea.outerHeight(true) - $select.outerHeight(true) - $scenarioPrediction.outerHeight(true) );
             // if table scrolls, add border to top and bottom
             if ( $table.height() > $scenarioTable.height() ) {
                 $scenarioTable.addClass( 'hasOverflow' );

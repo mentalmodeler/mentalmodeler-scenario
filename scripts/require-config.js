@@ -47,6 +47,7 @@ require.config({
         filesaver: '../vendor/filesaver/FileSaver',
         foundation: '../vendor/foundation/foundation.min',
         text: '../vendor/requirejs-text/text',
+        dagre: '../vendor/dagre/dagre.min',
         d3: '../vendor/d3/d3.v3.min',
         math: '../vendor/mathjs/math.min',
         swfobject: '../vendor/swfobject/swfobject',

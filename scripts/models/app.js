@@ -7,9 +7,10 @@ define([
     'models/abstract',
     'models/mmp',
     'views/mmp',
-    'models/scenario'
+    'models/scenario',
+    'dagre'
 
-], function ( $, _, Backbone, AbstractModel, MmpModel, MmpView, ScenarioModel ) {
+], function ( $, _, Backbone, AbstractModel, MmpModel, MmpView, ScenarioModel, Dagre ) {
     'use strict';
 
     var AppModel = AbstractModel.extend({
@@ -303,6 +304,82 @@ define([
                     else {
                       this.log('remove called for other type');
                     }
+                }
+            },
+
+            importCSV: function( results, file ) {
+                if ( !results.errors.length ) {
+                    const nodeWidth = 125;
+                    const nodeHeight = 35;
+                    let data = results.data;
+                    let g = new Dagre.graphlib.Graph();
+                    let mmpFileName = file.name.split( "." )[ 0 ] + ".mmp";
+                    let json = {
+                        info: {},
+                        concepts: []
+                    };
+
+                    g.setGraph({ rankdir: "LR", align: "UL", nodesep: 20, edgesep: 5, ranksep: 0, acyclicer: "greedy" });
+                    g.setDefaultEdgeLabel(function() { return {}; });
+    
+                    _.each(data, ( row, rIndex ) => {
+                        if ( !rIndex ) {
+                            json.info.name = row[ rIndex ]; 
+                            _.each(row.slice( 1, row.length ), ( concept, cIndex ) => {
+                                if ( concept !== "" ) {
+                                    let name = concept.replace( /\"/g, "" );
+                                    let lines = name.length / 20 < 1 ? 1 : name.length / 20;
+
+                                    json.concepts.push({
+                                        id: cIndex,
+                                        name: name,
+                                        x: 0,
+                                        y: 0,
+                                        relationships: []
+                                    });
+
+                                    g.setNode( name, { label: name, width: nodeWidth, height: nodeHeight * lines } );
+                                }
+                            });
+                        }
+                        else {
+                            _.each(row.slice( 1, row.length ), ( value, cIndex ) => {
+                                let influence = parseFloat( value.replace( /\"/g, "" ) );
+                                if ( !isNaN( influence ) && influence ) {
+                                    let concept = json.concepts[ rIndex - 1 ];
+                                    let relatedConcept = json.concepts[ cIndex ];
+    
+                                    concept.relationships.push({
+                                         id: relatedConcept.id,
+                                         name: relatedConcept.name,
+                                         influence: influence
+                                    });
+
+                                    g.setEdge( concept.name, relatedConcept.name );
+                                }
+                            });
+                        }
+                    });
+
+                    Dagre.layout(g);
+
+                    _.each(g.nodes(), ( name, index ) => {
+                        let concept = json.concepts[ index ];
+                        let node = g.node( name );
+
+                        concept.x = node.x;
+                        concept.y = node.y;
+                    });
+
+                    this.addModel( JSON.stringify( json ), mmpFileName );
+                } else {
+                    console.log( "## CSV PARSE ERRORS ##" );
+
+                    _.each(results.errors, ( error ) => {
+                        console.error( error.message );
+                    });
+
+                    alert( "Import CSV failed! Check the browser console for details." );
                 }
             },
 

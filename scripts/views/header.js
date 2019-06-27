@@ -113,61 +113,9 @@ define([
                 let header = this;
                 _.each(files, ( file ) => {
                     Papa.parse(file, {
-                        complete: header._parsedCSV
+                        complete:  window.mentalmodeler.appModel.importCSV.bind(window.mentalmodeler.appModel)
                     });
                 });
-            }
-        },
-
-        _parsedCSV: function( results, file ) {
-            if ( !results.errors.length ) {
-                let data = results.data;
-                let mmpFileName = file.name.split( "." )[ 0 ] + ".mmp";
-                let numConcepts = 0;
-                let json = {
-                    info: {},
-                    concepts: []
-                };
-
-                _.each(data, ( row, rIndex ) => {
-                    if ( !rIndex ) {
-                        json.info.name = row[ rIndex ]; 
-                        _.each(row.slice( 1, row.length ), ( concept, cIndex ) => {
-                            if ( concept !== "" ) {
-                                json.concepts.push({
-                                    id: cIndex,
-                                    name: concept.replace( /\"/g, "" ),
-                                    x: 0,
-                                    y: 0,
-                                    relationships: []
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        _.each(row.slice( 1, row.length ), ( value, cIndex ) => {
-                            let influence = parseFloat( value.replace( /\"/g, "" ) );
-                            if ( !isNaN( influence ) && influence ) {
-                                let concept = json.concepts[ rIndex - 1 ];
-                                let relatedConcept = json.concepts[ cIndex ];
-
-                                concept.relationships.push({
-                                     id: relatedConcept.id,
-                                     name: relatedConcept.name,
-                                     influence: influence
-                                });
-                            }
-                        });
-                    }
-                });
-
-                window.mentalmodeler.appModel.addModel( JSON.stringify( json ), mmpFileName );
-            } else {
-                console.log( "## CSV PARSE ERRORS ##" );
-                _.each(results.errors, ( error ) => {
-                    console.error( error.message );
-                });
-                alert( "Import CSV failed! Check the browser console for details." );
             }
         },
 

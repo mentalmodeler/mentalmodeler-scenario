@@ -14,9 +14,6 @@ require.config({
             ],
             exports: 'Backbone'
         },
-        filesaver: {
-            exports: 'filesaver'
-        },
         foundation: {
             deps: ['jquery'],
             exports: 'foundation'
@@ -57,7 +54,8 @@ require.config({
         x2js: '../vendor/x2js/xml2json.min',
         tableExport: '../vendor/tableExport/tableExport',
         jqueryBase64: '../vendor/tableExport/jquery.base64',
-        html2canvas: '../vendor/html2canvas'
+        html2canvas: '../vendor/html2canvas',
+        papaparse: '../vendor/papaparse/papaparse.min'
         // conceptmap: '../libs/conceptmap/js/main'
     }
 });

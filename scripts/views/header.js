@@ -10,8 +10,9 @@ define([
     'text!templates/exportTable.html',
     'models/scenario',
     'swfobject',
+    'papaparse',
     'filesaver'
-], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, SwfObject ) {
+], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, SwfObject, Papa ) {
     'use strict';
 
     var HeaderView = AbstractView.extend({
@@ -23,6 +24,7 @@ define([
 
         events: {
             'change input#load-file' : 'loadFiles',
+            'change input#import-csv' : 'importCSV',
             'click #newFile': 'newFile',
             'click #saveFile': 'saveFile',
             'click #deleteFile': 'remove',
@@ -98,6 +100,75 @@ define([
                 this.$el.find( '#deleteFile' ).addClass( 'disabled' );
             }
 
+        },
+
+        /*
+        * import csv using papa parse
+        */
+
+        importCSV: function( e ) {
+            let files = e.target && e.target.files;
+
+            if ( files && files.length > 0 ) {
+                let header = this;
+                _.each(files, ( file ) => {
+                    Papa.parse(file, {
+                        complete: header._parsedCSV
+                    });
+                });
+            }
+        },
+
+        _parsedCSV: function( results, file ) {
+            if ( !results.errors.length ) {
+                let data = results.data;
+                let mmpFileName = file.name.split( "." )[ 0 ] + ".mmp";
+                let numConcepts = 0;
+                let json = {
+                    info: {},
+                    concepts: []
+                };
+
+                _.each(data, ( row, rIndex ) => {
+                    if ( !rIndex ) {
+                        json.info.name = row[ rIndex ]; 
+                        _.each(row.slice( 1, row.length ), ( concept, cIndex ) => {
+                            if ( concept !== "" ) {
+                                json.concepts.push({
+                                    id: cIndex,
+                                    name: concept.replace( /\"/g, "" ),
+                                    x: 0,
+                                    y: 0,
+                                    relationships: []
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        _.each(row.slice( 1, row.length ), ( value, cIndex ) => {
+                            let influence = parseFloat( value.replace( /\"/g, "" ) );
+                            if ( !isNaN( influence ) && influence ) {
+                                let concept = json.concepts[ rIndex - 1 ];
+                                let relatedConcept = json.concepts[ cIndex ];
+
+                                concept.relationships.push({
+                                     id: relatedConcept.id,
+                                     name: relatedConcept.name,
+                                     influence: influence
+                                });
+                            }
+                        });
+                    }
+                });
+
+                window.mentalmodeler.appModel.addModel( JSON.stringify( json ), mmpFileName );
+            } else {
+                console.log( "## CSV PARSE ERRORS ##" );
+                _.each(results.errors, ( error ) => {
+                    console.error( error.message );
+                });
+                alert( "Import CSV failed! Check the browser console for details." );
+            }
         },
 
         /*

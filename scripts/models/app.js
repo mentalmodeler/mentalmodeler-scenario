@@ -199,7 +199,7 @@ define([
                 this.log('setSection\n\tsection:',section,'\n\tprevSection:',prevSection,'\n\tsectionChanged:',sectionChanged);
 
                 if ( sectionChanged ) {
-                    if (!(section === 'scenario' && this.curSelectionType !== 'scenario')) {
+                    if (prevSection === 'modeling' || prevSection === 'grid' || prevSection === 'preferred') {
                         this.saveModelData();
                     }
                     this.curSection = section;

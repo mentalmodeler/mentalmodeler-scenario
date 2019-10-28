@@ -29,16 +29,9 @@ require.config({
             deps: ['jquery'],
             exports: 'tableExport'
         },
-        jqueryBase64: {
-            deps: ['jquery'],
-            exports: 'jqueryBase64'
-        },
         html2canvas: {
             exports: 'html2canvas'
         }
-        // conceptmap: {
-        //     exports: 'conceptmap'
-        // }
     },
     paths: {
         jquery: '../vendor/jquery/jquery.min',
@@ -54,7 +47,6 @@ require.config({
         detect: '../vendor/detect/detect.min',
         x2js: '../vendor/x2js/xml2json.min',
         tableExport: '../vendor/tableExport/tableExport',
-        jqueryBase64: '../vendor/tableExport/jquery.base64',
         html2canvas: '../vendor/html2canvas',
         papaparse: '../vendor/papaparse/papaparse.min'
         // conceptmap: '../libs/conceptmap/js/main'

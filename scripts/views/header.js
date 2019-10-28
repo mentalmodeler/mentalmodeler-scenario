@@ -11,7 +11,8 @@ define([
     'models/scenario',
     'swfobject',
     'papaparse',
-    'filesaver'
+    'filesaver',
+    'tableExport'
 ], function ($, _, Backbone, Foundation, AbstractView, Template, ExportTable, ScenarioModel, SwfObject, Papa ) {
     'use strict';
 
@@ -110,7 +111,6 @@ define([
             let files = e.target && e.target.files;
 
             if ( files && files.length > 0 ) {
-                let header = this;
                 _.each(files, ( file ) => {
                     Papa.parse(file, {
                         complete:  window.mentalmodeler.appModel.importCSV.bind(window.mentalmodeler.appModel)
@@ -124,8 +124,10 @@ define([
         */
 
         exportData: function( type ) {
+            window.mentalmodeler.appModel.saveModelData();
             var concepts = [];
             var curModel = window.mentalmodeler.appModel.curModel;
+            var fileName = this.getFilename().split(".")[0];
             if ( curModel ) {
                 concepts = curModel.getConceptsForGrid();
             }
@@ -133,8 +135,8 @@ define([
             this.$el.append( $table );
             $table.tableExport({
                 type: type,
-                escape: 'false',
-                consoleLog: 'true'
+                fileName: fileName,
+                preventInjection: false,
                 // separator: ','
                 // ignoreColumn: [2,3],
                 // tableName:'yourTableName'

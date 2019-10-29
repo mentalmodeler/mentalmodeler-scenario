@@ -129,28 +129,50 @@ define([
                     return false;
                 }
 
+                if( window.MentalModelerUseFlash ) {
+                    this.replaceIdsForFlash( data.concepts );
+                }
+
                 var that = this;
-                if (typeof data.info !== 'undefined') {
+                if ( typeof data.info !== 'undefined' ) {
                     this.infoModel.setData( data.info );
                 }
-                if (typeof data.groupNames !== 'undefined') {
+                if ( typeof data.groupNames !== 'undefined' ) {
                    this.groupModel.setData( data.groupNames );
                 }
                 if (typeof data.concepts !== 'undefined') {
-                    _.each( data.concepts, function( concept ) {
+                    _.each( data.concepts, ( concept ) => {
                         that.conceptCollection.add( concept )
                     });
                 }
-                if ( data.hasOwnProperty('scenarios') && data.scenarios.length > 0 ) {
+                if (data.hasOwnProperty( 'scenarios' ) && data.scenarios.length > 0) {
                     this.scenarioCollection.reset();
-                    _.each( data.scenarios, function( scenario ) {
-                         that.addScenario( scenario );
+                    _.each( data.scenarios, ( scenario ) => {
+                         that.addScenario(scenario);
                     });
                 }
                 else {
                     // add one scenario so the module has at least one scenario
                     that.addScenario();
                 }
+            },
+
+            replaceIdsForFlash(concepts) {
+                let id = 0;
+                _.each(concepts, (concept) => {
+                    let idToReplace = concept.id;
+                    _.each(concepts, (otherConcept) => {
+                        if(idToReplace !== otherConcept.id) {
+                            _.each(otherConcept.relationships, (relationship) => {
+                                if(relationship.id === idToReplace) {
+                                    relationship.id = id;
+                                }
+                            });
+                        }
+                    });
+                    concept.id = id;
+                    id++;
+                });
             },
 
             /*

@@ -290,8 +290,10 @@ define([
         *  save file
         */
         saveFile: function() {
-            // FileSaver.js (filesaver module) populates a saveAs method on the window object
-            saveAs(new Blob([this.getXML()]), this.getFilename());
+            let blob = new Blob([this.getXML()], {type: "application/xml"});
+            let filename = this.getFilename();
+
+            saveAs(blob, filename);
        },
 
         /*

@@ -28,8 +28,6 @@ define(['underscore'], (_) => {
                 return names[0];
             }
         }
-
-        return undefined;
     };
 
     browserUtils.getBrowserVersion = () => {
@@ -61,6 +59,5 @@ define(['underscore'], (_) => {
         };
     };
 
-    window.bUtils = browserUtils;
     return browserUtils;
 });

@@ -63,7 +63,7 @@ require([
     'html2canvas'
 ], function ( $, Backbone, _, App, html2canvas ) {
     var params = new URLSearchParams(document.location.search.substring(1));
-    window.MentalModelerUseFlash = !params.has('noflash');
+    window.MentalModelerUseFlash = params.has('flash');
     // console.log('\nMain\n\twindow.MentalModelerConceptMap:', window.MentalModelerConceptMap, '\n\twindow.MentalModelerUseFlash:', window.MentalModelerUseFlash);
     window.mentalmodeler = new App();
     window.html2canvas = html2canvas;

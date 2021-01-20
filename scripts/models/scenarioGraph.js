@@ -104,7 +104,7 @@ define([
                 while( diff > 0.00001 ) {
                     let intermediateVec = math.zeros( vecSize );
                     currStateVec = math.zeros( vecSize );
-                    intermediateVec = math.multiply( prevStateVec, weightMatrix );
+                    intermediateVec = math.multiply( weightMatrix, prevStateVec );
 
                     currStateVec.forEach(function( x, i, vec ) {
                         if( clamps && clamps[ i[0] ] !== 0 ) {
@@ -120,21 +120,6 @@ define([
                 }
 
                 return currStateVec;          
-            },
-
-            equalVectors: function( vecA, vecB ) {
-                if( !vecA || !vecB || vecA.size()[1] !== vecB.size()[1] ) {
-                    return false;
-                }
-
-                var result = true;
-                vecA.forEach(function(val, ind, vec) {
-                    var valA = math.round( val, 5 );
-                    var valB = math.round( vecB.subset( math.index( ind ) ), 5 );
-                    result = result && ( valA === valB );
-                });
-
-                return result;
             }
         });
 

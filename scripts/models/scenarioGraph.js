@@ -103,9 +103,8 @@ define([
 
                 while( diff > 0.00001 ) {
                     let intermediateVec = math.zeros( vecSize );
-                    let intermediateVec2 = math.zeros( vecSize);
                     currStateVec = math.zeros( vecSize );
-                    intermediateVec = math.multiply( weightMatrix, prevStateVec );
+                    intermediateVec = math.multiply( prevStateVec, weightMatrix );
 
                     currStateVec.forEach(function( x, i, vec ) {
                         if( clamps && clamps[ i[0] ] !== 0 ) {

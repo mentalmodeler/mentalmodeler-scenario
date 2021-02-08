@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mentalmodeler>
+	<info>
+		<name><![CDATA[FCM]]></name>
+		<author><![CDATA[arousset]]></author>
+		<description><![CDATA[]]></description>
+		<version><![CDATA[1.0]]></version>
+		<date><![CDATA[Wed Feb 5 16:42:59 GMT-0600 2014]]></date>
+		<id><![CDATA[6ecbe43a-94e0-4b8e-84e4-66caa3764420]]></id>
+	</info>
+	<groupNames>
+	    <groupName index="0"><![CDATA[dfghfdgh]]></groupName>
+	    <groupName index="1"><![CDATA[ertyretyrte]]></groupName>
+	    <groupName index="2"><![CDATA[xcvbcbvxcvb]]></groupName>
+	    <groupName index="3"><![CDATA[]]></groupName>
+	    <groupName index="4"><![CDATA[]]></groupName>
+	    <groupName index="5"><![CDATA[]]></groupName>
+  	</groupNames>
+	<concepts>
+		<concept>
+			<id><![CDATA[1]]></id>
+			<name><![CDATA[Fish population]]></name>
+			<notes><![CDATA[]]></notes>
+			<units><![CDATA[]]></units>
+			<group><![CDATA[0]]></group>
+			<x><![CDATA[604]]></x>
+			<y><![CDATA[200]]></y>
+			<relationships>
+				<relationship>
+					<id><![CDATA[7]]></id>
+					<name><![CDATA[Livelihood]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[1]]></influence>
+				</relationship>
+			</relationships>
+		</concept>
+		<concept>
+			<id><![CDATA[2]]></id>
+			<name><![CDATA[Amount of wetland]]></name>
+			<notes><![CDATA[]]></notes>
+			<units><![CDATA[]]></units>
+			<group><![CDATA[1]]></group>
+			<x><![CDATA[200]]></x>
+			<y><![CDATA[205]]></y>
+			<relationships>
+				<relationship>
+					<id><![CDATA[1]]></id>
+					<name><![CDATA[Fish population]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[1]]></influence>
+				</relationship>
+				<relationship>
+					<id><![CDATA[8]]></id>
+					<name><![CDATA[Pollution]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[-0.25]]></influence>
+				</relationship>
+				<relationship>
+					<id><![CDATA[7]]></id>
+					<name><![CDATA[Livelihood]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[0.62]]></influence>
+				</relationship>
+			</relationships>
+		</concept>
+		<concept>
+			<id><![CDATA[6]]></id>
+			<name><![CDATA[Enforcement of laws]]></name>
+			<notes><![CDATA[]]></notes>
+			<units><![CDATA[]]></units>
+			<group><![CDATA[2]]></group>
+			<x><![CDATA[395]]></x>
+			<y><![CDATA[44]]></y>
+			<relationships>
+				<relationship>
+					<id><![CDATA[2]]></id>
+					<name><![CDATA[Amount of wetland]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[0.25]]></influence>
+				</relationship>
+				<relationship>
+					<id><![CDATA[1]]></id>
+					<name><![CDATA[Fish population]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[0.62]]></influence>
+				</relationship>
+				<relationship>
+					<id><![CDATA[8]]></id>
+					<name><![CDATA[Pollution]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[-0.62]]></influence>
+				</relationship>
+				<relationship>
+					<id><![CDATA[7]]></id>
+					<name><![CDATA[Livelihood]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[-0.25]]></influence>
+				</relationship>
+			</relationships>
+		</concept>
+		<concept>
+			<id><![CDATA[7]]></id>
+			<name><![CDATA[Livelihood]]></name>
+			<notes><![CDATA[]]></notes>
+			<units><![CDATA[]]></units>
+			<group><![CDATA[0]]></group>
+			<x><![CDATA[682]]></x>
+			<y><![CDATA[458]]></y>
+			<relationships/>
+		</concept>
+		<concept>
+			<id><![CDATA[8]]></id>
+			<name><![CDATA[Pollution]]></name>
+			<notes><![CDATA[]]></notes>
+			<units><![CDATA[]]></units>
+			<group><![CDATA[0]]></group>
+			<x><![CDATA[281]]></x>
+			<y><![CDATA[467]]></y>
+			<relationships>
+				<relationship>
+					<id><![CDATA[2]]></id>
+					<name><![CDATA[Amount of wetland]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[-0.25]]></influence>
+				</relationship>
+				<relationship>
+					<id><![CDATA[1]]></id>
+					<name><![CDATA[Fish population]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[-1]]></influence>
+				</relationship>
+				<relationship>
+					<id><![CDATA[7]]></id>
+					<name><![CDATA[Livelihood]]></name>
+					<notes><![CDATA[]]></notes>
+					<confidence><![CDATA[0]]></confidence>
+					<influence><![CDATA[-0.25]]></influence>
+				</relationship>
+			</relationships>
+		</concept>
+	</concepts>
+	<scenarios>
+		<scenario>
+			<name><![CDATA[A lot of fish die]]></name>
+			<concepts>
+				<concept>
+					<selected><![CDATA[true]]></selected>
+					<influence><![CDATA[-1]]></influence>
+					<id><![CDATA[1]]></id>
+					<name><![CDATA[Fish population]]></name>
+				</concept>
+				<concept>
+					<selected><![CDATA[true]]></selected>
+					<influence><![CDATA[]]></influence>
+					<id><![CDATA[2]]></id>
+					<name><![CDATA[Amount of wetland]]></name>
+				</concept>
+				<concept>
+					<selected><![CDATA[true]]></selected>
+					<influence><![CDATA[]]></influence>
+					<id><![CDATA[6]]></id>
+					<name><![CDATA[Enforcement of laws]]></name>
+				</concept>
+				<concept>
+					<selected><![CDATA[true]]></selected>
+					<influence><![CDATA[]]></influence>
+					<id><![CDATA[7]]></id>
+					<name><![CDATA[Livelihood]]></name>
+				</concept>
+				<concept>
+					<selected><![CDATA[true]]></selected>
+					<influence><![CDATA[]]></influence>
+					<id><![CDATA[8]]></id>
+					<name><![CDATA[Pollution]]></name>
+				</concept>
+			</concepts>
+		</scenario>
+	</scenarios>
+</mentalmodeler>

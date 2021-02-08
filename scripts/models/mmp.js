@@ -102,6 +102,9 @@ define([
             updateJSFromModelSection: function( modelJS ) {
                 var concepts = modelJS.concepts;
                 this.conceptCollection.reset( concepts );
+                if (typeof modelJS.groupNames !== 'undefined') {
+                    this.groupModel.setData( modelJS.groupNames );
+                }
                 // console.log('\tmmp > updateJSFromModelSection\n\t\tmodelJS:', modelJS, '\n\t\tthis.conceptCollection:', this.conceptCollection, '\n');
             },
 

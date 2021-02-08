@@ -56,5 +56,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', []);
 	grunt.registerTask('scss', ['watch']);
 	grunt.registerTask('dist', ['requirejs', 'compass', 'copy']);
+	grunt.registerTask('dist-js', ['requirejs', 'copy']);
 }
 

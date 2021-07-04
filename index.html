@@ -9,7 +9,6 @@
 		<link rel="stylesheet" href="css/foundation.css"/>
 		<link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css"/>
 		<link rel="stylesheet" href="css/app.css"/>
-		<link rel="stylesheet" href="libs/conceptmap/css/main.css"/>
 		<script src="vendor/custom.modernizr.js"></script>
 		<script>
 			window.mmConfig = window.mmConfig || {};
@@ -25,7 +24,30 @@
 			<div id="blocker"></div>
 		</div>
 		<div id="printArea"></div>
-		<script src="libs/conceptmap/js/main.js"></script>
+		<script>
+			function addScript(src, callback) {
+				console.log('callback:', callback);
+				var script = document.createElement('script');
+				script.setAttribute('src', src);
+				script.onload = callback;
+				document.body.appendChild(script);
+			}
+			function addStyles(src) {
+				var link = document.createElement('link');
+				link.href = src;
+				link.type = 'text/css';
+				link.rel = "stylesheet";
+				document.querySelector('head').appendChild(link);
+			}
+			if (window.location.search && window.location.search.includes('gitmm')) {
+				console.log('REMOTE');
+				addStyles('https://mentalmodeler.github.io/mentalmodeler-js/static/css/main.2c10665a.css');
+				addScript('https://mentalmodeler.github.io/mentalmodeler-js/static/js/main.c37efc60.js', loadMain);
+			} else {
+				addStyles('libs/conceptmap/css/main.css');
+				addScript('libs/conceptmap/js/main.js', loadMain);
+			}
+		</script>
 		<script data-main="scripts/main" src="vendor/requirejs/require.js"></script>
 	</body>
 </html>

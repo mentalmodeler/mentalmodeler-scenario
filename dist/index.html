@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
 		<link rel="stylesheet" href="css/foundation.css"/>
 		<link rel="stylesheet" href="css/app.css"/>
-		<link rel="stylesheet" href="conceptmap/css/main.css"/>
+		<!-- <link rel="stylesheet" href="conceptmap/css/main.css"/> -->
 		<script src="scripts/custom.modernizr.js"></script>
 	</head>
 	<body>
@@ -18,7 +18,34 @@
 			<div id="blocker"></div>
 		</div>
 		<div id="printArea"></div>
-		<script src="conceptmap/js/main.js"></script>
-		<script src="scripts/mentalmodeler.js"></script>
+		<script>
+			function addScript(src, callback) {
+				var script = document.createElement('script');
+				script.setAttribute('src', src);
+				script.onload = callback;
+				document.body.appendChild(script);
+			}
+			function addStyles(src) {
+				var link = document.createElement('link');
+				link.href = src;
+				link.type = 'text/css';
+				link.rel = "stylesheet";
+				document.querySelector('head').appendChild(link);
+			}
+			function loadMain() {
+				addScript('scripts/mentalmodeler.js');
+			}
+			if (window.location.search && window.location.search.includes('gitmm')) {
+				console.log('REMOTE');
+				addStyles('https://mentalmodeler.github.io/mentalmodeler-js/static/css/main.2c10665a.css');
+				addScript('https://mentalmodeler.github.io/mentalmodeler-js/static/js/main.c37efc60.js', loadMain);
+			} else {
+				addStyles('conceptmap/css/main.css');
+				addScript('conceptmap/js/main.js', loadMain);
+			
+			}
+		</script>
+		<!-- <script src="conceptmap/js/main.js"></script>
+		<script src="scripts/mentalmodeler.js"></script> -->
 	</body>
 </html>

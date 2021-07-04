@@ -431,7 +431,9 @@ define([
                 //that.log('reader.onload, theFile:',theFile)
                 return function(e) {
                     //that.log('loaded, files:',files,', theFile:',theFile,', e.target.result:',e.target.result);
-                    that.addModel( e.target.result, theFile.name );
+                    if (typeof e.target.result === 'string' && !e.target.result.includes('<compareref/>')) {
+                        that.addModel( e.target.result, theFile.name );
+                    }
                     //Backbone.trigger( 'file:onload', e.target.result );
                     if ( files.length > 0 ) {
                         that.readFiles( files );

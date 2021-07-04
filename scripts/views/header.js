@@ -28,6 +28,7 @@ define([
             'change input#import-csv' : 'importCSV',
             'click #newFile': 'newFile',
             'click #saveFile': 'saveFile',
+            'click #saveFileCompareRef': 'saveFileCompareRef',
             'click #deleteFile': 'remove',
             'click #print': 'print',
             'click #exportCsv': 'exportCSV',
@@ -67,7 +68,7 @@ define([
             return filename.replace(/\s/g, '') + (filename.indexOf('.mmp') !== -1 ? '' : '.mmp');
         },
 
-        getXML: function() {
+        getXML: function(removeCoordinates) {
             var xml = '';
             var appModel = window.mentalmodeler.appModel;
             if ( appModel.curModel ) {
@@ -75,7 +76,7 @@ define([
                 if ( appModel.curSection === 'modeling' ) {
                     appModel.saveModelData( true );
                 }
-                xml = appModel.curModel.getXML();
+                xml = appModel.curModel.getXML(removeCoordinates);
             }
             return xml;
         },
@@ -292,10 +293,18 @@ define([
         saveFile: function() {
             let blob = new Blob([this.getXML()], {type: "application/xml"});
             let filename = this.getFilename();
-
             saveAs(blob, filename);
        },
 
+       /*
+        *  save file as compare ref, i.e diplay coordinates removed
+        */
+        saveFileCompareRef: function() {
+            let blob = new Blob([this.getXML(true)], {type: "application/xml"});
+            let filename = this.getFilename();
+            saveAs(blob, filename);
+        },
+        
         /*
          *  Load files
          */

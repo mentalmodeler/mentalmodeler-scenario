@@ -96,9 +96,10 @@ define([
                 return json;
             },
 
-            toXML: function() {
+            toXML: function(removeCoordinates) {
                 var nodes = [];
-                nodes.push( XML.elementsFromJSON( this.attributes, ['selected','influence','relationships'], true ) );
+                var excludedProperties = ['selected','influence','relationships'].concat(removeCoordinates ? ['x', 'y'] : []);
+                nodes.push( XML.elementsFromJSON( this.attributes, excludedProperties, true ) );
                 var relationships = [ XML.JOIN_STR ];
                 this.relationshipCollection.each( function( relationship ) {
                     relationships.push( relationship.toXML() );

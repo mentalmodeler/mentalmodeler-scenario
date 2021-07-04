@@ -185,8 +185,9 @@ define([
                 return xml;
             },
 
-            getXML: function() {
-                var nodes = [ XMLUtils.JOIN_STR, this.infoModel.toXML(), this.groupModel.toXML(), this.getConceptsXML(), this.getScenariosXML() ];
+            getXML: function(removeCoordinates) {
+                const refModel = removeCoordinates ? '<compareref/>' : '';
+                var nodes = [ XMLUtils.JOIN_STR, this.infoModel.toXML(), refModel, this.groupModel.toXML(), this.getConceptsXML(removeCoordinates), this.getScenariosXML() ];
                 var xml = XMLUtils.header + XMLUtils.JOIN_STR + XMLUtils.elementNL( 'mentalmodeler', nodes.join('') );
                 this.set( 'xml', xml );
                 return xml;
@@ -215,10 +216,10 @@ define([
             /**
              * returns concepts xml section as a string
              */
-            getConceptsXML:function() {
+            getConceptsXML:function(removeCoordinates) {
                 var concepts = [ XMLUtils.JOIN_STR ];
                 this.conceptCollection.each( function( concept ) {
-                    concepts.push( concept.toXML() );
+                    concepts.push( concept.toXML(removeCoordinates) );
                 });
                 return XMLUtils.elementNL( 'concepts', concepts.join('') );
             },

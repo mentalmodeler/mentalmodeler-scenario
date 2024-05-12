@@ -46,12 +46,14 @@ define([
                 var data = this.get('data');
                 
                 var json = this.get('json');
+                
                 if (type === 'xml') {
                     json = XMLUtils.parseMmpFile( this.get('xml') )
                 } else if (type === 'json') {
                     json = JSON.parse(json);
-                }                
-                
+                } else if (typeof json === 'string') {
+                    json = JSON.parse(json);
+                }               
                 this.setData( json );
                 Backbone.trigger( 'mmp:change' );
 
@@ -91,6 +93,7 @@ define([
             
             updateXMLFromModelSection: function( modelXML ) {
                 // updates the concepts collection
+                console.log('------ updateXMLFromModelSection, modelXML:', modelXML);
                 var concepts = XMLUtils.parseMmpFile( modelXML, ['info', 'scenario'] ).concepts;
                 this.conceptCollection.reset( concepts );
 
@@ -100,8 +103,12 @@ define([
             },
 
             updateJSFromModelSection: function( modelJS ) {
+                console.log('------ updateJSFromModelSection, modelJS:', modelJS);
                 var concepts = modelJS.concepts;
+                var groupNames = modelJS.groupNames;
+                console.log('groupNames:', groupNames);
                 this.conceptCollection.reset( concepts );
+                this.groupModel.setData( groupNames || {});
                 // console.log('\tmmp > updateJSFromModelSection\n\t\tmodelJS:', modelJS, '\n\t\tthis.conceptCollection:', this.conceptCollection, '\n');
             },
 
